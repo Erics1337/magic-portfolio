@@ -1,0 +1,26 @@
+.timeline {
+    position: absolute;
+    left: -120px;
+    top: 24px;
+    bottom: 24px;
+    width: 2px;
+    background-color: var(--brand-alpha-medium);
+}
+
+.timelineDot {
+    position: absolute;
+    left: -124px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: white;
+    border: 3px solid var(--brand-default);
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .timeline,
+    .timelineDot {
+        display: none;
+    }
+}
