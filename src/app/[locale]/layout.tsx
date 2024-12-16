@@ -15,6 +15,7 @@ import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-in
 import { routing } from "@/i18n/routing";
 import { renderContent } from "@/app/resources";
 import { Background, Flex } from "@/once-ui/components";
+import Script from 'next/script';
 
 export async function generateMetadata(
 	{ params: { locale }}: { params: { locale: string }}
@@ -89,51 +90,78 @@ export default async function RootLayout({
 } : RootLayoutProps) {
 	unstable_setRequestLocale(locale);
 	const messages = await getMessages();
+
 	return (
-		<NextIntlClientProvider messages={messages}>
-			<Flex
-				as="html" lang="en"
-				background="page"
-				data-neutral={style.neutral} data-brand={style.brand} data-accent={style.accent}
-				data-solid={style.solid} data-solid-style={style.solidStyle}
-				data-theme={style.theme}
-				data-border={style.border}
-				data-surface={style.surface}
-				data-transition={style.transition}
-				className={classNames(
-					primary.variable,
-					secondary ? secondary.variable : '',
-					tertiary ? tertiary.variable : '',
-					code.variable)}>
-				<Flex style={{minHeight: '100vh'}}
-					as="body"
-					fillWidth margin="0" padding="0"
-					direction="column">
-					<Background
-						mask={effects.mask as any}
-						gradient={effects.gradient as any}
-						dots={effects.dots as any}
-						lines={effects.lines as any}/>
+		<html lang={locale} className={classNames(primary.variable, secondary ? secondary.variable : '', tertiary ? tertiary.variable : '', code.variable)}>
+			<body className="text-white bg-black">
+				<NextIntlClientProvider messages={messages}>
 					<Flex
-						fillWidth
-						minHeight="16">
-					</Flex>
-					<Header/>
-					<Flex
-						zIndex={0}
-						fillWidth paddingY="l" paddingX="l"
-						justifyContent="center" flex={1}>
+						as="main"
+						background="page"
+						data-neutral={style.neutral} 
+						data-brand={style.brand} 
+						data-accent={style.accent}
+						data-solid={style.solid} 
+						data-solid-style={style.solidStyle}
+						data-theme={style.theme}
+						data-border={style.border}
+						data-surface={style.surface}
+						data-transition={style.transition}
+						style={{
+							minHeight: '100vh',
+							position: 'relative',
+							zIndex: 1
+						}}
+						fillWidth 
+						margin="0" 
+						padding="0"
+						direction="column">
+						{/* Full-page background */}
+						<div
+							className="fixed inset-0 will-change-transform"
+							style={{
+								backgroundImage: `url('/images/RR-v-june-2020-24.png')`,
+								backgroundSize: "cover",
+								backgroundPosition: "center",
+								backgroundAttachment: "fixed",
+								width: "100vw",
+								height: "120vh",
+								left: "50%",
+								top: "50%",
+								transform: "translate(-50%, calc(-50% + calc(var(--scroll-offset, 0) * 0.3)))",
+								filter: "brightness(0.6)",
+								mixBlendMode: "multiply",
+								zIndex: -1
+							}}
+						/>
+						<Background
+							mask={effects.mask as any}
+							gradient={effects.gradient as any}
+							dots={effects.dots as any}
+							lines={effects.lines as any}
+						/>
+						<Header/>
 						<Flex
-							justifyContent="center"
-							fillWidth minHeight="0">
-							<RouteGuard>
-								{children}
-							</RouteGuard>
+							zIndex={1}
+							fillWidth 
+							paddingY="l" 
+							paddingX="l"
+							justifyContent="center" 
+							flex={1}>
+							<Flex
+								justifyContent="center"
+								fillWidth 
+								minHeight="0">
+								<RouteGuard>
+									{children}
+								</RouteGuard>
+							</Flex>
 						</Flex>
+						<Footer/>
 					</Flex>
-					<Footer/>
-				</Flex>
-			</Flex>
-		</NextIntlClientProvider>
+				</NextIntlClientProvider>
+				<Script src="/scripts/parallax.js" strategy="afterInteractive" />
+			</body>
+		</html>
 	);
 }

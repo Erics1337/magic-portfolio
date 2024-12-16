@@ -16,7 +16,7 @@ const IntroductionBanner: React.FC = () => {
 			{/* Profile Picture */}
 			<div className="overflow-hidden relative w-48 rounded-full border-4 border-blue-500 shadow-lg aspect-square">
 				<Image
-					src="/images/profilePic.jpg"
+					src="/images/avatar.jpg"
 					alt="Eric Swanson"
 					fill
 					className="object-cover"

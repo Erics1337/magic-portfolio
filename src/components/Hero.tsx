@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import React, { useEffect } from "react"
 import IntroductionBanner from "./IntroductionBanner"
@@ -15,50 +15,13 @@ import {
 
 const Hero: React.FC = () => {
 	useEffect(() => {
-		let ticking = false;
-		const heroSection = document.querySelector('.hero-section');
-
-		function updateParallax() {
-			const scrolled = window.scrollY;
-			const viewportHeight = window.innerHeight;
-			
-			// Update the scroll offset CSS variable
-			document.documentElement.style.setProperty('--scroll-offset', `${scrolled}px`);
-			
-			// Calculate parallax effects based on viewport position
-			if (heroSection) {
-				const heroRect = heroSection.getBoundingClientRect();
-				const heroVisible = heroRect.bottom > 0 && heroRect.top < viewportHeight;
-				
-				if (heroVisible) {
-					const progress = (viewportHeight - heroRect.top) / (viewportHeight + heroRect.height);
-					document.documentElement.style.setProperty('--hero-progress', progress);
-				}
-			}
-
-			ticking = false;
-		}
-
-		function requestTick() {
-			if (!ticking) {
-				requestAnimationFrame(updateParallax);
-				ticking = true;
-			}
-		}
-
-		// Add scroll listener with throttling
-		window.addEventListener('scroll', requestTick, { passive: true });
-		window.addEventListener('resize', requestTick, { passive: true });
-
-		// Initial update
-		updateParallax();
-
-		// Cleanup
-		return () => {
-			window.removeEventListener('scroll', requestTick);
-			window.removeEventListener('resize', requestTick);
+		const handleScroll = () => {
+			const progress = (window.scrollY / (document.body.offsetHeight - window.innerHeight)) * 100;
+			document.documentElement.style.setProperty('--hero-progress', progress.toString());
 		};
-	}, []); // Empty dependency array means this effect runs once on mount
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
 
 	return (
 		<section className="overflow-visible relative w-full h-screen hero-section">
@@ -82,12 +45,7 @@ const Hero: React.FC = () => {
 			<div
 				className="absolute inset-0 will-change-transform"
 				style={{
-					background: `
-						radial-gradient(circle at center, 
-							rgba(30, 27, 60, calc(0.5 + var(--hero-progress, 0) * 0.5)) 0%, 
-							rgba(30, 27, 60, calc(0.2 + var(--hero-progress, 0) * 0.3)) 40%, 
-							transparent 70%)
-					`,
+					background: "radial-gradient(circle at center, rgba(30, 27, 60, 0.8) 0%, rgba(30, 27, 60, 0.5) 40%, rgba(30, 27, 60, 0) 70%)",
 					opacity: "calc(1 - var(--hero-progress, 0) * 0.3)",
 				}}
 			/>
