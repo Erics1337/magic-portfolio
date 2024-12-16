@@ -1,6 +1,4 @@
-"use client"
-
-import React, { useEffect } from "react"
+import React from "react"
 import IntroductionBanner from "./IntroductionBanner"
 import ScrollIndicator from "./ScrollIndicator"
 import {
@@ -14,14 +12,6 @@ import {
 } from "@/once-ui/components"
 
 const Hero: React.FC = () => {
-	useEffect(() => {
-		const handleScroll = () => {
-			const progress = (window.scrollY / (document.body.offsetHeight - window.innerHeight)) * 100;
-			document.documentElement.style.setProperty('--hero-progress', progress.toString());
-		};
-		window.addEventListener('scroll', handleScroll);
-		return () => window.removeEventListener('scroll', handleScroll);
-	}, []);
 
 	return (
 		<section className="overflow-visible relative w-full h-screen hero-section">
@@ -45,8 +35,8 @@ const Hero: React.FC = () => {
 			<div
 				className="absolute inset-0 will-change-transform"
 				style={{
-					background: "radial-gradient(circle at center, rgba(30, 27, 60, 0.8) 0%, rgba(30, 27, 60, 0.5) 40%, rgba(30, 27, 60, 0) 70%)",
-					opacity: "calc(1 - var(--hero-progress, 0) * 0.3)",
+					background: "radial-gradient(50% 50% at 50% 50%, rgba(30, 27, 60, 0.8) 0%, rgba(30, 27, 60, 0.5) 40%, transparent 100%)",
+					opacity: "0.7",
 				}}
 			/>
 
