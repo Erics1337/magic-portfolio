@@ -83,6 +83,7 @@ export default async function Work({ params: { locale } }: { params: { locale: s
                     }),
                 }}
             />
+            <h1 className="text-4xl font-bold mb-8">Professional Case Studies</h1>
             <WorkContent posts={validPosts} locale={locale} />
         </Flex>
     );
