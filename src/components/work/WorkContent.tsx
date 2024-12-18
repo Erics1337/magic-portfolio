@@ -44,7 +44,7 @@ export function WorkContent({ posts, locale }: WorkContentProps) {
     console.log('Tag options:', tagOptions);
 
     return (
-        <Flex direction="column" gap="8">
+        <Flex direction="column" gap="48">
             <Select
                 id="tag-filter"
                 label="Filter by tag"

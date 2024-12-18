@@ -1,12 +1,13 @@
 import { notFound } from 'next/navigation'
 import { CustomMDX } from '@/components/mdx'
 import { getWorkProjects } from '@/app/utils/utils'
-import { AvatarGroup, Button, Flex, Heading, SmartImage, Text } from '@/once-ui/components'
+import { AvatarGroup, Button, Flex, Heading, Text } from '@/once-ui/components'
 import { baseURL, renderContent } from '@/app/resources';
 import { routing } from '@/i18n/routing';
 import { unstable_setRequestLocale, getTranslations } from 'next-intl/server';
 import { formatDate } from '@/app/utils/formatDate';
 import ScrollToHash from '@/components/ScrollToHash';
+import { ProjectImages } from '@/components/work/ProjectImages';
 
 interface WorkParams {
     params: {
@@ -138,11 +139,10 @@ export default async function Project({ params }: WorkParams) {
 				</Heading>
 			</Flex>
 			{post.metadata.images.length > 0 && (
-				<SmartImage
-					aspectRatio="16 / 9"
-					radius="m"
-					alt="image"
-					src={post.metadata.images[0]}/>
+				<ProjectImages
+					images={post.metadata.images}
+					title={post.metadata.title}
+				/>
 			)}
 			<Flex style={{margin: 'auto'}}
 				as="article"
@@ -164,6 +164,27 @@ export default async function Project({ params }: WorkParams) {
 					</Text>
 				</Flex>
 				<CustomMDX source={post.content} />
+				{post.metadata.tags && post.metadata.tags.length > 0 && (
+					<Flex
+						gap="2"
+						wrap={true}
+						marginTop="32"
+						justifyContent="flex-start">
+						{post.metadata.tags.map((tag: string, index: number) => (
+							<Text
+								key={index}
+								size="xs"
+								paddingX="4"
+								paddingY="2"
+								style={{
+									background: 'var(--neutral-alpha-weak)',
+									borderRadius: 'var(--radius-s)',
+								}}>
+								{tag}
+							</Text>
+						))}
+					</Flex>
+				)}
 			</Flex>
 			<ScrollToHash />
 		</Flex>

@@ -15,7 +15,7 @@ export function Projects({ range, locale, posts }: ProjectsProps) {
         : posts;
 
     return (
-        <Flex direction="column" gap="8">
+        <Flex direction="column" gap="64">
             {displayedProjects.map((project, idx) => (
                 <ProjectCard
                     key={idx}
@@ -24,7 +24,6 @@ export function Projects({ range, locale, posts }: ProjectsProps) {
                     description={project.metadata.summary}
                     images={project.metadata.images || []}
                     content={project.content}
-                    tags={project.metadata.tags || []}
                     avatars={(project.metadata.team || []).map(member => ({ src: member.avatar }))}
                 />
             ))}

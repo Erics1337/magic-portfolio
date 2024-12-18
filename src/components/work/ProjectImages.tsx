@@ -1,30 +1,19 @@
 "use client";
 
-import { AvatarGroup, Flex, Heading, RevealFx, SmartImage, SmartLink, Text } from "@/once-ui/components";
+import { Flex, RevealFx, SmartImage } from "@/once-ui/components";
 import { useEffect, useState } from "react";
-import { useTranslations } from 'next-intl';
 
-interface ProjectCardProps {
-    href: string;
-    images?: string[];
-    title?: string;
-    content?: string;
-    description?: string;
-    avatars?: { src: string }[];
+interface ProjectImagesProps {
+    images: string[];
+    title: string;
 }
 
-export const ProjectCard: React.FC<ProjectCardProps> = ({
-    href,
+export const ProjectImages: React.FC<ProjectImagesProps> = ({
     images = [],
     title,
-    content,
-    description,
-    avatars = []
 }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
-
-    const t = useTranslations();
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -39,7 +28,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             setIsTransitioning(false);
             const nextIndex = (activeIndex + 1) % images.length;
             handleControlClick(nextIndex);
-
         }
     };
 
@@ -99,54 +87,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     ))}
                 </Flex>
             )}
-            <Flex
-                mobileDirection="column"
-                fillWidth paddingX="s" paddingTop="12" paddingBottom="24" gap="l">
-                {title && (
-                    <Flex
-                        flex={5}>
-                        <SmartLink href={href}>
-                            <Heading
-                                as="h2"
-                                wrap="balance"
-                                variant="heading-strong-xl">
-                                {title}
-                            </Heading>
-                        </SmartLink>
-                    </Flex>
-                )}
-                {(avatars?.length > 0 || description?.trim() || content?.trim()) && (
-                    <Flex
-                        flex={7} direction="column"
-                        gap="16">
-                        {avatars?.length > 0 && (
-                            <AvatarGroup
-                                avatars={avatars}
-                                size="m"
-                                reverseOrder/>
-                        )}
-                        {description?.trim() && (
-                            <Text
-                                wrap="balance"
-                                variant="body-default-s"
-                                onBackground="neutral-weak">
-                                {description}
-                            </Text>
-                        )}
-                        {content?.trim() && (
-                            <SmartLink
-                                suffixIcon="chevronRight"
-                                style={{margin: '0', width: 'fit-content'}}
-                                href={href}>
-                                    <Text
-                                        variant="body-default-s">
-                                       {t("projectCard.label")}
-                                    </Text>
-                            </SmartLink>
-                        )}
-                    </Flex>
-                )}
-            </Flex>
         </Flex>
     );
-};
+}
