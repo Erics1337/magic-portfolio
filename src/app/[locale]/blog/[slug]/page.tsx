@@ -144,13 +144,13 @@ export default async function Blog({ params }: BlogParams) {
 				direction="column"
 				fillWidth>
 				<CustomMDX source={post.content} />
-				{post.metadata.tag && (
+				{post.metadata.tags && (
 					<Flex
 						gap="2"
 						wrap={true}
 						marginTop="32"
 						justifyContent="flex-start">
-						{post.metadata.tag.split(',').map((tag: string, index: number) => (
+						{post.metadata.tags.map((tag: string, index: number) => (
 							<Text
 								key={index}
 								size="xs"
