@@ -89,6 +89,14 @@ export default async function Gallery(
 
     return (
         <Flex fillWidth>
+            {/* 
+             * Structured data (JSON-LD) for SEO optimization
+             * This script helps search engines understand the image gallery content:
+             * - Provides information about gallery title, description, and URL
+             * - Lists all images with their URLs and descriptions
+             * - Includes author information
+             * This enables rich snippets in search results and better image search integration
+             */}
             <script
 				type="application/ld+json"
 				suppressHydrationWarning

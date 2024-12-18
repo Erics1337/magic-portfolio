@@ -10,7 +10,6 @@
 }
 
 .gridItem {
-    margin-bottom: 16px;
     transition: transform 0.2s ease-in-out;
 }
 
@@ -32,6 +31,13 @@
     }
 }
 
+.imageContainer {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-m);
+}
+
 .imageOverlay {
     position: absolute;
     bottom: 0;
@@ -45,6 +51,8 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    z-index: 2;
+    pointer-events: none;
 }
 
 .imageTitle {
