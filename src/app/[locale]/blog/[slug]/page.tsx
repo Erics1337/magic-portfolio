@@ -1,13 +1,13 @@
 import ScrollToHash from '@/components/ScrollToHash';
 import { notFound } from 'next/navigation'
 import { CustomMDX } from '@/components/mdx'
-import { getPosts } from '@/app/utils/utils'
+import { getBlogPosts } from '@/app/utils/utils'
 import { Avatar, Button, Flex, Heading, Text } from '@/once-ui/components'
 
 import { baseURL, renderContent } from '@/app/resources'
-import { unstable_setRequestLocale } from 'next-intl/server'
+import { unstable_setRequestLocale, getTranslations } from 'next-intl/server'
 import { routing } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
+
 import { formatDate } from '@/app/utils/formatDate'
 
 interface BlogParams {
@@ -25,7 +25,7 @@ export async function generateStaticParams() {
 
     // Fetch posts for each locale
     for (const locale of locales) {
-        const posts = getPosts(['src', 'app', '[locale]', 'blog', 'posts', locale]);
+        const posts = await getBlogPosts(locale);
         allPosts.push(...posts.map(post => ({
             slug: post.slug,
             locale: locale,
@@ -35,8 +35,8 @@ export async function generateStaticParams() {
     return allPosts;
 }
 
-export function generateMetadata({ params: { slug, locale } }: BlogParams) {
-	let post = getPosts(['src', 'app', '[locale]', 'blog', 'posts', locale]).find((post) => post.slug === slug)
+export async function generateMetadata({ params: { slug, locale } }: BlogParams) {
+	let post = (await getBlogPosts(locale)).find((post) => post.slug === slug)
 
 	if (!post) {
 		return
@@ -76,15 +76,15 @@ export function generateMetadata({ params: { slug, locale } }: BlogParams) {
 	}
 }
 
-export default function Blog({ params }: BlogParams) {
+export default async function Blog({ params }: BlogParams) {
 	unstable_setRequestLocale(params.locale);
-	let post = getPosts(['src', 'app', '[locale]', 'blog', 'posts', params.locale]).find((post) => post.slug === params.slug)
+	let post = (await getBlogPosts(params.locale)).find((post) => post.slug === params.slug)
 
 	if (!post) {
 		notFound()
 	}
 
-	const t = useTranslations();
+	const t = await getTranslations();
 	const { person } = renderContent(t);
 
 	return (
