@@ -122,6 +122,38 @@ function createParagraph({ children }: TextProps) {
     );
 };
 
+function createList({ children }: TextProps) {
+    return (
+        <Text
+            as="ul"
+            style={{
+                listStyle: 'disc',
+                paddingLeft: 'var(--static-space-24)',
+                marginTop: 'var(--static-space-8)',
+                marginBottom: 'var(--static-space-12)'
+            }}
+            variant="body-default-m"
+            onBackground="neutral-medium">
+            {children}
+        </Text>
+    );
+}
+
+function createListItem({ children }: TextProps) {
+    return (
+        <Text
+            as="li"
+            style={{
+                display: 'list-item',
+                marginBottom: 'var(--static-space-8)'
+            }}
+            variant="body-default-m"
+            onBackground="neutral-medium">
+            {children}
+        </Text>
+    );
+}
+
 const components = {
     p: createParagraph as any,
     h1: createHeading(1) as any,
@@ -132,6 +164,8 @@ const components = {
     h6: createHeading(6) as any,
     img: createImage as any,
     a: CustomLink as any,
+    ul: createList as any,
+    li: createListItem as any,
     Table,
     CodeBlock
 };
