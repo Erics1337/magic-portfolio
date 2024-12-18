@@ -17,10 +17,8 @@ export function BlogContent({ posts, locale }: BlogContentProps) {
         const tags = new Set<string>();
         tags.add('all');
         posts.forEach(post => {
-            if (post.metadata?.tag) {
-                // Split tags on comma and trim whitespace
-                const postTags = post.metadata.tag.split(',').map((t: string) => t.trim());
-                postTags.forEach((tag: string) => tags.add(tag));
+            if (post.metadata?.tags) {
+                post.metadata.tags.forEach((tag: string) => tags.add(tag));
             }
         });
         return Array.from(tags);
@@ -30,9 +28,8 @@ export function BlogContent({ posts, locale }: BlogContentProps) {
     const filteredPosts = useMemo(() => {
         if (selectedTag === 'all') return posts;
         return posts.filter(post => {
-            if (!post.metadata?.tag) return false;
-            const postTags = post.metadata.tag.split(',').map((t: string) => t.trim());
-            return postTags.includes(selectedTag);
+            if (!post.metadata?.tags) return false;
+            return post.metadata.tags.includes(selectedTag);
         });
     }, [posts, selectedTag]);
 
