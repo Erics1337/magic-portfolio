@@ -52,25 +52,40 @@ export default async function Gallery(
 	const workProjects = await getWorkProjects(locale) || [];
 
 	// Collect all images with their sources and links
-	const galleryImages: GalleryImage[] = [
+	const galleryImages = [
 		...blogPosts.flatMap(post => {
-			const images = post.metadata.images || (post.metadata.image ? [post.metadata.image] : []);
-			return images.map((image): GalleryImage => ({
-				src: image,
-				alt: post.metadata.title,
-				link: `/${locale}/blog/${post.slug}`,
-				type: 'blog',
-				orientation: 'horizontal'
-			}));
+			const images: GalleryImage[] = [];
+			if (post.metadata.image) {
+				images.push({
+					src: post.metadata.image,
+					alt: post.metadata.title,
+					link: `/${locale}/blog/${post.slug}`,
+					type: 'blog',
+					orientation: 'horizontal',
+					fallbackSrc: '/images/placeholder-blog.svg'
+				});
+			}
+			return images;
 		}),
-		...workProjects.flatMap(project => (project.metadata.images || []).map((image): GalleryImage => ({
-			src: image,
-			alt: project.metadata.title,
-			link: `/${locale}/work/${project.slug}`,
-			type: 'project',
-			orientation: 'horizontal'
-		})))
-	];
+		...workProjects.flatMap(project => {
+			const images: GalleryImage[] = [];
+			// Handle both single image and image array
+			const projectImages = project.metadata.images || 
+				(project.metadata.image ? [project.metadata.image] : []);
+			
+			projectImages.forEach(image => {
+				images.push({
+					src: image,
+					alt: project.metadata.title,
+					link: `/${locale}/work/${project.slug}`,
+					type: 'project',
+					orientation: 'horizontal',
+					fallbackSrc: '/images/placeholder-project.svg'
+				});
+			});
+			return images;
+		})
+	].filter(image => image.src); // Filter out any undefined images
 
     return (
         <Flex fillWidth>

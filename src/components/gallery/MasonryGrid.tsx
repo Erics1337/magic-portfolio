@@ -4,6 +4,7 @@ import Masonry from 'react-masonry-css';
 import { SmartImage } from "@/once-ui/components";
 import styles from "./Gallery.module.scss";
 import Link from 'next/link';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { renderContent } from '@/app/resources';
 
@@ -13,6 +14,7 @@ export interface GalleryImage {
     link: string;
     type: 'blog' | 'project';
     orientation: 'horizontal' | 'vertical';
+    fallbackSrc: string;
 }
 
 interface MasonryGridProps {
@@ -20,6 +22,8 @@ interface MasonryGridProps {
 }
 
 export default function MasonryGrid({ images }: MasonryGridProps) {
+    const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+
     const breakpointColumnsObj = {
         default: 4,
         1440: 3,
@@ -28,6 +32,10 @@ export default function MasonryGrid({ images }: MasonryGridProps) {
     };
 
     const t = useTranslations();
+
+    const handleImageError = (imageSrc: string) => {
+        setImageErrors(prev => ({ ...prev, [imageSrc]: true }));
+    };
 
     return (
         <Masonry
@@ -39,9 +47,10 @@ export default function MasonryGrid({ images }: MasonryGridProps) {
                     <SmartImage
                         radius="m"
                         aspectRatio={image.orientation === "horizontal" ? "16 / 9" : "9 / 16"}
-                        src={image.src}
+                        src={imageErrors[image.src] ? image.fallbackSrc : image.src}
                         alt={image.alt}
                         className={styles.gridItem}
+                        onError={() => handleImageError(image.src)}
                     />
                     <div className={styles.imageOverlay}>
                         <span className={styles.imageTitle}>{image.alt}</span>
