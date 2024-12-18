@@ -66,9 +66,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     <SmartImage
                         tabIndex={0}
                         radius="l"
-                        alt={title}
+                        alt={title || 'Project image'}
                         aspectRatio="16 / 9"
-                        src={images[activeIndex]}
+                        src={images[activeIndex] || images[0]}
                         style={{
                             border: '1px solid var(--neutral-alpha-weak)',
                             ...(images.length > 1 && {
