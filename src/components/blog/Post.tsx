@@ -57,11 +57,15 @@ export default function Post({ post, thumbnail }: PostProps) {
                         onBackground="neutral-weak">
                         {formatDate(post.metadata.publishedAt, false)}
                     </Text>
-                    { post.metadata.tag &&
-                        <Tag
-                            className="mt-8"
-                            label={post.metadata.tag}
-                            variant="neutral" />
+                    { post.metadata.tags && post.metadata.tags.length > 0 &&
+                        <Flex gap="8" wrap={true}>
+                            {post.metadata.tags.map((tag: string, index: number) => (
+                                <Tag
+                                    key={index}
+                                    label={tag}
+                                    variant="neutral" />
+                            ))}
+                        </Flex>
                     }
                 </Flex>
             </Flex>
