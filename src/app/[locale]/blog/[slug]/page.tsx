@@ -144,6 +144,27 @@ export default async function Blog({ params }: BlogParams) {
 				direction="column"
 				fillWidth>
 				<CustomMDX source={post.content} />
+				{post.metadata.tag && (
+					<Flex
+						gap="2"
+						wrap={true}
+						marginTop="32"
+						justifyContent="flex-start">
+						{post.metadata.tag.split(',').map((tag: string, index: number) => (
+							<Text
+								key={index}
+								size="xs"
+								paddingX="4"
+								paddingY="2"
+								style={{
+									background: 'var(--neutral-alpha-weak)',
+									borderRadius: 'var(--radius-s)',
+								}}>
+								{tag.trim()}
+							</Text>
+						))}
+					</Flex>
+				)}
 			</Flex>
 			<ScrollToHash />
 		</Flex>

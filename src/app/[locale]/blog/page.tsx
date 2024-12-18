@@ -1,14 +1,13 @@
 import { Flex, Heading } from '@/once-ui/components';
 import { Mailchimp } from '@/components';
-import { PostsContainer } from '@/components/blog/PostsContainer';
+import { BlogContent } from '@/components/blog/BlogContent';
 import { baseURL, renderContent } from '@/app/resources'
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
-import { useTranslations } from 'next-intl';
+import { getPosts } from '@/app/utils/utils';
 
 export async function generateMetadata(
 	{params: {locale}}: { params: { locale: string }}
 ) {
-
 	const t = await getTranslations();
 	const { blog } = renderContent(t);
 
@@ -40,13 +39,23 @@ export async function generateMetadata(
 	};
 }
 
-export default function Blog(
+export default async function Blog(
 	{ params: {locale}}: { params: { locale: string }}
 ) {
 	unstable_setRequestLocale(locale);
 
-	const t = useTranslations();
+	const [t, allPosts] = await Promise.all([
+		getTranslations(),
+		getPosts(['src', 'app', '[locale]', 'blog', 'posts', locale])
+	]);
+
 	const { person, blog, newsletter } = renderContent(t);
+
+	// Sort posts by date
+	const sortedPosts = [...allPosts].sort((a, b) => {
+		return new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime();
+	});
+
     return (
         <Flex
 			fillWidth maxWidth="s"
@@ -78,11 +87,7 @@ export default function Blog(
                 variant="display-strong-s">
                 {blog.title}
             </Heading>
-			<Flex
-				fillWidth flex={1} direction="column">
-				<PostsContainer range={[1,3]} locale={locale} thumbnail/>
-				<PostsContainer range={[4]} columns="2" locale={locale}/>
-			</Flex>
+			<BlogContent posts={sortedPosts} locale={locale} />
             {newsletter.display && (
                 <Mailchimp newsletter={newsletter} />
             )}
