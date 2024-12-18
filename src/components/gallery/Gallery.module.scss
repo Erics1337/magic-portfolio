@@ -1,14 +1,59 @@
 .masonryGrid {
     display: flex;
-    margin-left: calc(-1 * var(--static-space-16));
     width: 100%;
+    margin-left: -16px; /* Compensate for gutter */
 }
 
 .masonryGridColumn {
-    padding-left: var(--static-space-16);
+    padding-left: 16px; /* Gutter */
     background-clip: padding-box;
 }
 
 .gridItem {
-    margin-bottom: var(--static-space-16);
+    margin-bottom: 16px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.imageLink {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--radius-m);
+    margin-bottom: 16px;
+
+    &:hover {
+        .gridItem {
+            transform: scale(1.05);
+        }
+
+        .imageOverlay {
+            opacity: 1;
+        }
+    }
+}
+
+.imageOverlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.imageTitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.imageType {
+    font-size: 0.9rem;
+    text-transform: capitalize;
+    opacity: 0.8;
 }

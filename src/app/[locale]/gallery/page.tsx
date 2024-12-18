@@ -1,8 +1,10 @@
 import { Flex } from "@/once-ui/components";
-import MasonryGrid from "@/components/gallery/MasonryGrid";
+import MasonryGrid, { GalleryImage } from "@/components/gallery/MasonryGrid";
 import { baseURL, renderContent } from "@/app/resources";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
-import { useTranslations } from "next-intl";
+import { getBlogPosts, getWorkProjects } from '@/app/utils/utils';
+
+
 
 export async function generateMetadata(
 	{params: {locale}}: { params: { locale: string }}
@@ -39,12 +41,37 @@ export async function generateMetadata(
 	};
 }
 
-export default function Gallery(
+export default async function Gallery(
 	{ params: {locale}}: { params: { locale: string }}
 ) {
 	unstable_setRequestLocale(locale);
-	const t = useTranslations();
+	const t = await getTranslations();
 	const { gallery, person } = renderContent(t);
+
+	const blogPosts = await getBlogPosts(locale) || [];
+	const workProjects = await getWorkProjects(locale) || [];
+
+	// Collect all images with their sources and links
+	const galleryImages: GalleryImage[] = [
+		...blogPosts.flatMap(post => {
+			const images = post.metadata.images || (post.metadata.image ? [post.metadata.image] : []);
+			return images.map((image): GalleryImage => ({
+				src: image,
+				alt: post.metadata.title,
+				link: `/${locale}/blog/${post.slug}`,
+				type: 'blog',
+				orientation: 'horizontal'
+			}));
+		}),
+		...workProjects.flatMap(project => (project.metadata.images || []).map((image): GalleryImage => ({
+			src: image,
+			alt: project.metadata.title,
+			link: `/${locale}/work/${project.slug}`,
+			type: 'project',
+			orientation: 'horizontal'
+		})))
+	];
+
     return (
         <Flex fillWidth>
             <script
@@ -57,7 +84,7 @@ export default function Gallery(
 						name: gallery.title,
 						description: gallery.description,
 						url: `https://${baseURL}/gallery`,
-						image: gallery.images.map((image) => ({
+						image: galleryImages.map((image) => ({
                             '@type': 'ImageObject',
                             url: `${baseURL}${image.src}`,
                             description: image.alt,
@@ -73,7 +100,7 @@ export default function Gallery(
 					}),
 				}}
 			/>
-            <MasonryGrid/>
+            <MasonryGrid images={galleryImages}/>
         </Flex>
     );
 }

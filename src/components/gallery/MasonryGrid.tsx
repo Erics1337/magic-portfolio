@@ -3,10 +3,23 @@
 import Masonry from 'react-masonry-css';
 import { SmartImage } from "@/once-ui/components";
 import styles from "./Gallery.module.scss";
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { renderContent } from '@/app/resources';
 
-export default function MasonryGrid() {
+export interface GalleryImage {
+    src: string;
+    alt: string;
+    link: string;
+    type: 'blog' | 'project';
+    orientation: 'horizontal' | 'vertical';
+}
+
+interface MasonryGridProps {
+    images: GalleryImage[];
+}
+
+export default function MasonryGrid({ images }: MasonryGridProps) {
     const breakpointColumnsObj = {
         default: 4,
         1440: 3,
@@ -15,22 +28,26 @@ export default function MasonryGrid() {
     };
 
     const t = useTranslations();
-    const { gallery } = renderContent(t);
 
     return (
         <Masonry
             breakpointCols={breakpointColumnsObj}
             className={styles.masonryGrid}
             columnClassName={styles.masonryGridColumn}>
-            {gallery.images.map((image, index) => (
-                <SmartImage
-                    key={index}
-                    radius="m"
-                    aspectRatio={image.orientation === "horizontal" ? "16 / 9" : "9 / 16"}
-                    src={image.src}
-                    alt={image.alt}
-                    className={styles.gridItem}
-                />
+            {images.map((image, index) => (
+                <Link key={index} href={image.link} className={styles.imageLink}>
+                    <SmartImage
+                        radius="m"
+                        aspectRatio={image.orientation === "horizontal" ? "16 / 9" : "9 / 16"}
+                        src={image.src}
+                        alt={image.alt}
+                        className={styles.gridItem}
+                    />
+                    <div className={styles.imageOverlay}>
+                        <span className={styles.imageTitle}>{image.alt}</span>
+                        <span className={styles.imageType}>{image.type}</span>
+                    </div>
+                </Link>
             ))}
         </Masonry>
     );
