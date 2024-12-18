@@ -1,58 +1,67 @@
-import { getPosts } from '@/app/utils/utils';
+"use server";
+
+import { getWorkProjects } from '@/app/utils/utils';
 import { Flex } from '@/once-ui/components';
-import { Projects } from '@/components/work/Projects';
 import { baseURL, renderContent } from '@/app/resources';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
-import { useTranslations } from 'next-intl';
+import { WorkContent } from '@/components/work/WorkContent';
+import { ProjectsContainer } from '@/components/work/ProjectsContainer';
 
 export async function generateMetadata(
     {params: {locale}}: { params: { locale: string }}
 ) {
-
     const t = await getTranslations();
     const { work } = renderContent(t);
 
-	const title = work.title;
-	const description = work.description;
-	const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
+    const title = work.title;
+    const description = work.description;
+    const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
 
-	return {
-		title,
-		description,
-		openGraph: {
-			title,
-			description,
-			type: 'website',
-			url: `https://${baseURL}/${locale}/work/`,
-			images: [
-				{
-					url: ogImage,
-					alt: title,
-				},
-			],
-		},
-		twitter: {
-			card: 'summary_large_image',
-			title,
-			description,
-			images: [ogImage],
-		},
-	};
+    return {
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            images: [ogImage],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [ogImage],
+        },
+    };
 }
 
-export default function Work(
-    { params: {locale}}: { params: { locale: string }}
-) {
+export default async function Work({ params: { locale } }: { params: { locale: string } }) {
     unstable_setRequestLocale(locale);
-    let allProjects = getPosts(['src', 'app', '[locale]', 'work', 'projects', locale]);
+    const posts = await getWorkProjects(locale) || [];
+    console.log('Fetched posts:', posts.length);
+    console.log('Posts metadata:', posts.map(p => ({ 
+        title: p.metadata.title, 
+        tags: p.metadata.tags 
+    })));
+    
+    const t = await getTranslations();
+    const { person } = renderContent(t);
 
-    const t = useTranslations();
-    const { person, work } = renderContent(t);
+    const validPosts = posts.filter(post => 
+        post && 
+        post.metadata && 
+        post.metadata.title && 
+        post.metadata.summary
+    );
+    console.log('Valid posts:', validPosts.length);
+    console.log('Valid posts metadata:', validPosts.map(p => ({ 
+        title: p.metadata.title, 
+        tags: p.metadata.tags 
+    })));
 
     return (
         <Flex
-			fillWidth maxWidth="m"
-			direction="column">
+            fillWidth maxWidth="m"
+            direction="column">
             <script
                 type="application/ld+json"
                 suppressHydrationWarning
@@ -60,25 +69,21 @@ export default function Work(
                     __html: JSON.stringify({
                         '@context': 'https://schema.org',
                         '@type': 'CollectionPage',
-                        headline: work.title,
-                        description: work.description,
-                        url: `https://${baseURL}/projects`,
-                        image: `${baseURL}/og?title=Design%20Projects`,
+                        name: 'Work',
                         author: {
                             '@type': 'Person',
                             name: person.name,
                         },
-                        hasPart: allProjects.map(project => ({
+                        hasPart: validPosts.map(project => ({
                             '@type': 'CreativeWork',
                             headline: project.metadata.title,
                             description: project.metadata.summary,
-                            url: `https://${baseURL}/projects/${project.slug}`,
-                            image: `${baseURL}/${project.metadata.image}`,
+                            datePublished: project.metadata.publishedAt,
                         })),
                     }),
                 }}
             />
-            <Projects locale={locale}/>
+            <WorkContent posts={validPosts} locale={locale} />
         </Flex>
     );
 }

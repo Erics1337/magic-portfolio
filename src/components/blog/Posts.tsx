@@ -1,4 +1,5 @@
-import { getPosts } from '@/app/utils/utils';
+'use client';
+
 import { Grid } from '@/once-ui/components';
 import Post from './Post';
 
@@ -7,26 +8,22 @@ interface PostsProps {
     columns?: '1' | '2' | '3';
     locale: string;
     thumbnail?: boolean;
+    blogs: any[];
 }
 
 export function Posts({
     range,
     columns = '1',
     locale = 'en',
-    thumbnail = false
+    thumbnail = false,
+    blogs
 }: PostsProps) {
-    let allBlogs = getPosts(['src', 'app', '[locale]', 'blog', 'posts', locale]);
-
-    const sortedBlogs = allBlogs.sort((a, b) => {
-        return new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime();
-    });
-
     const displayedBlogs = range
-        ? sortedBlogs.slice(
+        ? blogs.slice(
               range[0] - 1,
-              range.length === 2 ? range[1] : sortedBlogs.length 
+              range.length === 2 ? range[1] : blogs.length 
           )
-        : sortedBlogs;
+        : blogs;
 
     return (
         <>

@@ -1,6 +1,6 @@
 import { Flex, Heading } from '@/once-ui/components';
 import { Mailchimp } from '@/components';
-import { Posts } from '@/components/blog/Posts';
+import { PostsContainer } from '@/components/blog/PostsContainer';
 import { baseURL, renderContent } from '@/app/resources'
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
@@ -80,8 +80,8 @@ export default function Blog(
             </Heading>
 			<Flex
 				fillWidth flex={1} direction="column">
-				<Posts range={[1,3]} locale={locale} thumbnail/>
-				<Posts range={[4]} columns="2" locale={locale}/>
+				<PostsContainer range={[1,3]} locale={locale} thumbnail/>
+				<PostsContainer range={[4]} columns="2" locale={locale}/>
 			</Flex>
             {newsletter.display && (
                 <Mailchimp newsletter={newsletter} />

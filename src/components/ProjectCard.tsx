@@ -11,6 +11,7 @@ interface ProjectCardProps {
     content: string;
     description: string;
     avatars: { src: string }[];
+    tags?: string[];
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -19,7 +20,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     title,
     content,
     description,
-    avatars
+    avatars = [],
+    tags = []
 }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -132,6 +134,20 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                                 onBackground="neutral-weak">
                                 {description}
                             </Text>
+                        )}
+                        {tags.length > 0 && (
+                            <Flex gap="2" wrap={true} marginTop="8">
+                                {tags.map((tag, index) => (
+                                    <Text
+                                        key={index}
+                                        size="xs"
+                                        paddingX="2"
+                                        paddingY="1"
+                                        >
+                                        {tag}
+                                    </Text>
+                                ))}
+                            </Flex>
                         )}
                         {content?.trim() && (
                             <SmartLink
