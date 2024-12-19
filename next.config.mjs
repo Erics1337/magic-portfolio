@@ -24,6 +24,10 @@ const nextConfig = {
             ...config.resolve.alias,
             '@': '/src',  // This allows absolute imports from the src directory
         };
+        config.module.rules.push({
+            test: /\.json$/,
+            type: 'json',
+        });
         return config;
     },
 };

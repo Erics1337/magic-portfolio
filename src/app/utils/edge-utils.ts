@@ -5,20 +5,33 @@ type Team = {
     linkedIn: string;
 };
 
-type Metadata = {
+type BaseMetadata = {
     title: string;
     publishedAt: string;
     summary: string;
-    image?: string;
-    images: string[];
     tags?: string[];
+};
+
+type BlogMetadata = BaseMetadata & {
+    image: string;
+};
+
+type WorkMetadata = BaseMetadata & {
+    images: string[];
     team: Team[];
 };
 
-type Post = {
-    metadata: Metadata;
+type BasePost = {
     slug: string;
     content: string;
+};
+
+type BlogPost = BasePost & {
+    metadata: BlogMetadata;
+};
+
+type WorkPost = BasePost & {
+    metadata: WorkMetadata;
 };
 
 // Helper to safely get base URL
@@ -32,31 +45,33 @@ function getBaseUrl(): string {
     return 'http://localhost:3000';
 }
 
-async function getPosts(contentType: string, locale: string): Promise<Post[]> {
+import enBlogContent from '@/content/en/blog/content.json';
+import enWorkContent from '@/content/en/work/content.json';
+
+async function getPosts(contentType: string, locale: string): Promise<BlogPost[] | WorkPost[]> {
     try {
-        // Use relative path for content fetching
-        const baseContentType = contentType.split('/')[0]; // 'blog' from 'blog/posts'
-        const contentPath = `/content/${locale}/${baseContentType}/content.json`;
-        
-        // Always fetch from the API in Edge runtime
-        const baseUrl = getBaseUrl();
-        const url = new URL(contentPath, baseUrl).toString();
-        
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch ${contentType} content`);
+        // Return static content during build time
+        if (locale === 'en') {
+            if (contentType === 'blog/posts') {
+                return enBlogContent as BlogPost[];
+            } else if (contentType === 'work/projects') {
+                return enWorkContent as WorkPost[];
+            }
         }
-        return await response.json();
+        
+        throw new Error(`Content not found for ${contentType} in locale ${locale}`);
     } catch (error) {
         console.error(`Error fetching ${contentType} content:`, error);
         return [];
     }
 }
 
-export async function getBlogPosts(locale: string): Promise<Post[]> {
-    return getPosts('blog/posts', locale);
+export function getBlogPosts(locale: string): Promise<BlogPost[]> {
+    return getPosts('blog/posts', locale) as Promise<BlogPost[]>;
 }
 
-export async function getWorkProjects(locale: string): Promise<Post[]> {
-    return getPosts('work/projects', locale);
+export function getWorkProjects(locale: string): Promise<WorkPost[]> {
+    return getPosts('work/projects', locale) as Promise<WorkPost[]>;
 }
+
+export const baseURL = getBaseUrl();

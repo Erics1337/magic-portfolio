@@ -71,9 +71,8 @@ export default async function Gallery(
 		}),
 		...workProjects.flatMap(project => {
 			const images: GalleryImage[] = [];
-			// Handle both single image and image array
-			const projectImages = project.metadata.images || 
-				(project.metadata.image ? [project.metadata.image] : []);
+			// Use the images array from project metadata
+			const projectImages = project.metadata.images;
 			
 			projectImages.forEach(image => {
 				images.push({

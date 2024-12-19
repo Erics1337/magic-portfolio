@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import { CustomMDX } from '../../../../components/mdx';
-import { getWorkProjects } from '../../../utils/edge-utils';
 import { AvatarGroup, Button, Flex, Heading, Text } from '../../../../once-ui/components';
 import { baseURL, renderContent } from '../../../resources';
 import { unstable_setRequestLocale, getTranslations } from 'next-intl/server';
@@ -8,6 +7,7 @@ import { routing } from '../../../../i18n/routing';
 import { formatDate } from '../../../utils/formatDate';
 import ScrollToHash from '../../../../components/ScrollToHash';
 import { ProjectImages } from '../../../../components/work/ProjectImages';
+import enWorkContent from '@/content/en/work/content.json';
 
 interface WorkParams {
     params: {
@@ -18,67 +18,50 @@ interface WorkParams {
 
 export async function generateStaticParams() {
     try {
-        const posts = await getWorkProjects('en');  // Default to English
-        return posts.map((post) => ({
-            locale: 'en',  // Default locale
+        return enWorkContent.map(post => ({
+            locale: 'en',
             slug: post.slug,
         }));
     } catch (error) {
         console.error('Error generating static params for work projects:', error);
-        return [];  // Return empty array if there's an error to prevent build failure
+        return [];
     }
 }
 
 export async function generateMetadata({ params: { slug, locale } }: WorkParams): Promise<any> {
-    const posts = await getWorkProjects(locale);
-    const post = posts.find((post) => post.slug === slug)
+    let post = enWorkContent.find((post) => post.slug === slug)
 
     if (!post) {
         return
     }
 
-    let {
-        title,
-        publishedAt: publishedTime,
-        summary: description,
-        images,
-        image,
-        team,
-    } = post.metadata
-    let ogImage = image
-        ? `https://${baseURL}${image}`
-        : `https://${baseURL}/og?title=${title}`;
-
     return {
-        title,
-        description,
-        images,
-        team,
+        title: post.metadata.title,
+        description: post.metadata.summary,
         openGraph: {
-            title,
-            description,
+            title: post.metadata.title,
+            description: post.metadata.summary,
             type: 'article',
-            publishedTime,
-            url: `https://${baseURL}/${locale}/work/${post.slug}`,
+            publishedTime: post.metadata.publishedAt,
+            url: `https://demo.magic-portfolio.com/work/${slug}`,
             images: [
                 {
-                    url: ogImage,
+                    url: post.metadata.images[0],
                 },
             ],
         },
         twitter: {
             card: 'summary_large_image',
-            title,
-            description,
-            images: [ogImage],
+            title: post.metadata.title,
+            description: post.metadata.summary,
+            images: [post.metadata.images[0]],
         },
     }
 }
 
 export default async function WorkProject({ params }: WorkParams) {
     unstable_setRequestLocale(params.locale);
-    const posts = await getWorkProjects(params.locale);
-    const post = posts.find((post) => post.slug === params.slug)
+    const post = enWorkContent.find((post) => post.slug === params.slug)
 
     if (!post) {
         notFound()
@@ -107,8 +90,8 @@ export default async function WorkProject({ params }: WorkParams) {
                         datePublished: post.metadata.publishedAt,
                         dateModified: post.metadata.publishedAt,
                         description: post.metadata.summary,
-                        image: post.metadata.image
-                            ? `https://${baseURL}${post.metadata.image}`
+                        image: post.metadata.images.length > 0
+                            ? `https://${baseURL}${post.metadata.images[0]}`
                             : `https://${baseURL}/og?title=${post.metadata.title}`,
                         url: `https://${baseURL}/${params.locale}/work/${post.slug}`,
                         author: {

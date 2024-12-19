@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation';
 import { CustomMDX } from '../../../../components/mdx';
-import { getBlogPosts } from '../../../utils/edge-utils';
 import { Avatar, Button, Flex, Heading, Text } from '../../../../once-ui/components';
 import { baseURL, renderContent } from '../../../resources';
 import { unstable_setRequestLocale, getTranslations } from 'next-intl/server';
 import { routing } from '../../../../i18n/routing';
 import { formatDate } from '../../../utils/formatDate';
 import ScrollToHash from '../../../../components/ScrollToHash';
+import enBlogContent from '@/content/en/blog/content.json';
 
 interface BlogParams {
     params: { 
@@ -17,61 +17,50 @@ interface BlogParams {
 
 export async function generateStaticParams() {
     try {
-        const posts = await getBlogPosts('en');  // Default to English
-        return posts.map((post) => ({
-            locale: 'en',  // Default locale
+        return enBlogContent.map(post => ({
+            locale: 'en',
             slug: post.slug,
         }));
     } catch (error) {
         console.error('Error generating static params for blog posts:', error);
-        return [];  // Return empty array if there's an error to prevent build failure
+        return [];
     }
 }
 
 export async function generateMetadata({ params: { slug, locale } }: BlogParams) {
-    let post = (await getBlogPosts(locale)).find((post) => post.slug === slug)
+    let post = enBlogContent.find((post) => post.slug === slug)
 
     if (!post) {
         return
     }
 
-    let {
-        title,
-        publishedAt: publishedTime,
-        summary: description,
-        image,
-    } = post.metadata;
-    let ogImage = image
-        ? `https://${baseURL}${image}`
-        : `https://${baseURL}/og?title=${title}`;
-
     return {
-        title,
-        description,
+        title: post.metadata.title,
+        description: post.metadata.summary,
         openGraph: {
-            title,
-            description,
+            title: post.metadata.title,
+            description: post.metadata.summary,
             type: 'article',
-            publishedTime,
-            url: `https://${baseURL}/${locale}/blog/${post.slug}`,
+            publishedTime: post.metadata.publishedAt,
+            url: `https://demo.magic-portfolio.com/blog/${slug}`,
             images: [
                 {
-                    url: ogImage,
+                    url: post.metadata.image,
                 },
             ],
         },
         twitter: {
             card: 'summary_large_image',
-            title,
-            description,
-            images: [ogImage],
+            title: post.metadata.title,
+            description: post.metadata.summary,
+            images: [post.metadata.image],
         },
     }
 }
 
 export default async function Blog({ params }: BlogParams) {
     unstable_setRequestLocale(params.locale);
-    let post = (await getBlogPosts(params.locale)).find((post) => post.slug === params.slug)
+    let post = enBlogContent.find((post) => post.slug === params.slug)
 
     if (!post) {
         notFound()
