@@ -390,8 +390,8 @@ export default function About(
                                                 <Image
                                                     src={cert.image}
                                                     alt={cert.name}
-                                                    width={120}
-                                                    height={120}
+                                                    width={64}
+                                                    height={64}
                                                     className={styles.certImage}
                                                 />
                                             )}

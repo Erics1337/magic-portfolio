@@ -144,12 +144,12 @@ const about = {
         institutions: [
             {
                 name: 'Western Colorado University',
-                description: <>Studied Computer Science.</>,
+                description: <>Bachelor of Science, Computer Science</>,
                 logo: '/logos/western.png'
             },
             {
                 name: 'State University of New York at Purchase',
-                description: <>Studied Media and Communications.</>,
+                description: <>Bachelor of Arts, Media and Communications</>,
                 logo: '/logos/purchaseCollege.png'
             }
         ]

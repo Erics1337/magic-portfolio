@@ -94,15 +94,15 @@ const createI18nContent = (t) => {
         },
         studies: {
             display: true, // set to false to hide this section
-            title: 'Studies',
+            title: t("about.studies.title"),
             institutions: [
                 {
-                    name: 'University of Jakarta',
-                    description: <>{t(`about.studies.institutions.University of Jakarta.description`)}</>,
+                    name: 'Western Colorado University',
+                    description: 'Bachelor of Science, Computer Science',
                 },
                 {
-                    name: 'Build the Future',
-                    description: <>{t("about.studies.institutions.Build the Future.description")}</>,
+                    name: 'State University of New York at Purchase',
+                    description: 'Bachelor of Arts, Media and Communications',
                 }
             ]
         },
