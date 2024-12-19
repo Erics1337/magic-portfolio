@@ -12,7 +12,7 @@ import { routing } from '@/i18n/routing';
 import { Locale, usePathname, useRouter } from '@/i18n/routing';
 import { renderContent } from "@/app/resources";
 import { useTranslations } from "next-intl";
-import { i18n } from "@/app/resources/config";
+import { i18nOptions } from "@/app/resources/config";
 
 type TimeDisplayProps = {
     timeZone: string;
@@ -49,9 +49,16 @@ const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = 'en-GB' })
     );
 };
 
-export default TimeDisplay;
+interface HeaderProps {
+    person: {
+        name: string;
+        role: string;
+        location: string;
+        [key: string]: any;
+    };
+}
 
-export const Header = () => {
+export const Header: React.FC<HeaderProps> = ({ person }) => {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
     const pathname = usePathname() ?? '';
@@ -68,7 +75,7 @@ export const Header = () => {
     }
 
     const t = useTranslations();
-    const { person, home, about, blog, work, gallery } = renderContent(t);
+    const { home, about, blog, work, gallery } = renderContent(t);
 
     return (
         <>
@@ -155,7 +162,7 @@ export const Header = () => {
                                 background="surface" border="neutral-medium" borderStyle="solid-1" radius="m-4" shadow="l"
                                 padding="4" gap="2"
                                 justifyContent="center">
-                                {i18n && routing.locales.map((locale, index) => (
+                                {i18nOptions && routing.locales.map((locale, index) => (
                                     <ToggleButton
                                         key={index}
                                         selected={params?.locale === locale}
@@ -178,3 +185,5 @@ export const Header = () => {
         </>
     )
 }
+
+export default TimeDisplay;

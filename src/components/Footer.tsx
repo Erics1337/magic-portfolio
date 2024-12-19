@@ -3,11 +3,20 @@ import { Flex, IconButton, SmartLink, Text } from "@/once-ui/components"
 import { useTranslations } from "next-intl";
 import styles from './Footer.module.scss'
 
-export const Footer = () => {
+interface FooterProps {
+    person: {
+        name: string;
+        role: string;
+        location: string;
+        [key: string]: any;
+    };
+}
+
+export const Footer: React.FC<FooterProps> = ({ person }) => {
     const currentYear = new Date().getFullYear();
 
     const t = useTranslations();
-    const { person, social } = renderContent(t);
+    const { social } = renderContent(t);
 
     return (
         <Flex
@@ -24,7 +33,7 @@ export const Footer = () => {
                     onBackground="neutral-strong">
                     <Text
                         onBackground="neutral-weak">
-                        © {currentYear} /
+                        {currentYear} /
                     </Text>
                     <Text paddingX="4">
                         {person.name}

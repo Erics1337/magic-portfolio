@@ -91,7 +91,7 @@ export default async function RootLayout({
 	unstable_setRequestLocale(locale);
 	const messages = await getMessages();
 	const t = await getTranslations();
-	const { person } = renderContent(t);
+	const content = renderContent(t);
 
 	return (
 		<html lang={locale}>
@@ -104,11 +104,11 @@ export default async function RootLayout({
 					<RouteGuard>
 						<Background />
 						<Flex direction="column" fillHeight>
-							<Header person={person} />
+							<Header person={content.person} />
 							<main className="flex-1">
 								{children}
 							</main>
-							<Footer person={person} />
+							<Footer person={content.person} />
 						</Flex>
 					</RouteGuard>
 				</NextIntlClientProvider>
