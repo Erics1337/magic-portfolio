@@ -10,7 +10,8 @@
 }
 
 .gridItem {
-    transition: transform 0.2s ease-in-out;
+    transition: all 0.3s ease-in-out !important;
+    transform: scale(1);
 }
 
 .imageLink {
@@ -21,7 +22,7 @@
     margin-bottom: 16px;
 
     &:hover {
-        .gridItem {
+        .imageContainer img {
             transform: scale(1.05);
         }
 
@@ -36,6 +37,10 @@
     width: 100%;
     overflow: hidden;
     border-radius: var(--radius-m);
+
+    img {
+        transition: transform 0.3s ease-in-out !important;
+    }
 }
 
 .imageOverlay {
@@ -46,7 +51,7 @@
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
     padding: 20px;
     opacity: 0;
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
     color: white;
     display: flex;
     flex-direction: column;
