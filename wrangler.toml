@@ -6,8 +6,6 @@ main = ".worker-next/index.mjs"
 
 assets = { directory = ".vercel/output/static", binding = "STATIC_ASSETS" }
 
-pages_build_output_dir = ".vercel/output/static"
-
 [[kv_namespaces]]
 binding = "NEXT_CACHE_WORKERS_KV"
 id = "a45cefdc503c49dca1622038a46483f9"
