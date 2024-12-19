@@ -154,6 +154,27 @@ function createListItem({ children }: TextProps) {
     );
 }
 
+// Handle standard markdown code blocks
+function createCode({ children, className }: { children: string, className?: string }) {
+    // Extract language from className (format is like "language-javascript")
+    const language = className?.replace('language-', '') || 'plaintext';
+
+    return (
+        <CodeBlock
+            className="my-24"
+            compact
+            codeInstances={[
+                {
+                    code: children,
+                    label: '',
+                    language: language
+                },
+            ]}
+            copyButton={true}
+        />
+    );
+}
+
 const components = {
     p: createParagraph as any,
     h1: createHeading(1) as any,
@@ -167,7 +188,10 @@ const components = {
     ul: createList as any,
     li: createListItem as any,
     Table,
-    CodeBlock
+    CodeBlock,
+    code: createCode as any,
+    // Handle code blocks with language specification
+    pre: ({ children }: { children: any }) => children
 };
 
 type CustomMDXProps = MDXRemoteProps & {

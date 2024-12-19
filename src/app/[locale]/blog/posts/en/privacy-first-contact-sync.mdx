@@ -39,49 +39,92 @@ The solution required a complete overhaul of our contact synchronization system.
 
 Instead of storing raw contact data, we implemented a sophisticated identification system:
 
-<CodeBlock className="my-24"
-    compact
-    codeInstances={[
-        {
-            code: 'interface Contact {\n  id: string;           // Device-provided unique identifier\n  bin: string;          // Social category assignment\n  lastSync: number;     // Timestamp for sync management\n}\n\ninterface ContactSync {\n  deviceContacts: Contact[];\n  serverContacts: Contact[];\n  changes: {\n    additions: Contact[];\n    updates: Contact[];\n    deletions: string[];\n  };\n}',
-            label: 'Contact Data Structure',
-            language: 'typescript'
-        },
-    ]}
-    copyButton
-/>
+```typescript
+interface Contact {
+  id: string;           // Device-provided unique identifier
+  bin: string;          // Social category assignment
+  lastSync: number;     // Timestamp for sync management
+}
+
+interface ContactSync {
+  deviceContacts: Contact[];
+  serverContacts: Contact[];
+  changes: {
+    additions: Contact[];
+    updates: Contact[];
+    deletions: string[];
+  };
+}
+```
 
 ### 2. Efficient Batch Processing
 
 The synchronization system needed to handle large contact lists efficiently while respecting Firebase's rate limits:
 
-<CodeBlock className="my-24"
-    compact
-    codeInstances={[
-        {
-            code: 'export async function syncContacts(userId: string) {\n  const { status } = await requestPermissionsAsync()\n  \n  if (status === "granted") {\n    const { data } = await getContactsAsync()\n    const userContactsRef = collection(db, "users", userId, "contacts")\n    \n    // Dynamic batch sizing based on contact list size\n    const maxBatchSize = 5000\n    const numberOfContacts = data.length\n    const batchSize = Math.min(maxBatchSize, numberOfContacts)\n    \n    const batch = writeBatch(db)\n    let batchCount = 0\n\n    // Efficient batch reading\n    const snapshot = await getDocs(\n      query(userContactsRef, orderBy("lastSync", "desc"))\n    )\n    const existingContacts = snapshot.docs.map((doc) => ({\n      id: doc.id,\n      bin: doc.data().bin,\n      lastSync: doc.data().lastSync\n    }))',
-            label: 'Batch Processing Implementation',
-            language: 'typescript'
-        },
-    ]}
-    copyButton
-/>
+```typescript
+export async function syncContacts(userId: string) {
+  const { status } = await requestPermissionsAsync()
+  
+  if (status === "granted") {
+    const { data } = await getContactsAsync()
+    const userContactsRef = collection(db, "users", userId, "contacts")
+    
+    // Dynamic batch sizing based on contact list size
+    const maxBatchSize = 5000
+    const numberOfContacts = data.length
+    const batchSize = Math.min(maxBatchSize, numberOfContacts)
+    
+    const batch = writeBatch(db)
+    let batchCount = 0
+
+    // Efficient batch reading
+    const snapshot = await getDocs(
+      query(userContactsRef, orderBy("lastSync", "desc"))
+    )
+    const existingContacts = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      bin: doc.data().bin,
+      lastSync: doc.data().lastSync
+    }))
+```
 
 ### 3. Intelligent Sync Algorithm
 
 The synchronization algorithm needed to handle various edge cases:
 
-<CodeBlock className="my-24"
-    compact
-    codeInstances={[
-        {
-            code: '// Handle contact updates and deletions\nfor (const contact of data) {\n    const existingContact = existingContacts.find(\n        (c) => c.id === contact.id\n    )\n\n    if (!existingContact || !existingContact.bin) {\n        const contactRef = doc(userContactsRef, contact.id)\n        batch.set(contactRef, {\n            bin: "",\n            lastSync: Date.now(),\n            // Only store the minimum required data\n            displayName: contact.name,  // For UI display only\n            categoryId: null\n        }, { merge: true })\n        batchCount++\n    } else if (existingContact.lastSync < (Date.now() - SYNC_THRESHOLD)) {\n        // Update only if significant time has passed\n        const contactRef = doc(userContactsRef, contact.id)\n        batch.update(contactRef, {\n            lastSync: Date.now()\n        })\n        batchCount++\n    }\n\n    // Commit batch if size limit reached\n    if (batchCount >= batchSize) {\n        await batch.commit()\n        batchCount = 0\n    }\n}',
-            label: 'Sync Algorithm',
-            language: 'typescript'
-        },
-    ]}
-    copyButton
-/>
+```typescript
+// Handle contact updates and deletions
+for (const contact of data) {
+    const existingContact = existingContacts.find(
+        (c) => c.id === contact.id
+    )
+
+    if (!existingContact || !existingContact.bin) {
+        const contactRef = doc(userContactsRef, contact.id)
+        batch.set(contactRef, {
+            bin: "",
+            lastSync: Date.now(),
+            // Only store the minimum required data
+            displayName: contact.name,  // For UI display only
+            categoryId: null
+        }, { merge: true })
+        batchCount++
+    } else if (existingContact.lastSync < (Date.now() - SYNC_THRESHOLD)) {
+        // Update only if significant time has passed
+        const contactRef = doc(userContactsRef, contact.id)
+        batch.update(contactRef, {
+            lastSync: Date.now()
+        })
+        batchCount++
+    }
+
+    // Commit batch if size limit reached
+    if (batchCount >= batchSize) {
+        await batch.commit()
+        batchCount = 0
+    }
+}
+```
 
 ## Performance Optimizations
 
@@ -106,17 +149,35 @@ The new system required careful optimization to maintain good performance:
 
 The privacy-focused approach required careful handling of the UI layer:
 
-<CodeBlock className="my-24"
-    compact
-    codeInstances={[
-        {
-            code: '// Initialize category counts with privacy-safe data\nconst initialCounts: { [key: string]: number } = {\n    [Category.INTIMATE]: 0,\n    [Category.BEST_FRIENDS]: 0,\n    [Category.GOOD_FRIENDS]: 0,\n    [Category.CASUAL_FRIENDS]: 0,\n    [Category.ACQUAINTANCES]: 0,\n    [Category.RECOGNIZABLE]: 0,\n}\n\n// Create enriched contacts without sensitive data\nconst enrichedContacts = data.map((phoneContact) => {\n    const associatedBin = existingContacts.find(\n        (fbContact) => fbContact.id === phoneContact.id\n    )?.bin || ""\n\n    if (initialCounts[associatedBin] !== undefined) {\n        initialCounts[associatedBin]++\n    }\n\n    return {\n        id: phoneContact.id,\n        displayName: phoneContact.name,\n        bin: associatedBin,\n        // Exclude other contact details\n    }\n})',
-            label: 'Privacy-Safe UI Data',
-            language: 'typescript'
-        },
-    ]}
-    copyButton
-/>
+```typescript
+// Initialize category counts with privacy-safe data
+const initialCounts: { [key: string]: number } = {
+    [Category.INTIMATE]: 0,
+    [Category.BEST_FRIENDS]: 0,
+    [Category.GOOD_FRIENDS]: 0,
+    [Category.CASUAL_FRIENDS]: 0,
+    [Category.ACQUAINTANCES]: 0,
+    [Category.RECOGNIZABLE]: 0,
+}
+
+// Create enriched contacts without sensitive data
+const enrichedContacts = data.map((phoneContact) => {
+    const associatedBin = existingContacts.find(
+        (fbContact) => fbContact.id === phoneContact.id
+    )?.bin || ""
+
+    if (initialCounts[associatedBin] !== undefined) {
+        initialCounts[associatedBin]++
+    }
+
+    return {
+        id: phoneContact.id,
+        displayName: phoneContact.name,
+        bin: associatedBin,
+        // Exclude other contact details
+    }
+})
+```
 
 ## Error Handling and Edge Cases
 
