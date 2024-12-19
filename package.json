@@ -7,13 +7,17 @@
 		"prebuild": "tsx scripts/generate-content.ts",
 		"build": "next build",
 		"postbuild": "npx @cloudflare/next-on-pages",
+		"deploy": "npm run prebuild && npm run build && npm run postbuild && wrangler pages deploy",
 		"start": "next start",
 		"lint": "next lint",
 		"generate-content": "tsx scripts/generate-content.ts",
 		"build:worker": "cloudflare",
 		"dev:worker": "wrangler dev --port 8771",
 		"preview:worker": "npm run build:worker && npm run dev:worker",
-		"deploy:worker": "npm run build:worker && wrangler deploy"
+		"deploy:worker": "npm run build:worker && wrangler deploy",
+		"pages:build": "npx @cloudflare/next-on-pages",
+		"preview": "npm run pages:build && wrangler pages dev",
+		"deploy": "npm run pages:build && wrangler pages deploy"
 	},
 	"engines": {
 		"node": ">=18.18.0"
@@ -52,6 +56,7 @@
 		"autoprefixer": "^10.4.16",
 		"eslint": "^8.57.1",
 		"eslint-config-next": "^15.1.0",
+		"eslint-plugin-next-on-pages": "^1.13.7",
 		"postcss": "^8.4.31",
 		"postcss-custom-media": "^10.0.7",
 		"postcss-flexbugs-fixes": "^5.0.2",

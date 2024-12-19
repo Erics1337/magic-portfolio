@@ -1,5 +1,6 @@
 import mdx from '@next/mdx';
 import createNextIntlPlugin from 'next-intl/plugin';
+import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
 
 const withMDX = mdx({
     extension: /\.mdx?$/,
@@ -24,5 +25,9 @@ const nextConfig = {
         return config;
     },
 };
+
+if (process.env.NODE_ENV === 'development') {
+    await setupDevPlatform();
+  }
 
 export default withNextIntl(withMDX(nextConfig));
