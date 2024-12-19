@@ -1,0 +1,148 @@
+[
+  {
+    "metadata": {
+      "title": "My Accomplishments Working at BEI",
+      "publishedAt": "2021-05-01",
+      "summary": "Developed an online course and optimized SEO for Business Enterprise Institute (BEI).",
+      "images": [
+        "/images/projects/project-01/cover-02.jpg",
+        "/images/projects/project-01/cover-01.png"
+      ],
+      "team": [
+        {
+          "name": "Eric Swanson",
+          "role": "Software Engineer",
+          "avatar": "/images/avatar.jpg",
+          "linkedIn": "https://www.linkedin.com/in/ericsdesign"
+        }
+      ],
+      "tags": [
+        "enterprise",
+        "drupal development",
+        "backend",
+        "frontend",
+        "lms"
+      ]
+    },
+    "slug": "bei-drupal-development",
+    "content": "\n# Overview\n\nAs a Drupal Developer for Business Enterprise Institute (BEI), I played a key role in expanding the company's outreach and enhancing its digital presence. During my time at BEI, I developed an online course using a Learning Management System (LMS) that enabled the business to train and certify over 2,000 financial planners nationwide. This initiative led to a significant expansion of BEI's network, contributing to growth of approximately 15% in their network reach and a 20% increase in profitability.\n\nI also focused on improving the visibility of BEI's website by optimizing its SEO performance. Through targeted enhancements, I successfully increased the site's SEO scores, ultimately positioning BEI higher on Google's search results for \"Exit Planning\" compared to its competitors. This increased online visibility attracted more potential clients and improved the company's market presence.\n\nIn addition, I leveraged Figma to design and present visual concepts for the website, which I then implemented into the Drupal site. These design improvements enhanced user engagement, leading to a notable increase in the time visitors spent on the site. My contributions not only supported BEI's educational mission but also drove meaningful growth in their business operations and online impact.\n\n## Key Features\n\n- **Online Course Development:** Developed an online course using a Learning Management System (LMS) that enabled BEI to train and certify over 2,000 financial planners nationwide.\n- **SEO Optimization:** Improved the visibility of BEI's website by optimizing its SEO performance, leading to higher search engine rankings.\n- **Figma Design Implementation:** Leveraged Figma to design and present visual concepts for the website, which were then implemented into the Drupal site.\n\n## Technologies Used\n\n- **Drupal:** For building and managing the website content.\n- **Learning Management System (LMS):** For developing and delivering the online course.\n- **Figma:** For designing and presenting visual concepts.\n\n## Challenges and Learnings\n\nOne key challenge was integrating the LMS with the existing Drupal website. This involved ensuring a seamless user experience and maintaining data consistency between the two systems. Additionally, optimizing the website for SEO required a deep understanding of search engine algorithms and best practices.\n\n## Outcome\n\nMy contributions at BEI not only supported their educational mission but also drove meaningful growth in their business operations and online impact. The online course significantly expanded their network reach and profitability, while the SEO improvements increased their online visibility and attracted more potential clients.\n"
+  },
+  {
+    "metadata": {
+      "title": "Tiny Feet Toolkit",
+      "publishedAt": "2020-09-11",
+      "summary": "Led development of the Tiny Feet Toolkit web application to help rural Colorado communities with climate action planning through data visualization and targeted recommendations.",
+      "images": [
+        "/images/projects/project-02/cover-01.jpg",
+        "/images/projects/project-02/cover-02.png",
+        "/images/projects/project-02/cover-03.png",
+        "/images/projects/project-02/cover-04.png"
+      ],
+      "team": [
+        {
+          "name": "Eric Swanson",
+          "role": "Full-Stack Developer & Technical Consultant",
+          "avatar": "/images/avatar.jpg",
+          "linkedIn": "https://www.linkedin.com/in/ericsdesign"
+        }
+      ],
+      "tags": [
+        "full-stack",
+        "python",
+        "flask",
+        "google maps",
+        "data visualization",
+        "climate tech"
+      ]
+    },
+    "slug": "climate-action-planning",
+    "content": "\n# Overview\n\nAs the lead full-stack developer in a cross-functional team, I spearheaded the development of Tiny Feet Toolkit, collaborating with a Master's of Environmental Management student from Western Colorado University and engineers from the Colorado School of Mines. This innovative web application supports climate action planning in rural Colorado communities by democratizing access to climate planning tools, aggregating public greenhouse gas (GHG) data, and providing targeted recommendations for climate action initiatives.\n\nWorking in an agile environment, I guided a team of seven engineers known as the \"30% crew\" through the design, implementation, and testing phases of the application. Our impact on environmental planning in underserved areas earned the project a $2,000 grant, validating its potential to drive meaningful change in community climate action.\n\nThe project specifically focuses on addressing the unique challenges faced by rural Colorado communities in developing and implementing climate action plans. By providing an accessible, data-driven platform, Tiny Feet Toolkit helps local governments and community leaders make informed decisions about climate initiatives.\n\n## Key Features\n\n- **Interactive Map Tool:** Developed a Google Maps API-powered interface for visualizing geographic data and community metrics, allowing users to compare GHG emissions and climate initiatives across different regions.\n- **Data Visualization Dashboard:** Created dynamic charts and graphs to present greenhouse gas emissions data in an accessible format, including historical trends and projections.\n- **Recommendation Engine:** Implemented a sophisticated filtering algorithm to provide tailored climate action planning suggestions based on community-specific needs, resources, and characteristics.\n- **Community Comparison Tools:** Built features that enable communities to benchmark their climate action progress against similar municipalities and learn from successful initiatives.\n\n## Technologies Used\n\n- **Python Flask:** For building the robust full-stack web application\n- **Google Maps API:** For interactive mapping features and geographic data visualization\n- **Data Visualization Libraries:** Utilized D3.js and Chart.js for creating dynamic, interactive charts and graphs\n- **MySQL:** For storing and managing community data, emissions information, and recommendations\n"
+  },
+  {
+    "metadata": {
+      "title": "Revolutionizing Bicycle Delivery at Kitzuma",
+      "publishedAt": "2022-06-01",
+      "summary": "Led development of Salesforce-based TMS and redesigned marketing website for nationwide bicycle delivery service.",
+      "images": [
+        "/images/projects/kitzuma/cover-01.jpeg",
+        "/images/projects/kitzuma/cover-02.png"
+      ],
+      "team": [
+        {
+          "name": "Eric Swanson",
+          "role": "Full Stack Engineer",
+          "avatar": "/images/avatar.jpg",
+          "linkedIn": "https://www.linkedin.com/in/ericsdesign"
+        }
+      ],
+      "tags": [
+        "salesforce",
+        "vue.js",
+        "frontend",
+        "backend",
+        "tms",
+        "figma"
+      ]
+    },
+    "slug": "kitzuma-cycling-logistics",
+    "content": "\n# Overview\n\nAs a Full Stack Engineer at Kitzuma Cycling Logistics, I played a pivotal role in enhancing their Transportation Management System (TMS) and digital presence. I led the development of critical software features for their proprietary Salesforce-based TMS, which empowered delivery drivers to verify safe bike deliveries. This implementation not only strengthened customer trust but also contributed to a significant 15% increase in business over a three-month period through real-time delivery confirmations.\n\nA major achievement was the complete redesign of Kitzuma's marketing website using Vue.js framework. This modernization effort focused on improving SEO and user experience, resulting in a remarkable 25% increase in lead conversions within three months. Working closely with the UI/UX team, I created custom front-end designs using Figma and Miro, iterating on component form and function to ensure optimal user experience.\n\nTo maintain code quality and reliability, I developed and maintained comprehensive unit tests and end-to-end tests for the Salesforce applications, achieving and maintaining 70% code coverage. This testing infrastructure ensured the stability and reliability of our delivery management system, supporting Kitzuma's nationwide bicycle delivery operations.\n\n## Key Features\n\n- **Salesforce TMS Enhancement:** Developed features enabling real-time delivery confirmations and safe bicycle delivery verification.\n- **Marketing Website Redesign:** Completely rebuilt the company website using Vue.js, focusing on SEO optimization and user experience.\n- **Custom UI/UX Design:** Created and implemented custom front-end designs using Figma and Miro.\n- **Comprehensive Testing:** Maintained robust test coverage for Salesforce applications ensuring system reliability.\n\n## Technologies Used\n\n- **Salesforce:** For Transportation Management System development\n- **Vue.js:** For marketing website frontend\n- **Figma & Miro:** For UI/UX design and prototyping\n- **Testing Frameworks:** For maintaining unit and end-to-end tests\n"
+  },
+  {
+    "metadata": {
+      "title": "California Transportation Department Website Development",
+      "publishedAt": "2023-10-01",
+      "summary": "Contributed key features to the Rebuilding California website as a contractor for the California Transportation Department.",
+      "images": [
+        "/images/projects/rebuilding-california/cover-01.jpg",
+        "/images/projects/rebuilding-california/cover-02.jpg"
+      ],
+      "team": [
+        {
+          "name": "Eric Swanson",
+          "role": "Full Stack Developer (Contractor)",
+          "avatar": "/images/avatar.jpg",
+          "linkedIn": "https://www.linkedin.com/in/ericsdesign"
+        }
+      ],
+      "tags": [
+        "react",
+        "gatsby",
+        "typesense",
+        "contentful",
+        "arcgis",
+        "enterprise"
+      ]
+    },
+    "slug": "rebuilding-california",
+    "content": "\n# Overview\n\nAs a contractor at Spruce Technology, I collaborated with a talented team to enhance the Rebuilding California website for the California Transportation Department. Working alongside the core development team, I contributed several pivotal features that helped deliver the project two weeks ahead of schedule and contributed to a 20% increase in site traffic within the first three months of launch.\n\nMy focus was on implementing specific technical solutions that improved both the public's access to information and internal content management processes. Through close collaboration with the team, I helped create a more efficient and user-friendly platform that better served both California residents and department staff.\n\n## Key Features\n\n- **Advanced Search Implementation:** Designed and implemented a comprehensive search component using Typesense, enabling efficient indexing and searching across all site publications. This feature significantly improved content discoverability and enhanced the overall user experience.\n\n- **Content Management System Integration:** Successfully configured and integrated Contentful as a headless CMS, providing the content team with autonomous management capabilities. This implementation reduced content update times by 50% and created a more flexible workflow for non-technical users.\n\n- **Interactive Map Enhancement:** Contributed to the migration of arcGIS Web AppBuilder widgets to Experience Builder, resulting in improved map interactivity and a 25% reduction in site load times. These optimizations led to better user engagement with the mapping features.\n\n## Technologies Used\n\n- **React & Gatsby:** Core framework for building the fast, modern web application\n- **Typesense:** For implementing advanced search functionality\n- **Contentful:** Headless CMS for content management\n- **ArcGIS Experience Builder:** For interactive mapping features\n- **GraphQL:** For efficient data querying\n"
+  },
+  {
+    "metadata": {
+      "title": "Social Brain Contacts - Relationship Management Reimagined",
+      "publishedAt": "2023-06-01",
+      "summary": "Developed a React Native mobile app that helps users manage their social relationships using social brain theory principles.",
+      "images": [
+        "/images/projects/social-brain/cover-01.jpg",
+        "/images/projects/social-brain/cover-02.jpg",
+        "/images/projects/social-brain/cover-03.jpg"
+      ],
+      "team": [
+        {
+          "name": "Eric Swanson",
+          "role": "Full Stack Developer",
+          "avatar": "/images/avatar.jpg",
+          "linkedIn": "https://www.linkedin.com/in/ericsdesign"
+        }
+      ],
+      "tags": [
+        "mobile development",
+        "react native",
+        "expo",
+        "social network",
+        "full-stack"
+      ]
+    },
+    "slug": "social-brain-contacts",
+    "content": "\n# Overview\n\n\nSocial Brain Contacts is an innovative mobile application that I independently developed to revolutionize how people manage their social relationships. Built using React Native and Expo, the app leverages social brain theory to help users organize their contacts into meaningful groups based on relationship strength and type. This scientific approach helps users maintain healthier social connections by aligning with our brain's natural capacity for relationships.\n<br/>\n<div className=\"hover:cursor-pointer mb-8\">\n  <a href=\"https://www.socialbraincontacts.com/\" target=\"_blank\" rel=\"noopener noreferrer\" className=\"hover:cursor-pointer inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors\">\n    Visit App Website\n  </a>\n</div>\nThe app addresses a fundamental challenge in our digital age: managing an ever-growing network of contacts while maintaining meaningful relationships. By incorporating insights from anthropology and neuroscience, particularly Dunbar's Number theory, the app helps users prioritize and maintain their most important relationships while keeping track of their broader social network.\n\n## Key Features\n\n- **Scientific Contact Organization:** Implemented contact grouping based on social brain theory and Dunbar's Number\n- **Contact Management:** Created an intuitive interface for organizing contacts into meaningful groups\n- **Cross-Platform Compatibility:** Ensured consistent performance across both iOS and Android platforms\n- **Privacy-Focused Design:** Built with user privacy as a core principle, ensuring personal data security\n\n## Technologies Used\n\n- **React Native & Expo:** For cross-platform mobile app development\n- **GitHub Actions:** For CI/CD pipeline and automated testing\n- **Firebase:** For secure backend services and data management\n- **Social Brain Theory:** For implementing scientifically-backed relationship management principles\n\n## Impact & Results\n\nThe app has made a significant impact in helping users better understand and manage their social relationships:\n\n- Successfully launched on both iOS and Android platforms\n- Achieved 200+ downloads across app stores\n- Maintained an active user base of 20+ regular users\n- Received valuable feedback from 30+ beta testers\n- Developed a comprehensive product website (socialbraincontacts.com) explaining the scientific principles behind the app\n\nThis project demonstrates my ability to translate complex scientific concepts into practical, user-friendly applications while maintaining high technical standards throughout the development process. It showcases my expertise in full-stack mobile development and my commitment to creating meaningful solutions that improve people's lives.\n"
+  }
+]

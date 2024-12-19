@@ -4,9 +4,10 @@
 	"scripts": {
 		"dev": "next dev",
 		"export": "next export",
-		"build": "next build",
+		"build": "tsx scripts/generate-content.ts && next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"generate-content": "tsx scripts/generate-content.ts"
 	},
 	"dependencies": {
 		"@floating-ui/react-dom": "^2.1.1",
@@ -44,6 +45,7 @@
 		"postcss-custom-media": "^10.0.7",
 		"postcss-flexbugs-fixes": "^5.0.2",
 		"sharp": "^0.33.5",
+		"tsx": "^4.19.2",
 		"typescript": "^5"
 	}
 }

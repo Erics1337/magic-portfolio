@@ -21,30 +21,33 @@ type Post = {
     content: string;
 };
 
-// TODO: Replace this with your actual data fetching logic
-// This could be an API call, database query, or static data
-const MOCK_POSTS: Post[] = [
-    {
-        metadata: {
-            title: "Sample Post",
-            publishedAt: "2023-01-01",
-            summary: "This is a sample post",
-            images: [],
-            team: []
-        },
-        slug: "sample-post",
-        content: "Sample content"
+async function getPosts(contentType: string, locale: string): Promise<Post[]> {
+    try {
+        // Get the base URL for the request
+        const baseUrl = process.env.VERCEL_URL 
+            ? `https://${process.env.VERCEL_URL}`
+            : process.env.NODE_ENV === 'development'
+                ? 'http://localhost:3000'
+                : '';
+
+        const response = await fetch(`${baseUrl}/content/${locale}/${contentType}/content.json`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch ${contentType} content`);
+        }
+        const posts = await response.json();
+        console.log(`Fetched posts: ${posts.length}`);
+        console.log(`Posts metadata: ${JSON.stringify(posts.map(p => p.metadata))}`);
+        return posts;
+    } catch (error) {
+        console.error(`Error fetching ${contentType} content:`, error);
+        return [];
     }
-];
+}
 
 export async function getBlogPosts(locale: string): Promise<Post[]> {
-    'use server';
-    // TODO: Implement actual data fetching logic
-    return MOCK_POSTS;
+    return getPosts('blog', locale);
 }
 
 export async function getWorkProjects(locale: string): Promise<Post[]> {
-    'use server';
-    // TODO: Implement actual data fetching logic
-    return MOCK_POSTS;
+    return getPosts('work', locale);
 }
