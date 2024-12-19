@@ -4,7 +4,7 @@ compatibility_flags = ["nodejs_compat"]
 
 main = ".worker-next/index.mjs"
 
-assets = { directory = ".vercel/output/static", binding = "STATIC_ASSETS" }
+assets = { directory = ".next/output/static", binding = "STATIC_ASSETS" }
 
 [[kv_namespaces]]
 binding = "NEXT_CACHE_WORKERS_KV"
