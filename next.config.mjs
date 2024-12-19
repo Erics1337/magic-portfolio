@@ -17,6 +17,7 @@ const nextConfig = {
         },
         mdxRs: true,
     },
+    output: "standalone", // Use the standalone build for Next.js
     webpack: (config) => {
         config.resolve.alias = {
             ...config.resolve.alias,
