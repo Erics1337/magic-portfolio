@@ -94,7 +94,7 @@ export const Header: React.FC<HeaderProps> = ({ person }) => {
                     paddingLeft="12" fillWidth
                     alignItems="center"
                     textVariant="body-default-s">
-                    { display.location && (
+                    { person.location && (
                         <Flex hide="s">
                             {person.location}
                         </Flex>
@@ -186,4 +186,4 @@ export const Header: React.FC<HeaderProps> = ({ person }) => {
     )
 }
 
-export default TimeDisplay;
+export default Header;

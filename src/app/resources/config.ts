@@ -25,7 +25,8 @@ export const style = {
 
 export const display = {
     grid: 'grid',
-    list: 'list'
+    list: 'list',
+    time: 'time'
 };
 
 export const mailchimp = {
