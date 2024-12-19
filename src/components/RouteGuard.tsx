@@ -29,7 +29,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
                 if (!pathname) return false;
 
                 if (pathname in routes) {
-                    return routes[pathname as keyof typeof routes];
+                    return true;
                 }
 
                 const dynamicRoutes = ['/blog', '/work'] as const;
