@@ -1,11 +1,11 @@
-export const runtime = 'edge';
-
 import { Flex, Heading } from '@/once-ui/components';
 import { Mailchimp } from '@/components';
 import { BlogContent } from '@/components/blog/BlogContent';
 import { baseURL, renderContent } from '@/app/resources'
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { getBlogPosts } from '@/app/utils/edge-utils';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(
 	{params: {locale}}: { params: { locale: string }}

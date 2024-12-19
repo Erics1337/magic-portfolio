@@ -1,5 +1,3 @@
-export const runtime = 'edge';
-
 import { Avatar, Button, Flex, Heading, Icon, IconButton, SmartImage, Tag, Text } from '@/once-ui/components';
 import { ReactNode } from 'react';
 import { baseURL, renderContent } from '@/app/resources';
@@ -10,6 +8,8 @@ import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import type { About, Institution, WorkExperience } from '@/app/types/about';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(
     {params: {locale}}: { params: { locale: string }}

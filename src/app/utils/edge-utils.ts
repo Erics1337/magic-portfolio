@@ -1,7 +1,3 @@
-'use server';
-
-export const runtime = 'edge';
-
 type Team = {
     name: string;
     role: string;
@@ -42,11 +38,13 @@ const MOCK_POSTS: Post[] = [
 ];
 
 export async function getBlogPosts(locale: string): Promise<Post[]> {
+    'use server';
     // TODO: Implement actual data fetching logic
     return MOCK_POSTS;
 }
 
 export async function getWorkProjects(locale: string): Promise<Post[]> {
+    'use server';
     // TODO: Implement actual data fetching logic
     return MOCK_POSTS;
 }

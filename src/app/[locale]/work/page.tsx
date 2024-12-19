@@ -1,12 +1,11 @@
-"use server";
-export const runtime = 'edge';
-
 import { getWorkProjects } from '@/app/utils/edge-utils';
 import { Flex } from '@/once-ui/components';
 import { baseURL, renderContent } from '@/app/resources';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { WorkContent } from '@/components/work/WorkContent';
 import { ProjectsContainer } from '@/components/work/ProjectsContainer';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(
     {params: {locale}}: { params: { locale: string }}
