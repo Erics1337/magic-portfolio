@@ -4,10 +4,16 @@
 	"scripts": {
 		"dev": "next dev",
 		"export": "next export",
-		"build": "tsx scripts/generate-content.ts && npx @cloudflare/next-on-pages@1",
+		"prebuild": "tsx scripts/generate-content.ts",
+		"build": "next build",
+		"postbuild": "npx @cloudflare/next-on-pages",
 		"start": "next start",
 		"lint": "next lint",
-		"generate-content": "tsx scripts/generate-content.ts"
+		"generate-content": "tsx scripts/generate-content.ts",
+		"build:worker": "cloudflare",
+		"dev:worker": "wrangler dev --port 8771",
+		"preview:worker": "npm run build:worker && npm run dev:worker",
+		"deploy:worker": "npm run build:worker && wrangler deploy"
 	},
 	"engines": {
 		"node": ">=18.18.0"
@@ -36,6 +42,7 @@
 	"devDependencies": {
 		"@cloudflare/next-on-pages": "^1.13.7",
 		"@csstools/postcss-global-data": "^2.1.1",
+		"@opennextjs/cloudflare": "^0.2.1",
 		"@types/cookie": "^0.6.0",
 		"@types/node": "^20",
 		"@types/react": "^18",
@@ -50,6 +57,7 @@
 		"postcss-flexbugs-fixes": "^5.0.2",
 		"sharp": "^0.33.5",
 		"tsx": "^4.19.2",
-		"typescript": "^5"
+		"typescript": "^5",
+		"wrangler": "^3.98.0"
 	}
 }
