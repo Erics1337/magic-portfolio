@@ -57,19 +57,19 @@ const about = {
     description: `Meet ${person.name}, ${person.role} from ${person.location}`,
     tableOfContent: {
         display: true,
-        subItems: false
+        subItems: true
     },
     avatar: {
         display: true
     },
     calendar: {
         display: true,
-        link: 'https://cal.com'
+        link: 'https://cal.com/eric-swanson'
     },
     intro: {
         display: true,
         title: 'Introduction',
-        description: <>I'm a passionate developer with over 5 years of experience in bringing success to teams by building great relationships and understanding the needs of clients to build high-performing custom digital solutions. I have a proven history of engineering bespoke web application features and crafting user-friendly designs and components. I'm an avid mentor and open-source contributor, passionate about sharing knowledge and giving back to the development community. My work spans digital interfaces, interactive experiences, and the convergence of design and technology.</>
+        description: <>I'm a passionate {person.role} with a focus on building innovative solutions. I combine technical expertise with creative problem-solving to deliver impactful software solutions.</>
     },
     work: {
         display: true, // set to false to hide this section
@@ -83,14 +83,7 @@ const about = {
                     <>Designed and developed a scalable, user-centric interface for Nularian Electrify's AI-automated workflow.</>,
                     <>Integrated LLM-powered solutions with Nularian Electrify's workflow, resulting in an average of 50% decrease in time-to-value for AI-automated tasks.</>
                 ],
-                images: [ // optional: leave the array empty if you don't want to display images
-                    {
-                        src: '/images/projects/project-01/cover-01.jpg',
-                        alt: 'Once UI Project',
-                        width: 16,
-                        height: 9
-                    }
-                ]
+                images: [], // actual project images come from MDX files
             },
             {
                 company: 'Blu Omega Consulting',
@@ -100,14 +93,7 @@ const about = {
                     <>Contributed to a federal project team that rebuilt the National Heart, Lung, and Blood Institute website using Agile methodologies and a DevOps toolset on Microsoft Azure, resulting in a 30% increase in user engagement and a 25% increase in website accessibility compliance.</>,
                     <>Cleaned up legacy code resulting in a 25% reduction in total repository size, modernizing the codebase and reducing technical debt.</>
                 ],
-                images: [ // optional: leave the array empty if you don't want to display images
-                    {
-                        src: '/images/projects/project-01/cover-01.jpg',
-                        alt: 'Once UI Project',
-                        width: 16,
-                        height: 9
-                    }
-                ]
+                images: [], // actual project images come from MDX files
             },
             {
                 company: 'Spruce Technologies',
@@ -117,14 +103,7 @@ const about = {
                     <>Improved the Delaware River and Bay Authority website performance by 40% through optimizing the underlying infrastructure and implementing content delivery network (CDN) caching.</>,
                     <>Designed and implemented a search feature for CalTrans RebuildingCA project, allowing users to find key information on California's budget spending.</>,
                 ],
-                images: [ // optional: leave the array empty if you don't want to display images
-                    {
-                        src: '/images/projects/project-01/cover-01.jpg',
-                        alt: 'Once UI Project',
-                        width: 16,
-                        height: 9
-                    }
-                ]
+                images: [], // actual project images come from MDX files
             },
             {
                 company: 'Kitzuma Cycling Logistics',
@@ -135,14 +114,7 @@ const about = {
                     <>Operationalized scripts for various internal processes by creating UI interfaces for the proprietary Transportation Management System (TMS) software using Salesforce platform.</>,
                     <>Redesigned company marketing website from the legacy codebase and integrated it with a headless CMS, resulting in a 50% increase in website engagement and a 30% increase in lead generation.</>,
                 ],
-                images: [ // optional: leave the array empty if you don't want to display images
-                    {
-                        src: '/images/projects/project-01/cover-01.jpg',
-                        alt: 'Once UI Project',
-                        width: 16,
-                        height: 9
-                    }
-                ]
+                images: [], // actual project images come from MDX files
             },
             {
                 company: 'Business Enterprise Institute',
@@ -152,14 +124,7 @@ const about = {
                     <>Designed and developed a comprehensive course using Learning Management Systems (LMS) to educate and certify BEI's nationwide network of over 2000 financial planning consultants.</>,
                     <>Led the reconstruction of the company homepage from scratch, ensuring a seamless user experience through collaboration with cross-functional teams, resulting in a 30% increase in organic traffic through targeted SEO optimization.</>
                 ],
-                images: [ // optional: leave the array empty if you don't want to display images
-                    {
-                        src: '/images/projects/project-01/cover-01.jpg',
-                        alt: 'Once UI Project',
-                        width: 16,
-                        height: 9
-                    }
-                ]
+                images: [], // actual project images come from MDX files
             },
             {
                 company: 'Tiny Feet Toolkit',
@@ -169,14 +134,7 @@ const about = {
                     <>Led the creation of a Google Maps API-based feature that allowed users to visualize greenhouse gas emissions data by location.</>,
                     <>Spearheaded the development of a tailored recommendation tool powered by a custom REST API.</>
                 ],
-                images: [ // optional: leave the array empty if you don't want to display images
-                    {
-                        src: '/images/projects/project-01/cover-01.jpg',
-                        alt: 'Once UI Project',
-                        width: 16,
-                        height: 9
-                    }
-                ]
+                images: [], // actual project images come from MDX files
             }
         ]
     },
@@ -197,41 +155,24 @@ const about = {
         ]
     },
     technical: {
-        display: true, // set to false to hide this section
-        title: 'Technical skills',
-        skills: [
+        display: false // Hiding technical skills section
+    },
+    certifications: {
+        display: true,
+        title: 'Certifications',
+        certs: [
             {
-                title: 'Figma',
-                description: <>Able to prototype in Figma with Once UI with unnatural speed.</>,
-                images: [
-                    {
-                        src: '/images/projects/project-01/cover-02.jpg',
-                        alt: 'Project image',
-                        width: 16,
-                        height: 9
-                    },
-                    {
-                        src: '/images/projects/project-01/cover-03.jpg',
-                        alt: 'Project image',
-                        width: 16,
-                        height: 9
-                    },
-                ]
-            },
-            {
-                title: 'Next.js',
-                description: <>Building next gen apps with Next.js.</>,
-                images: [
-                    {
-                        src: '/images/projects/project-01/cover-04.jpg',
-                        alt: 'Project image',
-                        width: 16,
-                        height: 9
-                    },
-                ]
+                name: 'AWS Certified Cloud Practitioner',
+                issuer: 'Amazon Web Services (AWS)',
+                issueDate: 'December 2023',
+                expirationDate: 'December 2026',
+                credentialId: '6df0cb31-d027-4dc0-979e-bbf95c425646',
+                credentialURL: 'https://www.credly.com/badges/6df0cb31-d027-4dc0-979e-bbf95c425646/linked_in_profile',
+                description: 'Validates overall understanding of the AWS Cloud, including key services, use cases, billing and pricing models, security concepts, and basic architectural principles.',
+                image: '/images/certifications/aws-cloud-practitioner.png'
             }
         ]
-    }
+    },
 }
 
 const blog = {
@@ -250,83 +191,4 @@ const work = {
     // All projects will be listed on the /home and /work routes
 }
 
-const gallery = {
-    label: 'Gallery',
-    title: 'My photo gallery',
-    description: `A photo collection by ${person.name}`,
-    // Images from https://pexels.com
-    images: [
-        { 
-            src: '/images/gallery/img-01.jpg', 
-            alt: 'image',
-            orientation: 'vertical'
-        },
-        { 
-            src: '/images/gallery/img-02.jpg', 
-            alt: 'image',
-            orientation: 'horizontal'
-        },
-        { 
-            src: '/images/gallery/img-03.jpg', 
-            alt: 'image',
-            orientation: 'vertical'
-        },
-        { 
-            src: '/images/gallery/img-04.jpg', 
-            alt: 'image',
-            orientation: 'horizontal'
-        },
-        { 
-            src: '/images/gallery/img-05.jpg', 
-            alt: 'image',
-            orientation: 'horizontal'
-        },
-        { 
-            src: '/images/gallery/img-06.jpg', 
-            alt: 'image',
-            orientation: 'vertical'
-        },
-        { 
-            src: '/images/gallery/img-07.jpg', 
-            alt: 'image',
-            orientation: 'horizontal'
-        },
-        { 
-            src: '/images/gallery/img-08.jpg', 
-            alt: 'image',
-            orientation: 'vertical'
-        },
-        { 
-            src: '/images/gallery/img-09.jpg', 
-            alt: 'image',
-            orientation: 'horizontal'
-        },
-        { 
-            src: '/images/gallery/img-10.jpg', 
-            alt: 'image',
-            orientation: 'horizontal'
-        },
-        { 
-            src: '/images/gallery/img-11.jpg', 
-            alt: 'image',
-            orientation: 'vertical'
-        },
-        { 
-            src: '/images/gallery/img-12.jpg', 
-            alt: 'image',
-            orientation: 'horizontal'
-        },
-        { 
-            src: '/images/gallery/img-13.jpg', 
-            alt: 'image',
-            orientation: 'horizontal'
-        },
-        { 
-            src: '/images/gallery/img-14.jpg', 
-            alt: 'image',
-            orientation: 'horizontal'
-        },
-    ]
-}
-
-export { person, social, newsletter, home, about, blog, work, gallery };
+export { person, social, newsletter, home, about, blog, work };

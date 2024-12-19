@@ -133,7 +133,7 @@ export const Header = () => {
                                     <Flex paddingX="2" hide="s">{blog.label}</Flex>
                                 </ToggleButton>
                             )}
-                            { routes['/gallery'] && (
+                            { routes['/gallery'] && gallery?.label && (
                                 <ToggleButton
                                     prefixIcon="gallery"
                                     href={`/${params?.locale}/gallery`}

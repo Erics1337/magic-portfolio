@@ -81,21 +81,14 @@ const createI18nContent = (t) => {
                     timeframe: t("about.work.experiences.FLY.timeframe"),
                     role: t("about.work.experiences.FLY.role"),
                     achievements: t("about.work.experiences.FLY.achievements").split(";"),
-                    images: [ // optional: leave the array empty if you don't want to display images
-                        {
-                            src: '/images/projects/project-01/cover-01.jpg',
-                            alt: 'Once UI Project',
-                            width: 16,
-                            height: 9
-                        }
-                    ]
+                    images: [], // actual project images come from MDX files
                 },
                 {
                     company: 'Creativ3',
                     timeframe: t("about.work.experiences.Creativ3.timeframe"),
                     role: t("about.work.experiences.Creativ3.role"),
                     achievements: t("about.work.experiences.Creativ3.achievements").split(";"),
-                    images: [ ]
+                    images: [], // actual project images come from MDX files
                 }
             ]
         },
@@ -114,7 +107,7 @@ const createI18nContent = (t) => {
             ]
         },
         technical: {
-            display: true, // set to false to hide this section
+            display: false, // Hiding technical skills section
             title: t("about.technical.title"),
             skills: [
                 {
@@ -148,7 +141,23 @@ const createI18nContent = (t) => {
                     ]
                 }
             ]
-        }
+        },
+        certifications: {
+            display: true,
+            title: t("about.certifications.title"),
+            certs: [
+                {
+                    name: t("about.certifications.awsCloudPractitioner.name"),
+                    issuer: t("about.certifications.awsCloudPractitioner.issuer"),
+                    issueDate: t("about.certifications.awsCloudPractitioner.issueDate"),
+                    expirationDate: t("about.certifications.awsCloudPractitioner.expirationDate"),
+                    credentialId: '6df0cb31-d027-4dc0-979e-bbf95c425646',
+                    credentialURL: 'https://www.credly.com/badges/6df0cb31-d027-4dc0-979e-bbf95c425646/linked_in_profile',
+                    description: t("about.certifications.awsCloudPractitioner.description"),
+                    image: '/images/certifications/aws-cloud-practitioner.png'
+                }
+            ]
+        },
     }
 
     const blog = {

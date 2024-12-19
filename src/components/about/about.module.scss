@@ -26,3 +26,59 @@
         align-self: center;
     }
 }
+
+.certifications {
+    display: grid;
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.certification {
+    background: var(--background-secondary);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+        transform: translateY(-4px);
+    }
+}
+
+.certLink {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    gap: var(--static-space-16);
+    align-items: center;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.certImage {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+.certInfo {
+    flex: 1;
+}
+
+.certDates {
+    color: var(--color-text-neutral-weak);
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+.certDescription {
+    margin: 1rem 0;
+    line-height: 1.6;
+}
+
+.certId {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-family: var(--font-mono);
+}

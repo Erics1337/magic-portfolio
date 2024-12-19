@@ -7,12 +7,7 @@ import timelineStyles from './timeline.module.css';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-
-interface Institution {
-    name: string;
-    description: ReactNode;
-    logo?: string; // Optional logo property
-}
+import type { About, Institution, WorkExperience } from '@/app/types/about';
 
 export async function generateMetadata(
     {params: {locale}}: { params: { locale: string }}
@@ -70,9 +65,14 @@ export default function About(
             items: about.studies.institutions.map(institution => institution.name)
         },
         { 
-            title: about.technical.title,
-            display: about.technical.display,
-            items: about.technical.skills.map(skill => skill.title)
+            title: about.technical?.title,
+            display: about.technical?.display,
+            items: (about.technical?.skills ?? []).map(skill => skill.name) || []
+        },
+        { 
+            title: about.certifications.title,
+            display: about.certifications.display,
+            items: about.certifications.certs?.map(cert => cert.name) || []
         },
     ]
     return (
@@ -274,7 +274,7 @@ export default function About(
                                         <Flex
                                             as="ul"
                                             direction="column" gap="16">
-                                            {experience.achievements.map((achievement: string, index: any) => (
+                                            {experience.achievements.map((achievement, index) => (
                                                 <Text
                                                     as="li"
                                                     variant="body-default-m"
@@ -295,11 +295,16 @@ export default function About(
                                                         border="neutral-medium"
                                                         borderStyle="solid-1"
                                                         radius="m"
-                                                        minWidth={image.width} height={image.height}>
+                                                        style={{ 
+                                                            minWidth: `${image.width}px`, 
+                                                            height: `${image.height}px`, 
+                                                            maxWidth: `${image.width}px`, 
+                                                            maxHeight: `${image.height}px` 
+                                                        }}>
                                                         <SmartImage
                                                             enlarge
                                                             radius="m"
-                                                            sizes={image.width.toString()}
+                                                            sizes={image.sizes}
                                                             alt={image.alt}
                                                             src={image.src}/>
                                                     </Flex>
@@ -324,11 +329,12 @@ export default function About(
                             <Flex
                                 direction="column"
                                 fillWidth gap="l" marginBottom="40">
-                                {about.studies.institutions.map((institution: Institution, index) => (
+                                {about.studies.institutions.map((institution, index) => (
                                     <Flex
-                                        key={`${institution.name}-${index}`}
-                                        fillWidth gap="16"
+                                        key={institution.name}
+                                        fillWidth
                                         direction="row"
+                                        gap="16"
                                         alignItems="center">
                                         {institution.logo && (
                                             <Flex
@@ -347,18 +353,57 @@ export default function About(
                                         )}
                                         <Flex
                                             direction="column"
-                                            gap="4">
-                                            <Text
-                                                id={institution.name}
-                                                variant="heading-strong-l">
+                                            gap="s">
+                                            <Heading variant="heading-strong-l">
                                                 {institution.name}
-                                            </Text>
-                                            <Text
-                                                variant="heading-default-xs"
-                                                onBackground="neutral-weak">
+                                            </Heading>
+                                            <Text variant="body-default-l">
                                                 {institution.description}
                                             </Text>
                                         </Flex>
+                                    </Flex>
+                                ))}
+                            </Flex>
+                        </>
+                    )}
+
+                    { about.certifications.display && (
+                        <>
+                            <Heading
+                                as="h2"
+                                id={about.certifications.title}
+                                variant="display-strong-s"
+                                marginBottom="m">
+                                {about.certifications.title}
+                            </Heading>
+                            <Flex
+                                direction="column"
+                                fillWidth gap="l" marginBottom="40">
+                                {about.certifications.certs.map((cert, index) => (
+                                    <Flex
+                                        key={cert.name}
+                                        fillWidth
+                                        direction="column"
+                                        gap="s">
+                                        <a href={cert.credentialURL} target="_blank" rel="noopener noreferrer" className={styles.certLink}>
+                                            {cert.image && (
+                                                <Image
+                                                    src={cert.image}
+                                                    alt={cert.name}
+                                                    width={120}
+                                                    height={120}
+                                                    className={styles.certImage}
+                                                />
+                                            )}
+                                            <Flex direction="column" gap="s">
+                                                <Heading variant="heading-strong-l">
+                                                    {cert.name}
+                                                </Heading>
+                                                <Text variant="body-default-l">
+                                                    {cert.issuer}
+                                                </Text>
+                                            </Flex>
+                                        </a>
                                     </Flex>
                                 ))}
                             </Flex>
@@ -378,7 +423,7 @@ export default function About(
                                 fillWidth gap="l">
                                 {about.technical.skills.map((skill, index) => (
                                     <Flex
-                                        key={`${skill}-${index}`}
+                                        key={`${skill.title}-${index}`}
                                         fillWidth gap="4"
                                         direction="column">
                                         <Text
@@ -400,11 +445,16 @@ export default function About(
                                                         border="neutral-medium"
                                                         borderStyle="solid-1"
                                                         radius="m"
-                                                        minWidth={image.width} height={image.height}>
+                                                        style={{ 
+                                                            minWidth: `${image.width}px`, 
+                                                            height: `${image.height}px`, 
+                                                            maxWidth: `${image.width}px`, 
+                                                            maxHeight: `${image.height}px` 
+                                                        }}>
                                                         <SmartImage
                                                             enlarge
                                                             radius="m"
-                                                            sizes={image.width.toString()}
+                                                            sizes={image.sizes}
                                                             alt={image.alt}
                                                             src={image.src}/>
                                                     </Flex>
