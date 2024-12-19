@@ -29,7 +29,7 @@ export interface BackgroundProps {
     lines?: LinesProps;
     mask?: MaskType;
     className?: string;
-    style?: React.CSSProperties;
+    style?: CSSProperties;
 }
 
 export interface GradientProps {
@@ -58,146 +58,184 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         lines = {},
         mask = 'none',
         className,
-        style
-    }, forwardedRef) => {
-        const dotsColor = dots.color ?? 'brand-on-background-weak';
-        const dotsSize = dots.size ?? '16';
-
-        const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+        style,
+        ...props
+    }, ref) => {
+        const [isMounted, setIsMounted] = useState(false);
+        const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
         const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 });
-        const maskSize = 1200;
+        const animationFrameRef = useRef<number>();
         const backgroundRef = useRef<HTMLDivElement>(null);
+        const combinedRef = useRef<HTMLDivElement>(null);
 
         useEffect(() => {
-            setRef(forwardedRef, backgroundRef.current);
-        }, [forwardedRef]);
-
-        useEffect(() => {
-            const handleMouseMove = (event: MouseEvent) => {
-                if (backgroundRef.current) {
-                    const rect = backgroundRef.current.getBoundingClientRect();
-                    setCursorPosition({
-                        x: event.clientX - rect.left,
-                        y: event.clientY - rect.top,
-                    });
-                }
-            };
-
-            document.addEventListener('mousemove', handleMouseMove);
-
+            setIsMounted(true);
             return () => {
-                document.removeEventListener('mousemove', handleMouseMove);
+                if (animationFrameRef.current) {
+                    cancelAnimationFrame(animationFrameRef.current);
+                }
             };
         }, []);
 
         useEffect(() => {
-            let animationFrameId: number;
+            if (!isMounted) return;
 
-            const updateSmoothPosition = () => {
-                setSmoothPosition((prev) => {
-                    const dx = cursorPosition.x - prev.x;
-                    const dy = cursorPosition.y - prev.y;
-                    const easingFactor = 0.05;
-
-                    return {
-                        x: Math.round(prev.x + dx * easingFactor),
-                        y: Math.round(prev.y + dy * easingFactor),
-                    };
-                });
-                animationFrameId = requestAnimationFrame(updateSmoothPosition);
+            const handleMouseMove = (event: MouseEvent) => {
+                if (mask === 'cursor') {
+                    setMousePosition({
+                        x: event.clientX,
+                        y: event.clientY,
+                    });
+                }
             };
 
             if (mask === 'cursor') {
-                animationFrameId = requestAnimationFrame(updateSmoothPosition);
+                window.addEventListener('mousemove', handleMouseMove);
             }
 
             return () => {
-                cancelAnimationFrame(animationFrameId);
+                if (mask === 'cursor') {
+                    window.removeEventListener('mousemove', handleMouseMove);
+                }
             };
-        }, [cursorPosition, mask]);
+        }, [mask, isMounted]);
 
-        const commonStyles: CSSProperties = {
-            position,
-            top: '0',
-            left: '0',
-            zIndex: '0',
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'none',
-            ...style,
-        };
+        useEffect(() => {
+            if (!isMounted || mask !== 'cursor') return;
+
+            const updateSmoothPosition = () => {
+                setSmoothPosition(prev => ({
+                    x: prev.x + (mousePosition.x - prev.x) * 0.1,
+                    y: prev.y + (mousePosition.y - prev.y) * 0.1,
+                }));
+                animationFrameRef.current = requestAnimationFrame(updateSmoothPosition);
+            };
+
+            animationFrameRef.current = requestAnimationFrame(updateSmoothPosition);
+
+            return () => {
+                if (animationFrameRef.current) {
+                    cancelAnimationFrame(animationFrameRef.current);
+                }
+            };
+        }, [mousePosition, mask, isMounted]);
 
         const maskStyle = (): CSSProperties => {
             switch (mask) {
-                case 'none':
-                    return { maskImage: 'none' };
                 case 'cursor':
                     return {
-                        maskImage: `radial-gradient(circle ${maskSize / 2}px at ${smoothPosition.x}px ${smoothPosition.y}px, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%)`,
-                        maskSize: '100% 100%',
+                        maskImage: 'radial-gradient(circle at center, transparent, black 70%)',
+                        WebkitMaskImage: 'radial-gradient(circle at center, transparent, black 70%)',
+                        maskPosition: `${smoothPosition.x}px ${smoothPosition.y}px`,
+                        WebkitMaskPosition: `${smoothPosition.x}px ${smoothPosition.y}px`,
+                        maskSize: '200% 200%',
+                        WebkitMaskSize: '200% 200%',
                     };
                 case 'topLeft':
                     return {
-                        maskImage: `radial-gradient(circle ${maskSize / 2}px at 0% 0%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%)`,
-                        maskSize: '100% 100%',
+                        maskImage: 'linear-gradient(45deg, transparent, black)',
+                        WebkitMaskImage: 'linear-gradient(45deg, transparent, black)',
                     };
                 case 'topRight':
                     return {
-                        maskImage: `radial-gradient(circle ${maskSize / 2}px at 100% 0%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%)`,
-                        maskSize: '100% 100%',
+                        maskImage: 'linear-gradient(-45deg, transparent, black)',
+                        WebkitMaskImage: 'linear-gradient(-45deg, transparent, black)',
                     };
                 case 'bottomLeft':
                     return {
-                        maskImage: `radial-gradient(circle ${maskSize / 2}px at 0% 100%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%)`,
-                        maskSize: '100% 100%',
+                        maskImage: 'linear-gradient(135deg, transparent, black)',
+                        WebkitMaskImage: 'linear-gradient(135deg, transparent, black)',
                     };
                 case 'bottomRight':
                     return {
-                        maskImage: `radial-gradient(circle ${maskSize / 2}px at 100% 100%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%)`,
-                        maskSize: '100% 100%',
+                        maskImage: 'linear-gradient(-135deg, transparent, black)',
+                        WebkitMaskImage: 'linear-gradient(-135deg, transparent, black)',
                     };
                 default:
                     return {};
             }
         };
 
+        // During SSR, render a simpler version without animations
+        if (!isMounted) {
+            return (
+                <div
+                    ref={(node) => {
+                        setRef(ref, node);
+                        setRef(combinedRef, node);
+                    }}
+                    style={{
+                        position,
+                        width: '100%',
+                        height: '100%',
+                        ...style,
+                    }}
+                    className={className}
+                    {...props}
+                />
+            );
+        }
+
         return (
             <>
                 {gradient.display && (
                     <div
                         ref={backgroundRef}
-                        className={className}
                         style={{
-                            ...commonStyles,
-                            opacity: gradient.opacity,
-                            background: 'radial-gradient(100% 100% at 50% 0%, var(--static-transparent) 0%, var(--page-background) 100%), radial-gradient(90% 80% at 10% 20%, var(--brand-background-medium) 0%, var(--static-transparent) 100%), radial-gradient(200% 120% at 50% 0%, var(--accent-solid-medium) 0%, var(--static-transparent) 100%)',
+                            position,
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            background: 'radial-gradient(circle at center, var(--gradient-start), var(--gradient-end))',
+                            opacity: gradient.opacity ?? 0.5,
+                            pointerEvents: 'none',
                             ...maskStyle(),
+                            ...style,
                         }}
+                        className={className}
+                        {...props}
                     />
                 )}
                 {dots.display && (
                     <div
-                        ref={backgroundRef}
-                        className={className}
                         style={{
-                            ...commonStyles,
-                            opacity: dots.opacity,
-                            backgroundImage: `radial-gradient(var(--${dotsColor}) 0.5px, var(--static-transparent) 1px)`,
-                            backgroundSize: `var(--static-space-${dotsSize}) var(--static-space-${dotsSize})`,
+                            position,
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            backgroundImage: 'radial-gradient(var(--color-neutral-dark) 1px, transparent 0)',
+                            backgroundSize: `${dots.size ?? 24}px ${dots.size ?? 24}px`,
+                            opacity: dots.opacity ?? 0.5,
+                            pointerEvents: 'none',
                             ...maskStyle(),
+                            ...style,
                         }}
+                        className={className}
+                        {...props}
                     />
                 )}
                 {lines.display && (
                     <div
-                        ref={backgroundRef}
-                        className={className}
                         style={{
-                            ...commonStyles,
-                            opacity: lines.opacity,
-                            backgroundImage: `repeating-linear-gradient(45deg, var(--brand-on-background-weak) 0, var(--brand-on-background-weak) 0.5px, var(--static-transparent) 0.5px, var(--static-transparent) ${dots.size})`,
+                            position,
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            backgroundImage: `
+                                linear-gradient(var(--color-neutral-dark) 1px, transparent 1px),
+                                linear-gradient(90deg, var(--color-neutral-dark) 1px, transparent 1px)
+                            `,
+                            backgroundSize: `${lines.size ?? 24}px ${lines.size ?? 24}px`,
+                            opacity: lines.opacity ?? 0.5,
+                            pointerEvents: 'none',
                             ...maskStyle(),
+                            ...style,
                         }}
+                        className={className}
+                        {...props}
                     />
                 )}
             </>

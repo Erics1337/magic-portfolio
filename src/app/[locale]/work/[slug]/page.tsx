@@ -9,8 +9,6 @@ import { formatDate } from '../../../utils/formatDate';
 import ScrollToHash from '../../../../components/ScrollToHash';
 import { ProjectImages } from '../../../../components/work/ProjectImages';
 
-export const runtime = 'edge';
-
 interface WorkParams {
     params: {
         slug: string;

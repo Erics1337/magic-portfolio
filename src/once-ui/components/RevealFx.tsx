@@ -6,88 +6,95 @@ import styles from './RevealFx.module.scss';
 import { Flex } from '.';
 
 interface RevealFxProps extends React.ComponentProps<typeof Flex> {
-	children: React.ReactNode;
-	speed?: 'slow' | 'medium' | 'fast';
-	delay?: number;
-	revealedByDefault?: boolean;
-	translateY?: number | SpacingToken;
-	trigger?: boolean;
-	style?: React.CSSProperties;
-	className?: string;
+    children: React.ReactNode;
+    speed?: 'slow' | 'medium' | 'fast';
+    delay?: number;
+    revealedByDefault?: boolean;
+    translateY?: number | SpacingToken;
+    trigger?: boolean;
+    style?: React.CSSProperties;
+    className?: string;
 }
 
 const RevealFx = forwardRef<HTMLDivElement, RevealFxProps>(({
-	children,
-	speed = 'medium',
-	delay = 0,
-	revealedByDefault = false,
-	translateY,
-	trigger,
-	style,
-	className,
-	...rest
+    children,
+    speed = 'medium',
+    delay = 0,
+    revealedByDefault = false,
+    translateY,
+    trigger,
+    style,
+    className,
+    ...rest
 }, ref) => {
-	const [isRevealed, setIsRevealed] = useState(revealedByDefault);
+    const [isRevealed, setIsRevealed] = useState(revealedByDefault);
+    const [isMounted, setIsMounted] = useState(false);
 
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			setIsRevealed(true);
-		}, delay * 1000);
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
-		return () => clearTimeout(timer);
-	}, [delay]);
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
 
-	useEffect(() => {
-		if (trigger !== undefined) {
-			setIsRevealed(trigger);
-		}
-	}, [trigger]);
+        const timer = setTimeout(() => {
+            setIsRevealed(true);
+        }, delay);
 
-	const getSpeedDuration = () => {
-		switch (speed) {
-			case 'fast':
-				return '1s';
-			case 'medium':
-				return '2s';
-			case 'slow':
-				return '3s';
-			default:
-				return '2s';
-		}
-	};
+        return () => clearTimeout(timer);
+    }, [delay, trigger]);
 
-	const getTranslateYValue = () => {
-		if (typeof translateY === 'number') {
-			return `${translateY}rem`;
-		} else if (typeof translateY === 'string') {
-			return `var(--static-space-${translateY})`;
-		}
-		return undefined;
-	};
+    const getSpeedDuration = () => {
+        switch (speed) {
+            case 'slow':
+                return 1000;
+            case 'fast':
+                return 400;
+            default:
+                return 600;
+        }
+    };
 
-	const translateValue = getTranslateYValue();
+    const getTranslateYValue = () => {
+        if (typeof translateY === 'number') {
+            return `${translateY}px`;
+        }
+        return translateY ? `var(--spacing-${translateY})` : '24px';
+    };
 
-	const combinedClassName = `${styles.revealFx} ${isRevealed ? styles.revealed : styles.hidden} ${className || ''}`;
+    // Don't apply any animations during SSR
+    if (!isMounted) {
+        return (
+            <Flex
+                ref={ref}
+                {...rest}
+                style={style}
+                className={className}>
+                {children}
+            </Flex>
+        );
+    }
 
-	const revealStyle: React.CSSProperties = {
-		transitionDuration: getSpeedDuration(),
-		transform: isRevealed ? 'translateY(0)' : `translateY(${translateValue})`,
-		...style,
-	};
+    const translateValue = getTranslateYValue();
+    const duration = getSpeedDuration();
 
-	return (
-		<Flex
-			fillWidth
-			justifyContent="center"
-			ref={ref}
-			aria-hidden="true"
-			style={revealStyle}
-			className={combinedClassName}
-			{...rest}>
-			{children}
-		</Flex>
-	);
+    const combinedClassName = `${styles.revealFx} ${isRevealed ? styles.revealed : styles.hidden} ${className || ''}`;
+
+    return (
+        <Flex
+            ref={ref}
+            {...rest}
+            style={{
+                ...style,
+                '--reveal-duration': `${duration}ms`,
+                '--reveal-translate': translateValue,
+            } as React.CSSProperties}
+            className={combinedClassName}>
+            {children}
+        </Flex>
+    );
 });
 
 RevealFx.displayName = 'RevealFx';
+
 export { RevealFx };

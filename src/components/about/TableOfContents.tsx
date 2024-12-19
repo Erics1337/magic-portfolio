@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Flex, Text } from '@/once-ui/components';
 import styles from './about.module.scss';
 
@@ -19,7 +19,15 @@ interface TableOfContentsProps {
 }
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({ structure, about }) => {
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     const scrollTo = (id: string, offset: number) => {
+        if (!isMounted) return;
+
         const element = document.getElementById(id);
         if (element) {
             const elementPosition = element.getBoundingClientRect().top;
@@ -32,60 +40,81 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ structure, about }) =
         }
     };
 
-    if (!about.tableOfContent.display) return null;
+    // During SSR or before mount, render a static version
+    if (!isMounted) {
+        return (
+            <Flex
+                direction="column"
+                gap="16"
+                className={styles.tableOfContents}>
+                {structure.map((section, index) => (
+                    section.display && (
+                        <Flex
+                            key={index}
+                            direction="column"
+                            gap="8">
+                            <Text
+                                weight="strong"
+                                size="s">
+                                {section.title}
+                            </Text>
+                            {about.tableOfContent.subItems && (
+                                <Flex
+                                    direction="column"
+                                    gap="4">
+                                    {section.items.map((item, itemIndex) => (
+                                        <Text
+                                            key={itemIndex}
+                                            size="s"
+                                            color="neutral-medium">
+                                            {item}
+                                        </Text>
+                                    ))}
+                                </Flex>
+                            )}
+                        </Flex>
+                    )
+                ))}
+            </Flex>
+        );
+    }
 
     return (
         <Flex
-            style={{
-                left: '0',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                whiteSpace: 'nowrap'
-            }}
-            position="fixed"
-            paddingLeft="24" gap="32"
-            direction="column" hide="m">
-            {structure
-                .filter(section => section.display)
-                .map((section, sectionIndex) => (
-                <Flex key={sectionIndex} gap="12" direction="column">
+            direction="column"
+            gap="16"
+            className={styles.tableOfContents}>
+            {structure.map((section, index) => (
+                section.display && (
                     <Flex
-                        style={{ cursor: 'pointer' }}
-                        className={styles.hover}
-                        gap="8"
-                        alignItems="center"
-                        onClick={() => scrollTo(section.title, 80)}>
-                        <Flex
-                            height="1" minWidth="16"
-                            background="neutral-strong">
-                        </Flex>
-                        <Text>
+                        key={index}
+                        direction="column"
+                        gap="8">
+                        <Text
+                            weight="strong"
+                            size="s"
+                            onClick={() => scrollTo(`section-${index}`, 80)}
+                            style={{ cursor: 'pointer' }}>
                             {section.title}
                         </Text>
-                    </Flex>
-                    {about.tableOfContent.subItems && (
-                        <>
-                            {section.items.map((item, itemIndex) => (
-                                <Flex
-                                    hide="l"
-                                    key={itemIndex}
-                                    style={{ cursor: 'pointer' }}
-                                    className={styles.hover}
-                                    gap="12" paddingLeft="24"
-                                    alignItems="center"
-                                    onClick={() => scrollTo(item, 80)}>
-                                    <Flex
-                                        height="1" minWidth="8"
-                                        background="neutral-strong">
-                                    </Flex>
-                                    <Text>
+                        {about.tableOfContent.subItems && (
+                            <Flex
+                                direction="column"
+                                gap="4">
+                                {section.items.map((item, itemIndex) => (
+                                    <Text
+                                        key={itemIndex}
+                                        size="s"
+                                        color="neutral-medium"
+                                        onClick={() => scrollTo(`item-${index}-${itemIndex}`, 80)}
+                                        style={{ cursor: 'pointer' }}>
                                         {item}
                                     </Text>
-                                </Flex>
-                            ))}
-                        </>
-                    )}
-                </Flex>
+                                ))}
+                            </Flex>
+                        )}
+                    </Flex>
+                )
             ))}
         </Flex>
     );

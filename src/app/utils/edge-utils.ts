@@ -21,28 +21,32 @@ type Post = {
     content: string;
 };
 
+// Helper to safely get base URL
+function getBaseUrl(): string {
+    if (process.env.CF_PAGES_URL) {
+        return process.env.CF_PAGES_URL;
+    }
+    if (process.env.NEXT_PUBLIC_SITE_URL) {
+        return process.env.NEXT_PUBLIC_SITE_URL;
+    }
+    return 'http://localhost:3000';
+}
+
 async function getPosts(contentType: string, locale: string): Promise<Post[]> {
     try {
-        // Get the base URL for the request
-        // For Cloudflare Pages, use the pages URL or fall back to localhost for development
-        const baseUrl = process.env.CF_PAGES_URL || process.env.NEXT_PUBLIC_SITE_URL || 
-            (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '');
-
-        // Ensure we have a base URL
-        if (!baseUrl) {
-            throw new Error('No base URL configured. Set CF_PAGES_URL or NEXT_PUBLIC_SITE_URL environment variable.');
-        }
-
-        // Use absolute URL and ensure it starts with https:// or http://
-        const url = new URL(`/content/${locale}/${contentType}/content.json`, baseUrl).toString();
+        // Use relative path for content fetching
+        const baseContentType = contentType.split('/')[0]; // 'blog' from 'blog/posts'
+        const contentPath = `/content/${locale}/${baseContentType}/content.json`;
+        
+        // Always fetch from the API in Edge runtime
+        const baseUrl = getBaseUrl();
+        const url = new URL(contentPath, baseUrl).toString();
+        
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`Failed to fetch ${contentType} content`);
         }
-        const posts = await response.json();
-        console.log(`Fetched posts: ${posts.length}`);
-        console.log(`Posts metadata: ${JSON.stringify(posts.map(p => p.metadata))}`);
-        return posts;
+        return await response.json();
     } catch (error) {
         console.error(`Error fetching ${contentType} content:`, error);
         return [];
@@ -50,9 +54,9 @@ async function getPosts(contentType: string, locale: string): Promise<Post[]> {
 }
 
 export async function getBlogPosts(locale: string): Promise<Post[]> {
-    return getPosts('blog', locale);
+    return getPosts('blog/posts', locale);
 }
 
 export async function getWorkProjects(locale: string): Promise<Post[]> {
-    return getPosts('work', locale);
+    return getPosts('work/projects', locale);
 }

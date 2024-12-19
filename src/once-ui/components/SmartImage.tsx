@@ -35,6 +35,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
     ...props
 }) => {
     const [isEnlarged, setIsEnlarged] = useState(false);
+    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
     const imageRef = useRef<HTMLDivElement>(null);
 
     const handleClick = () => {
@@ -44,6 +45,28 @@ const SmartImage: React.FC<SmartImageProps> = ({
     };
 
     useEffect(() => {
+        // Only run in browser environment
+        if (typeof window === 'undefined') return;
+
+        const updateDimensions = () => {
+            setDimensions({
+                width: window.innerWidth,
+                height: window.innerHeight
+            });
+        };
+
+        // Initial dimensions
+        updateDimensions();
+
+        // Update dimensions on resize
+        window.addEventListener('resize', updateDimensions);
+        return () => window.removeEventListener('resize', updateDimensions);
+    }, []);
+
+    useEffect(() => {
+        // Only run in browser environment
+        if (typeof document === 'undefined') return;
+
         if (isEnlarged) {
             document.body.style.overflow = 'hidden';
         } else {
@@ -56,15 +79,16 @@ const SmartImage: React.FC<SmartImageProps> = ({
     }, [isEnlarged]);
 
     const calculateTransform = () => {
-        if (!imageRef.current) return {};
+        // Only calculate transform in browser environment
+        if (typeof window === 'undefined' || !imageRef.current) return {};
 
         const rect = imageRef.current.getBoundingClientRect();
-        const scaleX = window.innerWidth / rect.width;
-        const scaleY = window.innerHeight / rect.height;
+        const scaleX = dimensions.width / rect.width;
+        const scaleY = dimensions.height / rect.height;
         const scale = Math.min(scaleX, scaleY) * 0.9;
 
-        const translateX = (window.innerWidth - rect.width) / 2 - rect.left;
-        const translateY = (window.innerHeight - rect.height) / 2 - rect.top;
+        const translateX = (dimensions.width - rect.width) / 2 - rect.left;
+        const translateY = (dimensions.height - rect.height) / 2 - rect.top;
 
         return {
             transform: isEnlarged
@@ -108,7 +132,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
                     aspectRatio,
                     cursor: enlarge ? 'pointer' : 'default',
                     borderRadius: isEnlarged ? '0' : radius ? `var(--radius-${radius})` : undefined,
-                    ...calculateTransform(),
+                    ...(typeof window !== 'undefined' ? calculateTransform() : {}),
                     ...style,
                 }}
                 className={classNames(className)}
@@ -152,11 +176,12 @@ const SmartImage: React.FC<SmartImageProps> = ({
                         style={{ 
                             objectFit: isEnlarged ? 'contain' : objectFit,
                         }}
+                        unoptimized={unoptimized}
                     />
                 )}
             </Flex>
 
-            {isEnlarged && enlarge && (
+            {isEnlarged && enlarge && typeof document !== 'undefined' && (
                 <Flex
                     justifyContent="center"
                     alignItems="center"
@@ -168,44 +193,9 @@ const SmartImage: React.FC<SmartImageProps> = ({
                         left: 0,
                         width: '100vw',
                         height: '100vh',
-                        background: 'var(--backdrop)',
-                        cursor: 'pointer',
-                        transition: 'opacity 0.3s ease-in-out',
-                        opacity: isEnlarged ? 1 : 0,
-                    }}>
-                    <Flex
-                        position="relative"
-                        style={{
-                            height: '100vh',
-                            transform: 'translate(-50%, -50%)',
-                        }}
-                        onClick={(e) => e.stopPropagation()}>
-                        {isVideo ? (
-                            <video
-                                src={src}
-                                autoPlay
-                                loop
-                                muted
-                                playsInline
-                                style={{ 
-                                    width: '90vw',
-                                    height: 'auto',
-                                    objectFit: 'contain',
-                                }}
-                            />
-                        ) : (
-                            <Image
-                                {...props}
-                                src={src}
-                                alt={alt}
-                                fill
-                                sizes="90vw"
-                                unoptimized={unoptimized}
-                                style={{ objectFit: 'contain' }}
-                            />
-                        )}
-                    </Flex>
-                </Flex>
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    }}
+                />
             )}
         </>
     );

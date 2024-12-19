@@ -8,8 +8,6 @@ import { routing } from '../../../../i18n/routing';
 import { formatDate } from '../../../utils/formatDate';
 import ScrollToHash from '../../../../components/ScrollToHash';
 
-export const runtime = 'edge';
-
 interface BlogParams {
     params: { 
         slug: string;

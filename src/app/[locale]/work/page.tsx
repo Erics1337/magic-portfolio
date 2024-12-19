@@ -5,9 +5,6 @@ import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { WorkContent } from '@/components/work/WorkContent';
 import { ProjectsContainer } from '@/components/work/ProjectsContainer';
 
-export const runtime = 'edge';
-export const dynamic = 'force-dynamic';
-
 export async function generateMetadata(
     {params: {locale}}: { params: { locale: string }}
 ) {
@@ -84,7 +81,7 @@ export default async function Work({ params: { locale } }: { params: { locale: s
                     }),
                 }}
             />
-            <h1 className="text-4xl font-bold mb-8">Professional Case Studies</h1>
+            <h1 className="mb-8 text-4xl font-bold">Professional Case Studies</h1>
             <WorkContent posts={validPosts} locale={locale} />
         </Flex>
     );

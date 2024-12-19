@@ -9,9 +9,6 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import type { About, Institution, WorkExperience } from '@/app/types/about';
 
-export const runtime = 'edge';
-export const dynamic = 'force-dynamic';
-
 export async function generateMetadata(
     {params: {locale}}: { params: { locale: string }}
 ) {
