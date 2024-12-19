@@ -1,8 +1,12 @@
-main = ".worker-next/index.mjs"
 name = "magic-portfolio"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
+
+main = ".worker-next/index.mjs"
+
 assets = { directory = ".worker-next/assets", binding = "ASSETS" }
+
+pages_build_output_dir = ".worker-next" # Add this line for Cloudflare Pages
 
 [[kv_namespaces]]
 binding = "NEXT_CACHE_WORKERS_KV"
