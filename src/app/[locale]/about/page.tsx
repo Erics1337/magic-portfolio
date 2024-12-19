@@ -13,7 +13,7 @@ export async function generateMetadata(
     {params: {locale}}: { params: { locale: string }}
 ) {
     const t = await getTranslations();
-    const {person, about, social } = renderContent(t);
+    const { person, about } = renderContent(t);
 	const title = about.title;
 	const description = about.description;
 	const ogImage = `https://${baseURL}/og?title=${encodeURIComponent(title)}`;
@@ -67,7 +67,7 @@ export default function About(
         { 
             title: about.technical?.title,
             display: about.technical?.display,
-            items: (about.technical?.skills ?? []).map(skill => skill.name) || []
+            items: about.technical?.skills?.map(skill => skill.name) || []
         },
         { 
             title: about.certifications.title,
@@ -379,7 +379,7 @@ export default function About(
                             <Flex
                                 direction="column"
                                 fillWidth gap="l" marginBottom="40">
-                                {about.certifications.certs.map((cert, index) => (
+                                {about.certifications.certs?.length > 0 && about.certifications.certs.map((cert, index) => (
                                     <Flex
                                         key={cert.name}
                                         fillWidth
