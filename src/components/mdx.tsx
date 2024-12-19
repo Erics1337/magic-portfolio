@@ -161,7 +161,7 @@ function createCode({ children, className }: { children: string, className?: str
 
     return (
         <CodeBlock
-            className="my-24"
+            className="my-8"
             compact
             codeInstances={[
                 {
