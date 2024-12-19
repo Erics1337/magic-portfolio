@@ -118,14 +118,14 @@ const SmartImage: React.FC<SmartImageProps> = ({
         <div
             ref={imageRef}
             className={classNames(
-                'relative overflow-hidden',
-                { 'cursor-pointer': enlarge },
+                'relative',
                 className
             )}
             style={{
                 ...style,
                 aspectRatio,
                 borderRadius: radius,
+                position: 'relative', // Add this line
             }}
             onClick={handleClick}
         >
@@ -159,15 +159,19 @@ const SmartImage: React.FC<SmartImageProps> = ({
                             }}
                         />
                     ) : (
-                        <img
+                        <Image
                             src={src}
                             alt={alt}
+                            fill
                             className={classNames(
                                 'w-full h-full',
                                 { 'object-cover': objectFit === 'cover' },
                                 { 'object-contain': objectFit === 'contain' }
                             )}
-                            loading="lazy"
+                            style={{
+                                objectFit
+                            }}
+                            unoptimized={unoptimized}
                             {...props}
                         />
                     )}
@@ -199,10 +203,16 @@ const SmartImage: React.FC<SmartImageProps> = ({
                                     className="max-w-[90vw] max-h-[90vh] object-contain"
                                 />
                             ) : (
-                                <img
+                                <Image
                                     src={src}
                                     alt={alt}
+                                    fill
                                     className="max-w-[90vw] max-h-[90vh] object-contain"
+                                    style={{
+                                        objectFit
+                                    }}
+                                    unoptimized={unoptimized}
+                                    {...props}
                                 />
                             )}
                         </div>
