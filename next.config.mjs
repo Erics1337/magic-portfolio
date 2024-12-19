@@ -10,6 +10,8 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    output: 'export', // Ensures Next.js generates static files
+    distDir: 'out', // This is the output directory for Cloudflare Pages
     pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
     experimental: {
         serverActions: {
