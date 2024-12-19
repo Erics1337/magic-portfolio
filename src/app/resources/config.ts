@@ -38,6 +38,9 @@ export const mailchimp = {
         gradient: 'gradient',
         dots: 'dots',
         lines: 'lines'
+    },
+    get action() {
+        return `https://${this.MAILCHIMP_API_SERVER}.list-manage.com/subscribe/post?u=${this.MAILCHIMP_API_KEY}&id=${this.MAILCHIMP_AUDIENCE_ID}`;
     }
 };
 
