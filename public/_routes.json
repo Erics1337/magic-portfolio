@@ -1,16 +1,11 @@
 {
   "version": 1,
-  "include": [
-    "/*",
-    "/en/*",
-    "/id/*"
-  ],
+  "include": ["/*"],
   "exclude": [
-    "/api/*",
-    "/_next/*",
-    "/static/*"
+    "/build/*",
+    "/admin/*",
+    "/_worker.js"
   ],
-  "rewrites": [
-    { "source": "/", "destination": "/en/" }
-  ]
+  "runtimeJS": true,
+  "platformErrorPages": true
 }
