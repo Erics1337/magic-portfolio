@@ -1,5 +1,16 @@
 {
   "version": 1,
-  "include": ["/*"],
-  "exclude": []
+  "include": [
+    "/*",
+    "/en/*",
+    "/id/*"
+  ],
+  "exclude": [
+    "/api/*",
+    "/_next/*",
+    "/static/*"
+  ],
+  "rewrites": [
+    { "source": "/", "destination": "/en/" }
+  ]
 }
