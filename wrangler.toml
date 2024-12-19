@@ -2,10 +2,5 @@ name = "magic-portfolio"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
-main = ".worker-next/index.mjs" # Entry file for Cloudflare Workers
-
-assets = { directory = ".next/output/static", binding = "STATIC_ASSETS" } # Static assets directory
-
-[[kv_namespaces]]
-binding = "NEXT_CACHE_WORKERS_KV"
-id = "a45cefdc503c49dca1622038a46483f9"
+main = ".vercel/output/static/_worker.js/index.js"
+assets = { directory = ".vercel/output/static", binding = "STATIC_ASSETS" }
