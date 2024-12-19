@@ -57,7 +57,7 @@ const display = {
 }
 
 const mailchimp = {
-    action: 'https://url/subscribe/post?parameters',
+    action: 'https://ericsdevportfolio.us15.list-manage.com/subscribe/post?u=f89b2761b0a8846c0ce865f29&amp;id=2295969f93&amp;f_id=00d5c2e1f0',
     effects: {
         mask: 'topRight',           // none | cursor | topLeft | topRight | bottomLeft | bottomRight
         gradient: {
