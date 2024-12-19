@@ -10,7 +10,7 @@
 		"generate-content": "tsx scripts/generate-content.ts"
 	},
 	"engines": {
-  		"node": ">=18.18.0"
+		"node": ">=18.18.0"
 	},
 	"dependencies": {
 		"@floating-ui/react-dom": "^2.1.1",
