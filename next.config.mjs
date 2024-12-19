@@ -11,10 +11,10 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: 'standalone',
     experimental: {
-      outputFileTracingRoot: './',
-    },
+        runtime: 'edge', // Use Cloudflare's edge runtime
+        outputFileTracingRoot: __dirname, // Ensure correct output paths
+      },
     pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
     webpack: (config) => {
         config.resolve.alias = {
