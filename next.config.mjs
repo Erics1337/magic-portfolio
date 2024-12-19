@@ -11,6 +11,11 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    output: 'export',
+    distDir: '.vercel/output/static',
+    experimental: {
+      appDir: true,
+    },
     pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
     webpack: (config) => {
         config.resolve.alias = {
