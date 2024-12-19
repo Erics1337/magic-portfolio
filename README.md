@@ -1,95 +1,81 @@
-# **Build your portfolio with Once UI's Magic Portfolio**
+# **Eric's Magic Portfolio**
 
-View the [demo here](https://demo.magic-portfolio.com).
+Welcome to my personal portfolio website, built with [Once UI](https://once-ui.com) and [Next.js](https://nextjs.org).
 
-![Magic Portfolio](public/images/cover.png)
+![Portfolio Preview](public/images/cover.png)
 
+# **About This Site**
 
-# **Getting started**
+This is my personal portfolio website where I showcase my work and share my thoughts. It's built using the powerful Once UI system, providing a clean, modern, and responsive design that focuses on content presentation.
 
-Magic Portfolio was built with [Once UI](https://once-ui.com) for [Next.js](https://nextjs.org). It requires Node.js v18.17+.
+# **Getting Started**
 
-**1. Clone the repository**
-```
-git clone https://github.com/once-ui-system/magic-portfolio.git
-```
+This portfolio requires Node.js v18.17+.
 
-**2. Install dependencies**
+**1. Install dependencies**
 ```
 npm install
 ```
 
-**3. Run dev server**
+**2. Run dev server**
 ```
 npm run dev
 ```
 
-**4. Edit config**
+**3. Configuration**
 ```
 src/app/resources/config
 ```
 
-**5. Edit content**
+**4. Content Management**
 ```
-src/app/resources/content (or content-i18n for localization)
-```
-
-**6. Create blog posts / projects**
-```
-Add a new .mdx file to src/app/[locale]/blog/posts or src/app/[locale]/work/projects
+src/app/resources/content
 ```
 
-**7. Optimize images (if needed)**
+**5. Adding Content**
+- Blog posts: Add `.mdx` files to `src/app/[locale]/blog/posts`
+- Projects: Add `.mdx` files to `src/app/[locale]/work/projects`
+
+**6. Image Optimization**
 ```
 node scripts/optimize-images.js
 ```
-This script will automatically optimize all images in the public directory, reducing their file size while maintaining quality. This is particularly useful when deploying to platforms with size limitations.
 
 # **Features**
 
-## **Once UI**
-- All tokens, components & features of [Once UI](https://once-ui.com)
+## **Technology Stack**
+- Built with [Once UI](https://once-ui.com) and Next.js
+- Modern, responsive design
+- SEO optimized
+- Customizable theming
 
-## **SEO**
-- Automatic open-graph and X image generation with next/og
-- Automatic schema and metadata generation based on the content file
+## **Content Features**
+- Blog section for sharing thoughts and experiences
+- Project showcase
+- Gallery support
+- About/CV section
+- Social media integration
+- Optional password protection for specific content
 
-## **Design**
-- Responsive layout optimized for all screen sizes
-- Timeless design without heavy animations and motion
-- Endless customization options through [data attributes](https://once-ui.com/docs/theming)
+## **Multilingual Support**
+- Built-in localization support using next-intl
+- Configurable in resources/config.js
 
-## **Content**
-- Render sections conditionally based on the content file
-- Enable or disable pages for blog, work, gallery and about / CV
-- Generate and display social links automatically
-- Set up password protection for URLs
+# **Author**
 
-## **Localization (NEW)**
-- Magic Portfolio now supports localization with the next-intl library
-- See more info in resources/config.js
+**Eric Swanson**
+- [GitHub](https://github.com/ericswanson)
+- [LinkedIn](https://www.linkedin.com/in/ericswanson/)
 
-# **Authors**
-
-Connect with us on Threads or LinkedIn.
-
-Lorant Toth: [Threads](https://www.threads.net/@lorant.one), [LinkedIn](https://www.linkedin.com/in/tothlorant/)  
-Zsofia Komaromi: [Threads](https://www.threads.net/@zsofia_kom), [LinkedIn](https://www.linkedin.com/in/zsofiakomaromi/)
-
-Localization added by [François Hernandez](https://github.com/francoishernandez)
-
-# **Get involved**
-
-- Join the [Design Engineers Club on Discord](https://discord.com/invite/5EyAQ4eNdS) and share your portfolio with us!
-- Report a [bug](https://github.com/once-ui-system/magic-portfolio/issues/new?labels=bug&template=bug_report.md).
+*Built with [Once UI](https://once-ui.com)*
 
 # **License**
 
 Distributed under the CC BY-NC 4.0 License.
-- Commercial usage is not allowed.
-- Attribution is required.
+- Commercial usage is not allowed
+- Attribution is required
 
 See `LICENSE.txt` for more information.
 
-# **Deploy with Vercel**
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fonce-ui-system%2Fmagic-portfolio&project-name=portfolio&repository-name=portfolio&redirect-url=https%3A%2F%2Fgithub.com%2Fonce-ui-system%2Fmagic-portfolio&demo-title=Magic%20Portfolio&demo-description=Showcase%20your%20designers%20or%20developer%20portfolio&demo-url=https%3A%2F%2Fdemo.magic-portfolio.com&demo-image=%2F%2Fraw.githubusercontent.com%2Fonce-ui-system%2Fmagic-portfolio%2Fmain%2Fpublic%2Fimages%2Fcover.png)
+# **Deploy**
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fonce-ui-system%2Fmagic-portfolio&project-name=portfolio&repository-name=portfolio)

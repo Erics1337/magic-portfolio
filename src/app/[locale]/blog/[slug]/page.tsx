@@ -1,7 +1,7 @@
 import ScrollToHash from '@/components/ScrollToHash';
 import { notFound } from 'next/navigation'
 import { CustomMDX } from '@/components/mdx'
-import { getBlogPosts } from '@/app/utils/utils'
+import { getBlogPosts } from '@/app/utils/edge-utils'
 import { Avatar, Button, Flex, Heading, Text } from '@/once-ui/components'
 
 import { baseURL, renderContent } from '@/app/resources'

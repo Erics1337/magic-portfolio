@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { CustomMDX } from '@/components/mdx'
-import { getWorkProjects } from '@/app/utils/utils'
+import { getWorkProjects } from '@/app/utils/edge-utils'
 import { AvatarGroup, Button, Flex, Heading, Text } from '@/once-ui/components'
 import { baseURL, renderContent } from '@/app/resources';
 import { routing } from '@/i18n/routing';

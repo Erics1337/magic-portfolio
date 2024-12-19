@@ -1,9 +1,11 @@
+export const runtime = 'edge';
+
 import { Flex, Heading } from '@/once-ui/components';
 import { Mailchimp } from '@/components';
 import { BlogContent } from '@/components/blog/BlogContent';
 import { baseURL, renderContent } from '@/app/resources'
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
-import { getPosts } from '@/app/utils/utils';
+import { getBlogPosts } from '@/app/utils/edge-utils';
 
 export async function generateMetadata(
 	{params: {locale}}: { params: { locale: string }}
@@ -46,7 +48,7 @@ export default async function Blog(
 
 	const [t, allPosts] = await Promise.all([
 		getTranslations(),
-		getPosts(['src', 'app', '[locale]', 'blog', 'posts', locale])
+		getBlogPosts(locale)
 	]);
 
 	const { person, blog, newsletter } = renderContent(t);

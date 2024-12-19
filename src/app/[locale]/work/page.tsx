@@ -1,6 +1,7 @@
 "use server";
+export const runtime = 'edge';
 
-import { getWorkProjects } from '@/app/utils/utils';
+import { getWorkProjects } from '@/app/utils/edge-utils';
 import { Flex } from '@/once-ui/components';
 import { baseURL, renderContent } from '@/app/resources';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';

@@ -1,10 +1,10 @@
+export const runtime = 'edge';
+
 import { Flex } from "@/once-ui/components";
 import MasonryGrid, { GalleryImage } from "@/components/gallery/MasonryGrid";
 import { baseURL, renderContent } from "@/app/resources";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
-import { getBlogPosts, getWorkProjects } from '@/app/utils/utils';
-
-
+import { getBlogPosts, getWorkProjects } from '@/app/utils/edge-utils';
 
 export async function generateMetadata(
 	{params: {locale}}: { params: { locale: string }}

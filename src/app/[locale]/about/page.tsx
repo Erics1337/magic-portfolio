@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { Avatar, Button, Flex, Heading, Icon, IconButton, SmartImage, Tag, Text } from '@/once-ui/components';
 import { ReactNode } from 'react';
 import { baseURL, renderContent } from '@/app/resources';

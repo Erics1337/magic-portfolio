@@ -1,4 +1,4 @@
-import { getPosts } from '@/app/utils/utils';
+import { getBlogPosts } from '@/app/utils/edge-utils';
 import { Posts } from './Posts';
 
 interface PostsContainerProps {
@@ -9,7 +9,7 @@ interface PostsContainerProps {
 }
 
 export async function PostsContainer(props: PostsContainerProps) {
-    const allBlogs = await getPosts(['src', 'app', '[locale]', 'blog', 'posts', props.locale]);
+    const allBlogs = await getBlogPosts(props.locale);
     
     const sortedBlogs = [...allBlogs].sort((a, b) => {
         return new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime();

@@ -1,4 +1,4 @@
-import { getPosts } from '@/app/utils/utils'
+import { getBlogPosts, getWorkProjects } from '@/app/utils/edge-utils'
 import { baseURL, routes as routesConfig } from '@/app/resources'
 import { routing } from '@/i18n/routing'
 
@@ -7,7 +7,7 @@ export default async function sitemap() {
     const includeLocalePrefix = locales.length > 1;
 
     const blogPosts = await Promise.all(locales.map(async (locale) => {
-        const posts = await getPosts(['src', 'app', '[locale]', 'blog', 'posts', locale]);
+        const posts = await getBlogPosts(locale);
         return posts.map((post) => ({
             url: `${baseURL}${includeLocalePrefix ? `/${locale}` : ''}/blog/${post.slug}`,
             lastModified: post.metadata.publishedAt,
@@ -15,7 +15,7 @@ export default async function sitemap() {
     }));
 
     const workPosts = await Promise.all(locales.map(async (locale) => {
-        const posts = await getPosts(['src', 'app', '[locale]', 'work', 'projects', locale]);
+        const posts = await getWorkProjects(locale);
         return posts.map((post) => ({
             url: `${baseURL}${includeLocalePrefix ? `/${locale}` : ''}/work/${post.slug}`,
             lastModified: post.metadata.publishedAt,
