@@ -17,7 +17,7 @@ const nextConfig = {
         unoptimized: true,
     },
     trailingSlash: true,
-    assetPrefix: '.',  // This helps with relative paths in Cloudflare Pages
+    assetPrefix: '/',  // Changed to leading slash for font loading
     experimental: {
         serverActions: {
             allowedOrigins: ['localhost:3000', 'ericswanson.me']
