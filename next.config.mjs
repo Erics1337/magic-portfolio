@@ -15,14 +15,27 @@ const nextConfig = {
     pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
     images: {
         unoptimized: true,
+        domains: ['*'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: '**',
+            },
+        ],
     },
     trailingSlash: true,
-    assetPrefix: '/',  // Changed to leading slash for font loading
     experimental: {
         serverActions: {
-            allowedOrigins: ['localhost:3000', 'ericswanson.me']
+            allowedOrigins: ['localhost:3000', 'ericsdevportfolio.com']
         }
     }
 };
+
+// Handle font loading for Cloudflare Pages
+if (process.env.CLOUDFLARE_PAGES) {
+    nextConfig.assetPrefix = 'https://ericsdevportfolio.com';
+} else {
+    nextConfig.assetPrefix = '';
+}
 
 export default withNextIntl(withMDX(nextConfig));
