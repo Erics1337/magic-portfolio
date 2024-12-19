@@ -5,11 +5,11 @@
 		"dev": "next dev",
 		"export": "next export",
 		"build": "tsx scripts/generate-content.ts && next build",
-		"deploy": "npm run prebuild && npm run build && npm run postbuild && wrangler pages deploy",
 		"start": "next start",
 		"lint": "next lint",
 		"pages:build": "npx @cloudflare/next-on-pages",
-		"preview": "npm run pages:build && wrangler pages dev"
+		"preview": "npm run pages:build && wrangler pages dev",
+		"deploy": "npm run pages:build && wrangler pages deploy"
 	},
 	"engines": {
 		"node": ">=18.18.0"
