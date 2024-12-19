@@ -39,6 +39,12 @@ src/app/resources/content (or content-i18n for localization)
 Add a new .mdx file to src/app/[locale]/blog/posts or src/app/[locale]/work/projects
 ```
 
+**7. Optimize images (if needed)**
+```
+node scripts/optimize-images.js
+```
+This script will automatically optimize all images in the public directory, reducing their file size while maintaining quality. This is particularly useful when deploying to platforms with size limitations.
+
 # **Features**
 
 ## **Once UI**
