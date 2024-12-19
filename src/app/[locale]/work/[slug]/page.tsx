@@ -16,22 +16,17 @@ interface WorkParams {
     };
 }
 
-export async function generateStaticParams(): Promise<{ slug: string; locale: string }[]> {
-    const locales = routing.locales;
-    
-    // Create an array to store all posts from all locales
-    const allPosts: { slug: string; locale: string }[] = [];
-
-    // Fetch posts for each locale
-    for (const locale of locales) {
-        const posts = await getWorkProjects(locale);
-        allPosts.push(...posts.map(post => ({
+export async function generateStaticParams() {
+    try {
+        const posts = await getWorkProjects('en');  // Default to English
+        return posts.map((post) => ({
+            locale: 'en',  // Default locale
             slug: post.slug,
-            locale: locale,
-        })));
+        }));
+    } catch (error) {
+        console.error('Error generating static params for work projects:', error);
+        return [];  // Return empty array if there's an error to prevent build failure
     }
-
-    return allPosts;
 }
 
 export async function generateMetadata({ params: { slug, locale } }: WorkParams): Promise<any> {
@@ -80,7 +75,7 @@ export async function generateMetadata({ params: { slug, locale } }: WorkParams)
     }
 }
 
-export default async function Project({ params }: WorkParams) {
+export default async function WorkProject({ params }: WorkParams) {
     unstable_setRequestLocale(params.locale);
     const posts = await getWorkProjects(params.locale);
     const post = posts.find((post) => post.slug === params.slug)

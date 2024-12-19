@@ -39,6 +39,10 @@ export async function generateMetadata(
 	};
 }
 
+export async function generateStaticParams() {
+    return [{ locale: 'en' }];  // Default to English locale
+}
+
 export default async function Gallery(
 	{ params: {locale}}: { params: { locale: string }}
 ) {

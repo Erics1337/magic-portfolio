@@ -12,6 +12,10 @@ import { useTranslations } from 'next-intl';
 import Hero from '@/components/Hero'
 
 
+export async function generateStaticParams() {
+    return [{ locale: 'en' }];  // Default to English locale
+}
+
 export async function generateMetadata(
 	{params: {locale}}: { params: { locale: string }}
 ) {
@@ -77,7 +81,7 @@ export default function Home(
 					}),
 				}}
 			/>
-			<div className="w-screen -mx-8">
+			<div className="-mx-8 w-screen">
 				<Hero />
 			</div>
 			<Flex

@@ -16,21 +16,16 @@ interface BlogParams {
 }
 
 export async function generateStaticParams() {
-    const locales = routing.locales;
-    
-    // Create an array to store all posts from all locales
-    const allPosts: { slug: string; locale: string }[] = [];
-
-    // Fetch posts for each locale
-    for (const locale of locales) {
-        const posts = await getBlogPosts(locale);
-        allPosts.push(...posts.map(post => ({
+    try {
+        const posts = await getBlogPosts('en');  // Default to English
+        return posts.map((post) => ({
+            locale: 'en',  // Default locale
             slug: post.slug,
-            locale: locale,
-        })));
+        }));
+    } catch (error) {
+        console.error('Error generating static params for blog posts:', error);
+        return [];  // Return empty array if there's an error to prevent build failure
     }
-
-    return allPosts;
 }
 
 export async function generateMetadata({ params: { slug, locale } }: BlogParams) {
