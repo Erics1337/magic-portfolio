@@ -11,6 +11,19 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
+    experimental: {
+        serverActions: {
+            bodySizeLimit: '2mb',
+        },
+        mdxRs: true,
+    },
+    webpack: (config) => {
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            '@': '/src',  // This allows absolute imports from the src directory
+        };
+        return config;
+    },
 };
 
 export default withNextIntl(withMDX(nextConfig));

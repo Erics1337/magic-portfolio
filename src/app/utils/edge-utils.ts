@@ -24,13 +24,18 @@ type Post = {
 async function getPosts(contentType: string, locale: string): Promise<Post[]> {
     try {
         // Get the base URL for the request
-        const baseUrl = process.env.VERCEL_URL 
-            ? `https://${process.env.VERCEL_URL}`
-            : process.env.NODE_ENV === 'development'
-                ? 'http://localhost:3000'
-                : '';
+        // For Cloudflare Pages, use the pages URL or fall back to localhost for development
+        const baseUrl = process.env.CF_PAGES_URL || process.env.NEXT_PUBLIC_SITE_URL || 
+            (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '');
 
-        const response = await fetch(`${baseUrl}/content/${locale}/${contentType}/content.json`);
+        // Ensure we have a base URL
+        if (!baseUrl) {
+            throw new Error('No base URL configured. Set CF_PAGES_URL or NEXT_PUBLIC_SITE_URL environment variable.');
+        }
+
+        // Use absolute URL and ensure it starts with https:// or http://
+        const url = new URL(`/content/${locale}/${contentType}/content.json`, baseUrl).toString();
+        const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`Failed to fetch ${contentType} content`);
         }
