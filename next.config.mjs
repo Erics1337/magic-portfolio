@@ -13,7 +13,6 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
     experimental: {
         runtime: 'edge', // Use Cloudflare's edge runtime
-        outputFileTracingRoot: __dirname, // Ensure correct output paths
       },
     pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
     webpack: (config) => {
