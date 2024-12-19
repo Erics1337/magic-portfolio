@@ -149,6 +149,95 @@ The results were significant:
 - **Build Time**: Increased by only 2-3 seconds
 - **Runtime Memory Usage**: Decreased significantly without filesystem operations
 
+## Recent Build Optimizations
+
+While implementing this edge-first architecture, I encountered and resolved several critical build issues with Cloudflare Pages:
+
+### 1. Edge Runtime Configuration
+
+Dynamic routes needed explicit edge runtime configuration. I added the following to both blog and work route files:
+
+```typescript
+// In [slug]/page.tsx files
+export const runtime = 'edge';
+```
+
+This ensures these routes are properly configured to run in Cloudflare's edge runtime environment.
+
+### 2. URL Parsing Enhancement
+
+The initial URL parsing implementation caused build failures. I enhanced the content fetching logic to handle URLs more robustly:
+
+```typescript
+async function getPosts(contentType: string, locale: string): Promise<Post[]> {
+    try {
+        // For Cloudflare Pages, use the pages URL or fall back to localhost
+        const baseUrl = process.env.CF_PAGES_URL || process.env.NEXT_PUBLIC_SITE_URL || 
+            (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '');
+
+        // Ensure we have a base URL
+        if (!baseUrl) {
+            throw new Error('No base URL configured. Set CF_PAGES_URL or NEXT_PUBLIC_SITE_URL environment variable.');
+        }
+
+        // Use absolute URL and ensure it starts with https:// or http://
+        const url = new URL(`/content/${locale}/${contentType}/content.json`, baseUrl).toString();
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`Failed to fetch ${contentType} content`);
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error(`Error fetching ${contentType} content:`, error);
+        return [];
+    }
+}
+```
+
+This update ensures proper URL construction and error handling, particularly important for edge environments.
+
+### 3. Module Resolution
+
+To handle import paths correctly, I updated the Next.js configuration:
+
+```javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+    // ... other config
+    experimental: {
+        serverActions: {
+            bodySizeLimit: '2mb',
+        },
+        mdxRs: true,
+    },
+    webpack: (config) => {
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            '@': '/src',  // Enables proper module resolution
+        };
+        return config;
+    },
+};
+```
+
+### 4. Import Path Standardization
+
+I standardized import paths across the application to use relative paths, making them more reliable in the edge environment:
+
+```typescript
+// Before
+import { CustomMDX } from '@/components/mdx';
+
+// After
+import { CustomMDX } from '../../../../components/mdx';
+```
+
+This approach, while more verbose, ensures consistent module resolution across different environments.
+
+These optimizations significantly improved the build reliability and runtime performance of the site on Cloudflare Pages, while maintaining the benefits of edge computing we discussed earlier.
+
 ## Looking Forward
 
 This edge-first architecture opens up interesting possibilities for future enhancements:
