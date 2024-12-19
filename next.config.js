@@ -2,8 +2,9 @@
 const withNextIntl = require('next-intl/plugin')();
 
 const nextConfig = {
-    output: 'export',  // Enable static exports
-    distDir: 'out',   // Specify the output directory
+    output: 'export',  
+    distDir: 'out',   
+    trailingSlash: true,  
     images: {
         unoptimized: true,
         remotePatterns: [

@@ -4,7 +4,7 @@ import { i18nOptions } from './src/app/resources/config';
 export default createMiddleware({
   locales: i18nOptions.locales,
   defaultLocale: i18nOptions.defaultLocale,
-  localePrefix: 'as-needed'
+  localePrefix: 'always'  // Change to 'always' for static exports
 });
 
 export const config = {
