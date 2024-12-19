@@ -80,9 +80,9 @@ interface RootLayoutProps {
 	params: {locale: string};
 }
 
-export function generateStaticParams() {
-	return routing.locales.map((locale) => ({locale}));
-  }
+export async function generateStaticParams() {
+	return routing.locales.map((locale) => ({ locale }));
+}
 
 export default async function RootLayout({
 	children,
@@ -90,81 +90,37 @@ export default async function RootLayout({
 } : RootLayoutProps) {
 	unstable_setRequestLocale(locale);
 	const messages = await getMessages();
+	const t = await getTranslations();
+	const { person } = renderContent(t);
 
 	return (
-		<html lang={locale} className={classNames(primary.variable, secondary ? secondary.variable : '', tertiary ? tertiary.variable : '', code.variable)}>
-			<body className="text-white bg-black">
-				<NextIntlClientProvider messages={messages}>
-					<Flex
-						as="main"
-						background="page"
-						data-neutral={style.neutral} 
-						data-brand={style.brand} 
-						data-accent={style.accent}
-						data-solid={style.solid} 
-						data-solid-style={style.solidStyle}
-						data-theme={style.theme}
-						data-border={style.border}
-						data-surface={style.surface}
-						data-transition={style.transition}
-						style={{
-							minHeight: '100vh',
-							position: 'relative',
-							zIndex: 1
-						}}
-						fillWidth 
-						margin="0" 
-						padding="0"
-						direction="column">
-						{/* Full-page background */}
-						<div
-							className="fixed inset-0 will-change-transform"
-							style={{
-								backgroundImage: `url('/images/RR-v-june-2020-24.png')`,
-								backgroundSize: "cover",
-								backgroundPosition: "center",
-								backgroundAttachment: "fixed",
-								width: "100vw",
-								height: "120vh",
-								left: "50%",
-								top: "50%",
-								transform: "translate(-50%, calc(-50% + calc(var(--scroll-offset, 0) * 0.3)))",
-								filter: "brightness(0.6)",
-								mixBlendMode: "multiply",
-								zIndex: -1
-							}}
-						/>
-						<Background
-							mask={effects.mask as any}
-							gradient={effects.gradient as any}
-							dots={effects.dots as any}
-							lines={effects.lines as any}
-						/>
-						<Header/>
-						<Flex
-							zIndex={1}
-							fillWidth 
-							paddingY="l" 
-							paddingX="l"
-							justifyContent="center" 
-							flex={1}>
-							<Flex
-								justifyContent="center"
-								fillWidth 
-								minHeight="0">
-								<RouteGuard>
-									{children}
-								</RouteGuard>
-							</Flex>
+		<html lang={locale}>
+			<body className={classNames(
+				primary.variable,
+				secondary ? secondary.variable : '',
+				tertiary ? tertiary.variable : '',
+			)}>
+				<NextIntlClientProvider messages={messages} locale={locale}>
+					<RouteGuard>
+						<Background />
+						<Flex direction="column" fillHeight>
+							<Header person={person} />
+							<main className="flex-1">
+								{children}
+							</main>
+							<Footer person={person} />
 						</Flex>
-						<Footer/>
-					</Flex>
+					</RouteGuard>
 				</NextIntlClientProvider>
-				<Script 
-					src="/scripts/parallax.js" 
-					strategy="afterInteractive"
-					id="parallax-script"
-				/>
+				<Script src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX" />
+				<Script id="google-analytics">
+					{`
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+						gtag('config', 'G-XXXXXXXXXX');
+					`}
+				</Script>
 			</body>
 		</html>
 	);
