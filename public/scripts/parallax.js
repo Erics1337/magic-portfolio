@@ -1,4 +1,9 @@
-if (typeof window !== 'undefined') {
+'use strict';
+
+(function() {
+  // Only run in browser environment
+  if (typeof window === 'undefined') return;
+
   let ticking = false;
   const heroSection = document.querySelector('.hero-section');
 
@@ -19,7 +24,7 @@ if (typeof window !== 'undefined') {
         document.documentElement.style.setProperty('--hero-progress', progress);
       }
     }
-
+    
     ticking = false;
   }
 
@@ -30,10 +35,20 @@ if (typeof window !== 'undefined') {
     }
   }
 
-  // Add scroll listener with throttling
-  window.addEventListener('scroll', requestTick, { passive: true });
-  window.addEventListener('resize', requestTick, { passive: true });
+  // Initialize parallax
+  function init() {
+    // Add scroll listener with throttling
+    window.addEventListener('scroll', requestTick, { passive: true });
+    window.addEventListener('resize', requestTick, { passive: true });
+    
+    // Initial update
+    requestTick();
+  }
 
-  // Initial update
-  updateParallax();
-}
+  // Run initialization when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();

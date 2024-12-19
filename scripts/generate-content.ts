@@ -43,37 +43,39 @@ async function readMDXFile(filePath: string): Promise<Post> {
 }
 
 async function generateContentJson(contentType: string, locale: string) {
-    const contentDir = path.join(
-        process.cwd(), 
-        'src/app/[locale]', 
-        contentType === 'blog' ? 'blog/posts' : 'work/projects',
-        locale
-    );
-    const outputDir = path.join(process.cwd(), 'public', 'content', locale, contentType);
-    
     try {
-        // Create output directory if it doesn't exist
-        await fs.promises.mkdir(outputDir, { recursive: true });
+        // Ensure output directories exist
+        const contentDir = path.join(process.cwd(), 'public', 'content', locale, contentType);
+        await fs.promises.mkdir(contentDir, { recursive: true });
+
+        const sourceDir = path.join(process.cwd(), 'content', locale, contentType);
+        const files = await getMDXFiles(sourceDir);
         
-        // Read all MDX files
-        const mdxFiles = await getMDXFiles(contentDir);
+        console.log(`Processing ${files.length} files for ${contentType}...`);
+        
         const posts = await Promise.all(
-            mdxFiles.map(async (file) => {
-                const filePath = path.join(contentDir, file);
-                return await readMDXFile(filePath);
+            files.map(async (file) => {
+                try {
+                    return await readMDXFile(path.join(sourceDir, file));
+                } catch (error) {
+                    console.error(`Error processing file ${file}:`, error);
+                    return null;
+                }
             })
         );
+
+        const validPosts = posts.filter((post): post is Post => post !== null);
+        const outputPath = path.join(contentDir, 'content.json');
         
-        // Write to JSON file
-        const outputPath = path.join(outputDir, 'content.json');
         await fs.promises.writeFile(
             outputPath,
-            JSON.stringify(posts, null, 2)
+            JSON.stringify(validPosts, null, 2)
         );
         
-        console.log(`Generated ${outputPath}`);
+        console.log(`Generated ${outputPath} with ${validPosts.length} entries`);
     } catch (error) {
         console.error(`Error generating content for ${contentType}:`, error);
+        throw error; // Re-throw to fail the build if content generation fails
     }
 }
 

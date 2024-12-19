@@ -160,7 +160,11 @@ export default async function RootLayout({
 						<Footer/>
 					</Flex>
 				</NextIntlClientProvider>
-				<Script src="/scripts/parallax.js" strategy="afterInteractive" />
+				<Script 
+					src="/scripts/parallax.js" 
+					strategy="lazyOnload"
+					id="parallax-script" 
+				/>
 			</body>
 		</html>
 	);
