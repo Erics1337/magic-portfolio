@@ -32,7 +32,13 @@ export const display = {
 export const mailchimp = {
     MAILCHIMP_API_KEY: process.env.MAILCHIMP_API_KEY || '',
     MAILCHIMP_API_SERVER: process.env.MAILCHIMP_API_SERVER || '',
-    MAILCHIMP_AUDIENCE_ID: process.env.MAILCHIMP_AUDIENCE_ID || ''
+    MAILCHIMP_AUDIENCE_ID: process.env.MAILCHIMP_AUDIENCE_ID || '',
+    effects: {
+        mask: 'mask',
+        gradient: 'gradient',
+        dots: 'dots',
+        lines: 'lines'
+    }
 };
 
 export const baseURL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
