@@ -2,15 +2,15 @@ import { InlineCode } from "@/once-ui/components";
 
 const createI18nContent = (t) => {
     const person = {
-        firstName: 'Selene',
-        lastName:  'Yu',
+        firstName: 'Eric',
+        lastName:  'Swanson',
         get name() {
             return `${this.firstName} ${this.lastName}`;
         },
         role:      t("person.role"),
         avatar:    '/images/avatar.jpg',
-        location:  'Asia/Jakarta',        // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-        languages: ['English', 'Bahasa']  // optional: Leave the array empty if you don't want to display languages
+        location:  'America/Denver',        // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
+        languages: []  // optional: Leave the array empty if you don't want to display languages
     }
 
     const newsletter = {
@@ -25,22 +25,22 @@ const createI18nContent = (t) => {
         {
             name: 'GitHub',
             icon: 'github',
-            link: 'https://github.com/once-ui-system/nextjs-starter',
+            link: 'https://github.com/erics1337',
         },
         {
             name: 'LinkedIn',
             icon: 'linkedin',
-            link: 'https://www.linkedin.com/company/once-ui/',
+            link: 'https://www.linkedin.com/in/ericsdesign',
         },
         {
             name: 'X',
             icon: 'x',
-            link: '',
+            link: 'https://x.com/eric__electric',
         },
         {
             name: 'Email',
             icon: 'email',
-            link: 'mailto:example@gmail.com',
+            link: 'mailto:erics1337@gmail.com',
         },
     ]
 
@@ -48,7 +48,7 @@ const createI18nContent = (t) => {
         label: t("home.label"),
         title: t("home.title", {name: person.name}),
         description: t("home.description", {role: person.role}),
-        headline: <>{t("home.headline")}</>,
+        headline: <>{t("home.headline", {firstName: person.firstName})}</>,
         subline: <>{t("home.subline")}</>
     }
 
@@ -65,29 +65,57 @@ const createI18nContent = (t) => {
         },
         calendar: {
             display: true,
-            link: 'https://cal.com'
+            link: 'https://cal.com/eric-swanson'
         },
         intro: {
             display: true,
             title: t("about.intro.title"),
-            description: <>{t("about.intro.description")}</>
+            description: <>{t("about.intro.description", {role: person.role})}</>
         },
         work: {
             display: true, // set to false to hide this section
             title: t("about.work.title"),
             experiences: [
                 {
-                    company: 'FLY',
-                    timeframe: t("about.work.experiences.FLY.timeframe"),
-                    role: t("about.work.experiences.FLY.role"),
-                    achievements: t("about.work.experiences.FLY.achievements").split(";"),
+                    company: 'Nularian',
+                    timeframe: t("about.work.experiences.Nularian.timeframe"),
+                    role: t("about.work.experiences.Nularian.role"),
+                    achievements: t("about.work.experiences.Nularian.achievements").split(";"),
                     images: [], // actual project images come from MDX files
                 },
                 {
-                    company: 'Creativ3',
-                    timeframe: t("about.work.experiences.Creativ3.timeframe"),
-                    role: t("about.work.experiences.Creativ3.role"),
-                    achievements: t("about.work.experiences.Creativ3.achievements").split(";"),
+                    company: 'Blu Omega Consulting',
+                    timeframe: t("about.work.experiences.BluOmega.timeframe"),
+                    role: t("about.work.experiences.BluOmega.role"),
+                    achievements: t("about.work.experiences.BluOmega.achievements").split(";"),
+                    images: [], // actual project images come from MDX files
+                },
+                {
+                    company: 'Spruce Technologies',
+                    timeframe: t("about.work.experiences.Spruce.timeframe"),
+                    role: t("about.work.experiences.Spruce.role"),
+                    achievements: t("about.work.experiences.Spruce.achievements").split(";"),
+                    images: [], // actual project images come from MDX files
+                },
+                {
+                    company: 'Kitzuma Cycling Logistics',
+                    timeframe: t("about.work.experiences.Kitzuma.timeframe"),
+                    role: t("about.work.experiences.Kitzuma.role"),
+                    achievements: t("about.work.experiences.Kitzuma.achievements").split(";"),
+                    images: [], // actual project images come from MDX files
+                },
+                {
+                    company: 'Business Enterprise Institute',
+                    timeframe: t("about.work.experiences.BEI.timeframe"),
+                    role: t("about.work.experiences.BEI.role"),
+                    achievements: t("about.work.experiences.BEI.achievements").split(";"),
+                    images: [], // actual project images come from MDX files
+                },
+                {
+                    company: 'Tiny Feet Toolkit',
+                    timeframe: t("about.work.experiences.TinyFeet.timeframe"),
+                    role: t("about.work.experiences.TinyFeet.role"),
+                    achievements: t("about.work.experiences.TinyFeet.achievements").split(";"),
                     images: [], // actual project images come from MDX files
                 }
             ]
@@ -98,11 +126,13 @@ const createI18nContent = (t) => {
             institutions: [
                 {
                     name: 'Western Colorado University',
-                    description: 'Bachelor of Science, Computer Science',
+                    description: <>{t("about.studies.institutions.Western.description")}</>,
+                    logo: '/logos/western.png'
                 },
                 {
                     name: 'State University of New York at Purchase',
-                    description: 'Bachelor of Arts, Media and Communications',
+                    description: <>{t("about.studies.institutions.Purchase.description")}</>,
+                    logo: '/logos/purchaseCollege.png'
                 }
             ]
         },
@@ -147,13 +177,13 @@ const createI18nContent = (t) => {
             title: t("about.certifications.title"),
             certs: [
                 {
-                    name: t("about.certifications.awsCloudPractitioner.name"),
-                    issuer: t("about.certifications.awsCloudPractitioner.issuer"),
-                    issueDate: t("about.certifications.awsCloudPractitioner.issueDate"),
-                    expirationDate: t("about.certifications.awsCloudPractitioner.expirationDate"),
+                    name: t("about.certifications.certs.awsCloudPractitioner.name"),
+                    issuer: t("about.certifications.certs.awsCloudPractitioner.issuer"),
+                    issueDate: t("about.certifications.certs.awsCloudPractitioner.issueDate"),
+                    expirationDate: t("about.certifications.certs.awsCloudPractitioner.expirationDate"),
                     credentialId: '6df0cb31-d027-4dc0-979e-bbf95c425646',
                     credentialURL: 'https://www.credly.com/badges/6df0cb31-d027-4dc0-979e-bbf95c425646/linked_in_profile',
-                    description: t("about.certifications.awsCloudPractitioner.description"),
+                    description: t("about.certifications.certs.awsCloudPractitioner.description"),
                     image: '/images/certifications/aws-cloud-practitioner.png'
                 }
             ]
@@ -181,78 +211,7 @@ const createI18nContent = (t) => {
         title: t("gallery.title"),
         description: t("gallery.description", {name: person.name}),
         // Images from https://pexels.com
-        images: [
-            {
-                src: '/images/gallery/img-01.jpg',
-                alt: 'image',
-                orientation: 'vertical'
-            },
-            {
-                src: '/images/gallery/img-02.jpg',
-                alt: 'image',
-                orientation: 'horizontal'
-            },
-            { 
-                src: '/images/gallery/img-03.jpg',
-                alt: 'image',
-                orientation: 'vertical'
-            },
-            { 
-                src: '/images/gallery/img-04.jpg',
-                alt: 'image',
-                orientation: 'horizontal'
-            },
-            {
-                src: '/images/gallery/img-05.jpg',
-                alt: 'image',
-                orientation: 'horizontal'
-            },
-            {
-                src: '/images/gallery/img-06.jpg',
-                alt: 'image',
-                orientation: 'vertical'
-            },
-            {
-                src: '/images/gallery/img-07.jpg',
-                alt: 'image',
-                orientation: 'horizontal'
-            },
-            {
-                src: '/images/gallery/img-08.jpg',
-                alt: 'image',
-                orientation: 'vertical'
-            },
-            {
-                src: '/images/gallery/img-09.jpg',
-                alt: 'image',
-                orientation: 'horizontal'
-            },
-            {
-                src: '/images/gallery/img-10.jpg',
-                alt: 'image',
-                orientation: 'horizontal'
-            },
-            { 
-                src: '/images/gallery/img-11.jpg',
-                alt: 'image',
-                orientation: 'vertical'
-            },
-            {
-                src: '/images/gallery/img-12.jpg',
-                alt: 'image',
-                orientation: 'horizontal'
-            },
-            {
-                src: '/images/gallery/img-13.jpg',
-                alt: 'image',
-                orientation: 'horizontal'
-            },
-            { 
-                src: '/images/gallery/img-14.jpg',
-                alt: 'image',
-                orientation: 'horizontal'
-            },
-        ]
+        images: []
     }
     return {
         person,

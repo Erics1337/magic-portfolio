@@ -1,5 +1,7 @@
 {
     "person": {
+        "firstName": "Eric",
+        "name": "Eric Swanson",
         "role": "Full Stack Developer"
     },
     "newsletter": {
@@ -11,7 +13,7 @@
         "label": "Home",
         "title": "{name}'s Portfolio",
         "description": "Portfolio website showcasing my work as a {role}",
-        "headline": "Welcome to {person.firstName}'s Portfolio",
+        "headline": "Welcome to {firstName}'s Portfolio",
         "subline": "I'm a creative problem solver who thrives on the intersection of design and engineering."
     },
     "about": {
@@ -20,7 +22,7 @@
         "description": "Meet {name}, {role} from {location}",
         "intro": {
             "title": "Introduction",
-            "description": "I'm a passionate developer with over 5 years of experience in bringing success to teams by building great relationships and understanding the needs of clients to build high-performing custom digital solutions. I have a proven history of engineering bespoke web application features and crafting user-friendly designs and components. I'm an avid mentor and open-source contributor, passionate about sharing knowledge and giving back to the development community. My work spans digital interfaces, interactive experiences, and the convergence of design and technology."
+            "description": "I'm a passionate {role} with a focus on building innovative solutions. I combine technical expertise with creative problem-solving to deliver impactful software solutions."
         },
         "work": {
             "title": "Work Experience",
@@ -28,27 +30,42 @@
                 "Nularian": {
                     "timeframe": "2025",
                     "role": "Full Stack Engineer",
-                    "achievements": "Designed and developed a scalable, user-centric interface for Nularian Electrify's AI-automated workflow, resulting in a 25% increase in customer engagement and a 15% reduction in customer support tickets.;Integrated LLM-powered solutions with Nularian Electrify's workflow, resulting in an average of 50% decrease in time-to-value for AI-automated tasks."
+                    "achievements": "Designed and developed a scalable, user-centric interface for Nularian Electrify's AI-automated workflow.;Integrated LLM-powered solutions with Nularian Electrify's workflow, resulting in an average of 50% decrease in time-to-value for AI-automated tasks."
                 },
-                "Blu Omega Consulting": {
+                "BluOmega": {
                     "timeframe": "2024",
                     "role": "Full Stack Developer",
                     "achievements": "Contributed to a federal project team that rebuilt the National Heart, Lung, and Blood Institute website using Agile methodologies and a DevOps toolset on Microsoft Azure, resulting in a 30% increase in user engagement and a 25% increase in website accessibility compliance.;Cleaned up legacy code resulting in a 25% reduction in total repository size, modernizing the codebase and reducing technical debt."
                 },
-                "Business Enterprise Institute": {
+                "Spruce": {
+                    "timeframe": "2023",
+                    "role": "Full Stack Developer",
+                    "achievements": "Improved the Delaware River and Bay Authority website performance by 40% through optimizing the underlying infrastructure and implementing content delivery network (CDN) caching.;Designed and implemented a search feature for CalTrans RebuildingCA project, allowing users to find key information on California's budget spending."
+                },
+                "Kitzuma": {
+                    "timeframe": "2022",
+                    "role": "Full Stack Engineer",
+                    "achievements": "Contributed to the development of company tools used to manage shipping logistics including tracking, invoicing, and order fulfillment, resulting in a 25% reduction in time spent on order fulfillment.;Operationalized scripts for various internal processes by creating UI interfaces for the proprietary Transportation Management System (TMS) software using Salesforce platform.;Redesigned company marketing website from the legacy codebase and integrated it with a headless CMS, resulting in a 50% increase in website engagement and a 30% increase in lead generation."
+                },
+                "BEI": {
                     "timeframe": "2021 - 2022",
                     "role": "Full Stack Developer",
-                    "achievements": "Developed and maintained custom web applications using React, Node.js, and PostgreSQL, resulting in a 40% increase in user engagement.;Implemented automated testing and continuous integration pipelines, reducing deployment time by 60% and improving code quality."
+                    "achievements": "Designed and developed a comprehensive course using Learning Management Systems (LMS) to educate and certify BEI's nationwide network of over 2000 financial planning consultants.;Led the reconstruction of the company homepage from scratch, ensuring a seamless user experience through collaboration with cross-functional teams, resulting in a 30% increase in organic traffic through targeted SEO optimization."
+                },
+                "TinyFeet": {
+                    "timeframe": "2020 - 2021",
+                    "role": "Lead Engineer",
+                    "achievements": "Led the creation of a Google Maps API-based feature that allowed users to visualize greenhouse gas emissions data by location.;Spearheaded the development of a tailored recommendation tool powered by a custom REST API."
                 }
             }
         },
         "studies": {
             "title": "Studies",
             "institutions": {
-                "Western Colorado University": {
+                "Western": {
                     "description": "Bachelor of Science, Computer Science"
                 },
-                "State University of New York at Purchase": {
+                "Purchase": {
                     "description": "Bachelor of Arts, Media and Communications"
                 }
             }
@@ -63,12 +80,26 @@
                     "description": "Building next gen apps with Next.js + Once UI + Supabase."
                 }
             }
+        },
+        "certifications": {
+            "title": "Certifications",
+            "certs": {
+                "awsCloudPractitioner": {
+                    "name": "AWS Certified Cloud Practitioner",
+                    "issuer": "Amazon Web Services (AWS)",
+                    "issueDate": "December 2023",
+                    "expirationDate": "December 2026",
+                    "credentialId": "6df0cb31-d027-4dc0-979e-bbf95c425646",
+                    "credentialURL": "https://www.credly.com/badges/6df0cb31-d027-4dc0-979e-bbf95c425646/linked_in_profile",
+                    "description": "Validates overall understanding of the AWS Cloud, including key services, use cases, billing and pricing models, security concepts, and basic architectural principles."
+                }
+            }
         }
     },
     "blog": {
         "label": "Blog",
         "title": "Writing about design and tech...",
-        "description": "Read what {name} has been up to recently"
+        "description": "Thoughts, stories, and ideas about design, technology, and creativity."
     },
     "work": {
         "label": "Work",
@@ -77,8 +108,8 @@
     },
     "gallery": {
         "label": "Gallery",
-        "title": "My photo gallery",
-        "description": "A photo collection by {name}"
+        "title": "Project Gallery",
+        "description": "A visual showcase of my work and projects"
     },
     "projectCard": {
         "label": "Read Case Study"
