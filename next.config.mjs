@@ -15,9 +15,8 @@ const nextConfig = {
     pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
     images: {
         unoptimized: true, // Required for static export
-        domains: [], // Add any external image domains here if needed
-        remotePatterns: [], // Add any remote image patterns here if needed
     },
+    trailingSlash: true, // This helps with static hosting
     experimental: {
         serverActions: {
             bodySizeLimit: '2mb',

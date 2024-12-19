@@ -115,89 +115,101 @@ const SmartImage: React.FC<SmartImageProps> = ({
     const isYouTube = isYouTubeVideo(src);
 
     return (
-        <>
-            <Flex
-                ref={imageRef}
-                fillWidth
-                position="relative"
-                {...(!isEnlarged && { background: 'neutral-medium' })}
-                style={{
-                    outline: 'none',
-                    overflow: 'hidden',
-                    height: aspectRatio
-                        ? undefined
-                        : height
-                        ? `${height}rem`
-                        : '100%',
-                    aspectRatio,
-                    cursor: enlarge ? 'pointer' : 'default',
-                    borderRadius: isEnlarged ? '0' : radius ? `var(--radius-${radius})` : undefined,
-                    ...(typeof window !== 'undefined' ? calculateTransform() : {}),
-                    ...style,
-                }}
-                className={classNames(className)}
-                onClick={handleClick}>
-                {isLoading && (
-                    <Skeleton shape="block" />
-                )}
-                {!isLoading && isVideo && (
-                    <video
-                        src={src}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: isEnlarged ? 'contain' : objectFit,
-                        }}
-                    />
-                )}
-                {!isLoading && isYouTube && (
-                    <iframe
-                        width="100%"
-                        height="100%"
-                        src={getYouTubeEmbedUrl(src)}
-                        frameBorder="0"
-                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        style={{
-                            objectFit: objectFit,
-                        }}
-                    />
-                )}
-                {!isLoading && !isVideo && !isYouTube && (
-                    <Image
-                        {...props}
-                        src={src}
-                        alt={alt}
-                        fill
-                        style={{ 
-                            objectFit: isEnlarged ? 'contain' : objectFit,
-                        }}
-                        unoptimized={unoptimized}
-                    />
-                )}
-            </Flex>
-
-            {isEnlarged && enlarge && typeof document !== 'undefined' && (
-                <Flex
-                    justifyContent="center"
-                    alignItems="center"
-                    position="fixed"
-                    zIndex={1}
-                    onClick={handleClick}
-                    style={{
-                        top: 0,
-                        left: 0,
-                        width: '100vw',
-                        height: '100vh',
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    }}
-                />
+        <div
+            ref={imageRef}
+            className={classNames(
+                'relative overflow-hidden',
+                { 'cursor-pointer': enlarge },
+                className
             )}
-        </>
+            style={{
+                ...style,
+                aspectRatio,
+                borderRadius: radius,
+            }}
+            onClick={handleClick}
+        >
+            {isLoading ? (
+                <Skeleton shape="block" className="w-full h-full" />
+            ) : (
+                <>
+                    {isVideo ? (
+                        <video
+                            src={src}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: isEnlarged ? 'contain' : objectFit,
+                            }}
+                        />
+                    ) : isYouTube ? (
+                        <iframe
+                            width="100%"
+                            height="100%"
+                            src={getYouTubeEmbedUrl(src)}
+                            frameBorder="0"
+                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            style={{
+                                objectFit: objectFit,
+                            }}
+                        />
+                    ) : (
+                        <img
+                            src={src}
+                            alt={alt}
+                            className={classNames(
+                                'w-full h-full',
+                                { 'object-cover': objectFit === 'cover' },
+                                { 'object-contain': objectFit === 'contain' }
+                            )}
+                            loading="lazy"
+                            {...props}
+                        />
+                    )}
+                    {isEnlarged && (
+                        <div
+                            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setIsEnlarged(false);
+                            }}
+                        >
+                            {isVideo ? (
+                                <video
+                                    src={src}
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    className="max-w-[90vw] max-h-[90vh] object-contain"
+                                />
+                            ) : isYouTube ? (
+                                <iframe
+                                    width="100%"
+                                    height="100%"
+                                    src={getYouTubeEmbedUrl(src)}
+                                    frameBorder="0"
+                                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    className="max-w-[90vw] max-h-[90vh] object-contain"
+                                />
+                            ) : (
+                                <img
+                                    src={src}
+                                    alt={alt}
+                                    className="max-w-[90vw] max-h-[90vh] object-contain"
+                                />
+                            )}
+                        </div>
+                    )}
+                </>
+            )}
+        </div>
     );
 };
 
