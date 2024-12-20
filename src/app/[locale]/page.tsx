@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { Heading, Flex, Text, Button,  Avatar, RevealFx, Arrow } from '@/once-ui/components';
-import { ProjectsContainer } from '@/components/work/ProjectsContainer';
-
+import { Projects } from '@/components/work/Projects';
 import { baseURL, routes, renderContent } from '@/app/resources'; 
 import { Mailchimp } from '@/components';
 import { PostsContainer } from '@/components/blog/PostsContainer';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
+import { getWorkProjects } from '@/app/utils/utils';
 
 import Hero from '@/components/Hero'
 
@@ -45,12 +45,13 @@ export async function generateMetadata(
 	};
 }
 
-export default function Home(
+export default async function Home(
 	{ params: {locale}}: { params: { locale: string }}
 ) {
 	unstable_setRequestLocale(locale);
-	const t = useTranslations();
+	const t = await getTranslations();
 	const { home, about, person, newsletter } = renderContent(t);
+	const posts = await getWorkProjects(locale);
 	return (
 		<Flex
 			maxWidth="m" fillWidth gap="xl"
@@ -131,7 +132,7 @@ export default function Home(
 				
 			</Flex>
 			<RevealFx translateY="16" delay={0.6}>
-				<ProjectsContainer range={[1,1]} locale={locale}/>
+				<Projects range={[1,1]} locale={locale} posts={posts}/>
 			</RevealFx>
 			{routes['/blog'] && (
 				<Flex
@@ -151,7 +152,7 @@ export default function Home(
 					</Flex>
 				</Flex>
 			)}
-			<ProjectsContainer range={[2]} locale={locale}/>
+			<Projects range={[2]} locale={locale} posts={posts}/>
 			{ newsletter.display &&
 				<Mailchimp newsletter={newsletter} />
 			}

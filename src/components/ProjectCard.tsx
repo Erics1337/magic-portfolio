@@ -6,11 +6,11 @@ import { useTranslations } from 'next-intl';
 
 interface ProjectCardProps {
     href: string;
-    images?: string[];
-    title?: string;
-    content?: string;
-    description?: string;
-    avatars?: { src: string }[];
+    images: string[];
+    title: string;
+    content: string;
+    description: string;
+    avatars: { src: string }[];
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -19,7 +19,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     title,
     content,
     description,
-    avatars = []
+    avatars
 }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -66,9 +66,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     <SmartImage
                         tabIndex={0}
                         radius="l"
-                        alt={title || 'Project image'}
+                        alt={title}
                         aspectRatio="16 / 9"
-                        src={images[activeIndex] || images[0]}
+                        src={images[activeIndex]}
                         style={{
                             border: '1px solid var(--neutral-alpha-weak)',
                             ...(images.length > 1 && {
@@ -105,14 +105,12 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 {title && (
                     <Flex
                         flex={5}>
-                        <SmartLink href={href}>
-                            <Heading
-                                as="h2"
-                                wrap="balance"
-                                variant="heading-strong-xl">
-                                {title}
-                            </Heading>
-                        </SmartLink>
+                        <Heading
+                            as="h2"
+                            wrap="balance"
+                            variant="heading-strong-xl">
+                            {title}
+                        </Heading>
                     </Flex>
                 )}
                 {(avatars?.length > 0 || description?.trim() || content?.trim()) && (
