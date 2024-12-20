@@ -10,7 +10,9 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {},
+    experimental: {
+        outputStandalone: true,
+    },
     pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
     webpack: (config) => {
         config.resolve.alias = {
