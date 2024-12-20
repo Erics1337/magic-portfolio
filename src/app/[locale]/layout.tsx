@@ -1,28 +1,34 @@
-import "@/once-ui/styles/index.scss";
-import "@/once-ui/tokens/index.scss";
+import "@/once-ui/styles/index.scss"
+import "@/once-ui/tokens/index.scss"
 
-import classNames from 'classnames';
+import classNames from "classnames"
 
-import { Footer, Header, RouteGuard } from "@/components";
-import { baseURL, effects, style } from '@/app/resources'
+import { Footer, Header, RouteGuard } from "@/components"
+import { baseURL, effects, style } from "@/app/resources"
 
-import { Inter } from 'next/font/google'
-import { Source_Code_Pro } from 'next/font/google';
+import { Inter } from "next/font/google"
+import { Source_Code_Pro } from "next/font/google"
 
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { NextIntlClientProvider } from "next-intl"
+import {
+	getMessages,
+	getTranslations,
+	unstable_setRequestLocale,
+} from "next-intl/server"
 
-import { routing } from "@/i18n/routing";
-import { renderContent } from "@/app/resources";
-import { Background, Flex } from "@/once-ui/components";
-import Script from 'next/script';
+import { routing } from "@/i18n/routing"
+import { renderContent } from "@/app/resources"
+import { Background, Flex } from "@/once-ui/components"
+import Script from "next/script"
+import GoogleAnalytics from "../utils/GoogleAnalytics"
 
-export async function generateMetadata(
-	{ params: { locale }}: { params: { locale: string }}
-) {
-
-	const t = await getTranslations();
-	const { person, home } = renderContent(t);
+export async function generateMetadata({
+	params: { locale },
+}: {
+	params: { locale: string }
+}) {
+	const t = await getTranslations()
+	const { person, home } = renderContent(t)
 
 	return {
 		metadataBase: new URL(`https://${baseURL}/${locale}`),
@@ -30,11 +36,11 @@ export async function generateMetadata(
 		description: home.description,
 		openGraph: {
 			title: `${person.firstName}'s Portfolio`,
-			description: 'Portfolio website showcasing my work.',
+			description: "Portfolio website showcasing my work.",
 			url: baseURL,
 			siteName: `${person.firstName}'s Portfolio`,
-			locale: 'en_US',
-			type: 'website',
+			locale: "en_US",
+			type: "website",
 		},
 		robots: {
 			index: true,
@@ -42,80 +48,89 @@ export async function generateMetadata(
 			googleBot: {
 				index: true,
 				follow: true,
-				'max-video-preview': -1,
-				'max-image-preview': 'large',
-				'max-snippet': -1,
+				"max-video-preview": -1,
+				"max-image-preview": "large",
+				"max-snippet": -1,
 			},
 		},
 	}
-};
+}
 
 const primary = Inter({
-	variable: '--font-primary',
-	subsets: ['latin'],
-	display: 'swap',
+	variable: "--font-primary",
+	subsets: ["latin"],
+	display: "swap",
 })
 
 type FontConfig = {
-    variable: string;
-};
+	variable: string
+}
 
 /*
 	Replace with code for secondary and tertiary fonts
 	from https://once-ui.com/customize
 */
-const secondary: FontConfig | undefined = undefined;
-const tertiary: FontConfig | undefined = undefined;
+const secondary: FontConfig | undefined = undefined
+const tertiary: FontConfig | undefined = undefined
 /*
-*/
+ */
 
 const code = Source_Code_Pro({
-	variable: '--font-code',
-	subsets: ['latin'],
-	display: 'swap',
-});
+	variable: "--font-code",
+	subsets: ["latin"],
+	display: "swap",
+})
 
 interface RootLayoutProps {
-	children: React.ReactNode;
-	params: {locale: string};
+	children: React.ReactNode
+	params: { locale: string }
 }
 
 export function generateStaticParams() {
-	return routing.locales.map((locale) => ({locale}));
-  }
+	return routing.locales.map((locale) => ({ locale }))
+}
 
 export default async function RootLayout({
 	children,
-	params: {locale}
-} : RootLayoutProps) {
-	unstable_setRequestLocale(locale);
-	const messages = await getMessages();
+	params: { locale },
+}: RootLayoutProps) {
+	unstable_setRequestLocale(locale)
+	const messages = await getMessages()
 
 	return (
-		<html lang={locale} className={classNames(primary.variable, secondary ? secondary.variable : '', tertiary ? tertiary.variable : '', code.variable)}>
+		<html
+			lang={locale}
+			className={classNames(
+				primary.variable,
+				secondary ? secondary.variable : "",
+				tertiary ? tertiary.variable : "",
+				code.variable
+			)}
+		>
 			<body className="text-white bg-black">
 				<NextIntlClientProvider messages={messages}>
 					<Flex
 						as="main"
 						background="page"
-						data-neutral={style.neutral} 
-						data-brand={style.brand} 
+						data-neutral={style.neutral}
+						data-brand={style.brand}
 						data-accent={style.accent}
-						data-solid={style.solid} 
+						data-solid={style.solid}
 						data-solid-style={style.solidStyle}
 						data-theme={style.theme}
 						data-border={style.border}
 						data-surface={style.surface}
 						data-transition={style.transition}
 						style={{
-							minHeight: '100vh',
-							position: 'relative',
-							zIndex: 1
+							minHeight: "100vh",
+							position: "relative",
+							zIndex: 1,
 						}}
-						fillWidth 
-						margin="0" 
+						fillWidth
+						margin="0"
 						padding="0"
-						direction="column">
+						direction="column"
+					>
 						{/* Full-page background */}
 						<div
 							className="fixed inset-0 will-change-transform"
@@ -128,10 +143,11 @@ export default async function RootLayout({
 								height: "120vh",
 								left: "50%",
 								top: "50%",
-								transform: "translate(-50%, calc(-50% + calc(var(--scroll-offset, 0) * 0.3)))",
+								transform:
+									"translate(-50%, calc(-50% + calc(var(--scroll-offset, 0) * 0.3)))",
 								filter: "brightness(0.6)",
 								mixBlendMode: "multiply",
-								zIndex: -1
+								zIndex: -1,
 							}}
 						/>
 						<Background
@@ -140,43 +156,25 @@ export default async function RootLayout({
 							dots={effects.dots as any}
 							lines={effects.lines as any}
 						/>
-						<Header/>
+						<Header />
 						<Flex
 							zIndex={1}
-							fillWidth 
-							paddingY="l" 
+							fillWidth
+							paddingY="l"
 							paddingX="l"
-							justifyContent="center" 
-							flex={1}>
-							<Flex
-								justifyContent="center"
-								fillWidth 
-								minHeight="0">
-								<RouteGuard>
-									{children}
-								</RouteGuard>
+							justifyContent="center"
+							flex={1}
+						>
+							<Flex justifyContent="center" fillWidth minHeight="0">
+								<RouteGuard>{children}</RouteGuard>
 							</Flex>
 						</Flex>
-						<Footer/>
+						<Footer />
 					</Flex>
 				</NextIntlClientProvider>
 				<Script src="/scripts/parallax.js" strategy="afterInteractive" />
 			</body>
-				<Script
-					strategy="afterInteractive"
-					src={`https://www.googletagmanager.com/gtag/js?id=G-DGV7Y7JDQS`}
-				/>
-				<Script id="google-analytics" strategy="afterInteractive">
-					{`
-						window.dataLayer = window.dataLayer || [];
-						function gtag() {
-							window.dataLayer.push(arguments);
-						}
-						gtag("js", new Date());
-						gtag("config", "G-DGV7Y7JDQS");
-					`}
-				</Script>
-			
+			<GoogleAnalytics />
 		</html>
-	);
+	)
 }
