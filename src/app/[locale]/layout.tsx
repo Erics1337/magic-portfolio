@@ -162,6 +162,21 @@ export default async function RootLayout({
 				</NextIntlClientProvider>
 				<Script src="/scripts/parallax.js" strategy="afterInteractive" />
 			</body>
+				<Script
+					strategy="afterInteractive"
+					src={`https://www.googletagmanager.com/gtag/js?id=G-DGV7Y7JDQS`}
+				/>
+				<Script id="google-analytics" strategy="afterInteractive">
+					{`
+						window.dataLayer = window.dataLayer || [];
+						function gtag() {
+							window.dataLayer.push(arguments);
+						}
+						gtag("js", new Date());
+						gtag("config", "G-DGV7Y7JDQS");
+					`}
+				</Script>
+			
 		</html>
 	);
 }
