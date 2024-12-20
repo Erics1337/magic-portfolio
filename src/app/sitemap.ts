@@ -1,4 +1,4 @@
-import { getBlogPosts, getWorkProjects } from '@/app/utils/edge-utils'
+import { getBlogPosts, getWorkProjects } from '@/app/utils/utils'
 import { baseURL, routes as routesConfig } from '@/app/resources'
 import { routing } from '@/i18n/routing'
 

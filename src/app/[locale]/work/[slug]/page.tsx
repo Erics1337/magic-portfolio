@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { CustomMDX } from '../../../../components/mdx';
-import { getWorkProjects } from '../../../utils/edge-utils';
+import { getWorkProjects } from '../../../utils/utils';
 import { AvatarGroup, Button, Flex, Heading, Text } from '../../../../once-ui/components';
 import { baseURL, renderContent } from '../../../resources';
 import { unstable_setRequestLocale, getTranslations } from 'next-intl/server';
@@ -9,7 +9,6 @@ import { formatDate } from '../../../utils/formatDate';
 import ScrollToHash from '../../../../components/ScrollToHash';
 import { ProjectImages } from '../../../../components/work/ProjectImages';
 
-export const runtime = 'edge';
 
 interface WorkParams {
     params: {

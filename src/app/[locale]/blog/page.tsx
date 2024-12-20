@@ -3,9 +3,8 @@ import { Mailchimp } from '@/components';
 import { BlogContent } from '@/components/blog/BlogContent';
 import { baseURL, renderContent } from '@/app/resources'
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
-import { getBlogPosts } from '@/app/utils/edge-utils';
+import { getBlogPosts } from '@/app/utils/utils';
 
-export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(

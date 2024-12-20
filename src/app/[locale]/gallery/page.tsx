@@ -2,9 +2,8 @@ import { Flex } from "@/once-ui/components";
 import MasonryGrid, { GalleryImage } from "@/components/gallery/MasonryGrid";
 import { baseURL, renderContent } from "@/app/resources";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
-import { getBlogPosts, getWorkProjects } from '@/app/utils/edge-utils';
+import { getBlogPosts, getWorkProjects } from '@/app/utils/utils';
 
-export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(

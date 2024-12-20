@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { CustomMDX } from '../../../../components/mdx';
-import { getBlogPosts } from '../../../utils/edge-utils';
+import { getBlogPosts } from '../../../utils/utils';
 import { Avatar, Button, Flex, Heading, Text } from '../../../../once-ui/components';
 import { baseURL, renderContent } from '../../../resources';
 import { unstable_setRequestLocale, getTranslations } from 'next-intl/server';
@@ -8,7 +8,6 @@ import { routing } from '../../../../i18n/routing';
 import { formatDate } from '../../../utils/formatDate';
 import ScrollToHash from '../../../../components/ScrollToHash';
 
-export const runtime = 'edge';
 
 interface BlogParams {
     params: { 

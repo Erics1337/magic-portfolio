@@ -1,4 +1,4 @@
-import { getBlogPosts } from '@/app/utils/edge-utils';
+import { getBlogPosts } from '@/app/utils/utils';
 import { Posts } from './Posts';
 
 interface PostsContainerProps {

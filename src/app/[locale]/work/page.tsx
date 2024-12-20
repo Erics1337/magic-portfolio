@@ -1,11 +1,10 @@
-import { getWorkProjects } from '@/app/utils/edge-utils';
+import { getWorkProjects } from '@/app/utils/utils';
 import { Flex } from '@/once-ui/components';
 import { baseURL, renderContent } from '@/app/resources';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { WorkContent } from '@/components/work/WorkContent';
 import { ProjectsContainer } from '@/components/work/ProjectsContainer';
 
-export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(

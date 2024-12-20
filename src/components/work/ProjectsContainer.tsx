@@ -1,4 +1,4 @@
-import { getWorkProjects } from '@/app/utils/edge-utils';
+import { getWorkProjects } from '@/app/utils/utils';
 import { Projects } from './Projects';
 
 interface ProjectsContainerProps {
