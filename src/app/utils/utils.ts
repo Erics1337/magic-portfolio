@@ -52,7 +52,7 @@ async function readMDXFile(filePath: string): Promise<Post> {
 async function getMDXData(dir: string): Promise<Post[]> {
     try {
         const POSTS_PATH = path.join(process.cwd(), dir);
-        console.log('Looking for posts in:', POSTS_PATH);
+        // console.log('Looking for posts in:', POSTS_PATH);
         
         // Check if directory exists
         try {
@@ -63,10 +63,10 @@ async function getMDXData(dir: string): Promise<Post[]> {
         }
 
         const postFilePaths = await fs.promises.readdir(POSTS_PATH);
-        console.log('Found files:', postFilePaths);
+        // console.log('Found files:', postFilePaths);
         
         const mdxFiles = postFilePaths.filter((path) => /\.mdx?$/.test(path));
-        console.log('MDX files:', mdxFiles);
+        // console.log('MDX files:', mdxFiles);
 
         const posts = await Promise.all(
             mdxFiles.map(async (filePath) => {
@@ -82,7 +82,7 @@ async function getMDXData(dir: string): Promise<Post[]> {
 
         // Filter out any null values from failed reads
         const validPosts = posts.filter((post): post is Post => post !== null);
-        console.log('Valid posts:', validPosts.length);
+        // console.log('Valid posts:', validPosts.length);
         return validPosts;
     } catch (error) {
         console.error(`Error reading directory ${dir}:`, error);
@@ -93,7 +93,7 @@ async function getMDXData(dir: string): Promise<Post[]> {
 export async function getPosts(customPath: string[] = ['', '', '', '']): Promise<Post[]> {
     try {
         const dir = path.join(...customPath);
-        console.log('Getting posts from directory:', dir);
+        // console.log('Getting posts from directory:', dir);
         const posts = await getMDXData(dir);
         return Array.isArray(posts) ? posts : [];
     } catch (error) {
@@ -109,8 +109,8 @@ export async function getBlogPosts(locale: string) {
 
 export async function getWorkProjects(locale: string) {
     'use server'
-    console.log('Getting work projects for locale:', locale);
+    // console.log('Getting work projects for locale:', locale);
     const projects = await getPosts(['src', 'app', '[locale]', 'work', 'projects', locale]);
-    console.log('Found projects:', projects.length);
+    // console.log('Found projects:', projects.length);
     return projects;
 }

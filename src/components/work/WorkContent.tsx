@@ -24,7 +24,7 @@ export function WorkContent({ posts, locale }: WorkContentProps) {
         return Array.from(tags);
     }, [posts]);
 
-    console.log('Available tags:', allTags);
+    // console.log('Available tags:', allTags);
 
     // Filter posts based on selected tag
     const filteredPosts = useMemo(() => {
@@ -41,7 +41,7 @@ export function WorkContent({ posts, locale }: WorkContentProps) {
         value: tag
     }));
 
-    console.log('Tag options:', tagOptions);
+    // console.log('Tag options:', tagOptions);
 
     return (
         <Flex direction="column" gap="48">

@@ -36,11 +36,11 @@ export async function generateMetadata(
 export default async function Work({ params: { locale } }: { params: { locale: string } }) {
     unstable_setRequestLocale(locale);
     const posts = await getWorkProjects(locale) || [];
-    console.log('Fetched posts:', posts.length);
-    console.log('Posts metadata:', posts.map(p => ({ 
-        title: p.metadata.title, 
-        tags: p.metadata.tags 
-    })));
+    // console.log('Fetched posts:', posts.length);
+    // console.log('Posts metadata:', posts.map(p => ({ 
+    //     title: p.metadata.title, 
+    //     tags: p.metadata.tags 
+    // })));
     
     const t = await getTranslations();
     const { person } = renderContent(t);
@@ -51,11 +51,11 @@ export default async function Work({ params: { locale } }: { params: { locale: s
         post.metadata.title && 
         post.metadata.summary
     );
-    console.log('Valid posts:', validPosts.length);
-    console.log('Valid posts metadata:', validPosts.map(p => ({ 
-        title: p.metadata.title, 
-        tags: p.metadata.tags 
-    })));
+    // console.log('Valid posts:', validPosts.length);
+    // console.log('Valid posts metadata:', validPosts.map(p => ({ 
+    //     title: p.metadata.title, 
+    //     tags: p.metadata.tags 
+    // })));
 
     return (
         <Flex
