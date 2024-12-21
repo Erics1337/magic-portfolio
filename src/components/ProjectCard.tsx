@@ -1,7 +1,7 @@
 "use client";
 
 import { AvatarGroup, Flex, Heading, RevealFx, SmartImage, SmartLink, Text } from "@/once-ui/components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useTranslations } from 'next-intl';
 
 interface ProjectCardProps {
@@ -22,9 +22,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     avatars
 }) => {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [nextImageIndex, setNextImageIndex] = useState(1);
     const [isTransitioning, setIsTransitioning] = useState(false);
-
     const t = useTranslations();
+    const nextImageRef = useRef<HTMLImageElement>(null);
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -33,6 +35,11 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
         return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        setNextImageIndex((activeIndex + 1) % images.length);
+    }, [activeIndex, images.length]);
+
 
     const handleImageClick = () => {
         if(images.length > 1) {
@@ -98,6 +105,21 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                         </Flex>
                     ))}
                 </Flex>
+            )}
+             {images.length > 1 && (
+                <div style={{ display: 'none', height: 0, width: 0, overflow: 'hidden' }}>
+                    <img
+                        src={images[nextImageIndex]}
+                        alt="Preloading next image"
+                        style={{
+                            position: 'absolute',
+                            top: '-9999px',
+                            left: '-9999px',
+                            width: '0px',
+                            height: '0px',
+                        }}
+                    />
+                </div>
             )}
             <Flex
                 mobileDirection="column"
