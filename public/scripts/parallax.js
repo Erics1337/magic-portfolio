@@ -1,22 +1,35 @@
 if (typeof window !== 'undefined') {
   let ticking = false;
+  let lastScrollY = 0;
   const heroSection = document.querySelector('.hero-section');
+  
+  // Set up hardware acceleration
+  if (heroSection) {
+    heroSection.style.willChange = 'transform';
+    heroSection.style.transformStyle = 'preserve-3d';
+  }
+
+  function lerp(start, end, factor) {
+    return start + (end - start) * factor;
+  }
 
   function updateParallax() {
     const scrolled = window.scrollY;
     const viewportHeight = window.innerHeight;
     
-    // Update the scroll offset CSS variable
-    document.documentElement.style.setProperty('--scroll-offset', `${scrolled}px`);
-    
-    // Calculate parallax effects based on viewport position
     if (heroSection) {
       const heroRect = heroSection.getBoundingClientRect();
       const heroVisible = heroRect.bottom > 0 && heroRect.top < viewportHeight;
       
       if (heroVisible) {
-        const progress = (viewportHeight - heroRect.top) / (viewportHeight + heroRect.height);
-        document.documentElement.style.setProperty('--hero-progress', progress);
+        // Smooth out the scroll value using linear interpolation
+        lastScrollY = lerp(lastScrollY, scrolled, 0.1);
+        
+        // Use a smaller parallax factor for more subtle movement
+        const translateY = lastScrollY * 0.15;
+        
+        // Use translate3d for hardware acceleration
+        heroSection.style.transform = `translate3d(0, ${translateY}px, 0)`;
       }
     }
 
@@ -30,8 +43,9 @@ if (typeof window !== 'undefined') {
     }
   }
 
-  // Add scroll listener with throttling
+  // Handle both mouse wheel and touch events
   window.addEventListener('scroll', requestTick, { passive: true });
+  window.addEventListener('touchmove', requestTick, { passive: true });
   window.addEventListener('resize', requestTick, { passive: true });
 
   // Initial update
