@@ -127,12 +127,16 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 {title && (
                     <Flex
                         flex={5}>
-                        <Heading
-                            as="h2"
-                            wrap="balance"
-                            variant="heading-strong-xl">
-                            {title}
-                        </Heading>
+                        <SmartLink href={href}
+                         className="hover:underline hover:underline-offset-4"
+                        >
+                            <Heading
+                                as="h2"
+                                wrap="balance"
+                                variant="heading-strong-xl">
+                                {title}
+                            </Heading>
+                        </SmartLink>
                     </Flex>
                 )}
                 {(avatars?.length > 0 || description?.trim() || content?.trim()) && (
