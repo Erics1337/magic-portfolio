@@ -24,10 +24,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     const [activeIndex, setActiveIndex] = useState(0);
     const [nextImageIndex, setNextImageIndex] = useState(1);
     const [isTransitioning, setIsTransitioning] = useState(false);
-    const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
+    const [preloadedImages] = useState<Set<string>>(new Set());
     const t = useTranslations();
     const nextImageRef = useRef<HTMLImageElement>(null);
-
+    const preloadedImagesRef = useRef<Set<string>>(new Set());
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -41,25 +41,31 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         setNextImageIndex((activeIndex + 1) % images.length);
     }, [activeIndex, images.length]);
 
-    // Preload images
     useEffect(() => {
         const preloadImage = (src: string) => {
-            if (!preloadedImages.has(src)) {
+            if (!preloadedImagesRef.current.has(src)) {
                 const img = new Image();
+                img.onload = () => {
+                    preloadedImagesRef.current.add(src);
+                };
                 img.src = src;
-                setPreloadedImages(prev => new Set([...prev, src]));
             }
         };
 
-        // Preload next image
-        if (images[nextImageIndex]) {
-            preloadImage(images[nextImageIndex]);
-        }
-
-        // Preload all images in background
+        // Preload all images immediately
         images.forEach(preloadImage);
-    }, [images, nextImageIndex, preloadedImages]);
+    }, [images]); // Only re-run if images array changes
 
+    useEffect(() => {
+        // Ensure next image is preloaded when activeIndex changes
+        if (images[nextImageIndex]) {
+            const img = new Image();
+            img.onload = () => {
+                preloadedImagesRef.current.add(images[nextImageIndex]);
+            };
+            img.src = images[nextImageIndex];
+        }
+    }, [nextImageIndex, images]);
 
     const handleImageClick = () => {
         if(images.length > 1) {
@@ -125,21 +131,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                         </Flex>
                     ))}
                 </Flex>
-            )}
-             {images.length > 1 && (
-                <div style={{ display: 'none', height: 0, width: 0, overflow: 'hidden' }}>
-                    <img
-                        src={images[nextImageIndex]}
-                        alt="Preloading next image"
-                        style={{
-                            position: 'absolute',
-                            top: '-9999px',
-                            left: '-9999px',
-                            width: '0px',
-                            height: '0px',
-                        }}
-                    />
-                </div>
             )}
             <Flex
                 mobileDirection="column"
