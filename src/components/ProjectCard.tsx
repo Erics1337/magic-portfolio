@@ -24,6 +24,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     const [activeIndex, setActiveIndex] = useState(0);
     const [nextImageIndex, setNextImageIndex] = useState(1);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [preloadedImages, setPreloadedImages] = useState<Set<string>>(new Set());
     const t = useTranslations();
     const nextImageRef = useRef<HTMLImageElement>(null);
 
@@ -39,6 +40,25 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     useEffect(() => {
         setNextImageIndex((activeIndex + 1) % images.length);
     }, [activeIndex, images.length]);
+
+    // Preload images
+    useEffect(() => {
+        const preloadImage = (src: string) => {
+            if (!preloadedImages.has(src)) {
+                const img = new Image();
+                img.src = src;
+                setPreloadedImages(prev => new Set([...prev, src]));
+            }
+        };
+
+        // Preload next image
+        if (images[nextImageIndex]) {
+            preloadImage(images[nextImageIndex]);
+        }
+
+        // Preload all images in background
+        images.forEach(preloadImage);
+    }, [images, nextImageIndex, preloadedImages]);
 
 
     const handleImageClick = () => {
