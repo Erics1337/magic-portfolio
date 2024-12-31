@@ -21,6 +21,7 @@ import { renderContent } from "@/app/resources"
 import { Background, Flex } from "@/once-ui/components"
 import Script from "next/script"
 import GoogleAnalytics from "../utils/GoogleAnalytics"
+import { Analytics } from "@vercel/analytics/react"
 
 export async function generateMetadata({
 	params: { locale },
@@ -107,6 +108,7 @@ export default async function RootLayout({
 				code.variable
 			)}
 		>
+			<Analytics />
 			<body className="text-white bg-black">
 				<NextIntlClientProvider messages={messages}>
 					<Flex
