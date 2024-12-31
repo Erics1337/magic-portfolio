@@ -22,6 +22,8 @@ import { Background, Flex } from "@/once-ui/components"
 import Script from "next/script"
 import GoogleAnalytics from "../utils/GoogleAnalytics"
 import { Analytics } from "@vercel/analytics/react"
+import Percept from "@perceptinsight/percept-js";
+Percept.init("abc24c6b5f909f6fc43033af3b1b94492100bb2bd642d3bac685cb0f61b47131");
 
 export async function generateMetadata({
 	params: { locale },
