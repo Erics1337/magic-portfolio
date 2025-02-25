@@ -74,7 +74,7 @@ export default function About(
         { 
             title: about.certifications.title,
             display: about.certifications.display,
-            items: about.certifications.certs?.map(cert => cert.name) || []
+            items: ["AWS Certified Cloud Practitioner", "AWS Certified AI Practitioner"]
         },
     ]
     return (
@@ -334,10 +334,11 @@ export default function About(
                                 {about.studies.institutions.map((institution, index) => (
                                     <Flex
                                         key={institution.name}
+                                        id={institution.name}
                                         fillWidth
                                         direction="row"
                                         gap="16"
-                                        alignItems="center">
+                                        alignItems="flex-start">
                                         {institution.logo && (
                                             <Flex
                                                 width="48"
@@ -354,11 +355,24 @@ export default function About(
                                             </Flex>
                                         )}
                                         <Flex
+                                            fillWidth
                                             direction="column"
                                             gap="s">
-                                            <Heading variant="heading-strong-l">
-                                                {institution.name}
-                                            </Heading>
+                                            <Flex
+                                                fillWidth
+                                                justifyContent="space-between"
+                                                alignItems="flex-end">
+                                                <Heading variant="heading-strong-l">
+                                                    {institution.name}
+                                                </Heading>
+                                                <Text
+                                                    variant="heading-default-xs"
+                                                    onBackground="neutral-weak">
+                                                    {institution.name === "Western Colorado University" 
+                                                        ? "2017 - 2020"
+                                                        : "2010 - 2014"}
+                                                </Text>
+                                            </Flex>
                                             <Text variant="body-default-l">
                                                 {institution.description}
                                             </Text>
@@ -381,31 +395,42 @@ export default function About(
                             <Flex
                                 direction="column"
                                 fillWidth gap="l" marginBottom="40">
-                                {about.certifications.certs?.length > 0 && about.certifications.certs.map((cert, index) => (
+                                {[
+                                    {
+                                        name: "AWS Certified Cloud Practitioner",
+                                        image: "/images/certifications/aws-cloud-practitioner.png",
+                                        issuer: "Amazon Web Services (AWS)",
+                                        credentialURL: "https://www.credly.com/badges/6df0cb31-d027-4dc0-979e-bbf95c425646/linked_in_profile"
+                                    },
+                                    {
+                                        name: "AWS Certified AI Practitioner",
+                                        image: "/images/certifications/aws-ai-practitioner.png",
+                                        issuer: "Amazon Web Services (AWS)",
+                                        credentialURL: "https://www.credly.com/badges/5b0a3df4-c87d-465d-894f-5fdd3c2c8d59/linked_in_profile"
+                                    }
+                                ].map((cert, index) => (
                                     <Flex
                                         key={cert.name}
+                                        id={cert.name}
                                         fillWidth
-                                        direction="column"
-                                        gap="s">
-                                        <a href={cert.credentialURL} target="_blank" rel="noopener noreferrer" className={styles.certLink}>
-                                            {cert.image && (
-                                                <Image
-                                                    src={cert.image}
-                                                    alt={cert.name}
-                                                    width={64}
-                                                    height={64}
-                                                    className={styles.certImage}
-                                                />
-                                            )}
-                                            <Flex direction="column" gap="s">
-                                                <Heading variant="heading-strong-l">
-                                                    {cert.name}
-                                                </Heading>
-                                                <Text variant="body-default-l">
-                                                    {cert.issuer}
-                                                </Text>
-                                            </Flex>
-                                        </a>
+                                        direction="row"
+                                        gap="16"
+                                        alignItems="center">
+                                        <Image
+                                            src={cert.image}
+                                            alt={cert.name}
+                                            width={64}
+                                            height={64}
+                                            style={{ objectFit: 'contain' }}
+                                        />
+                                        <Flex direction="column" gap="s">
+                                            <Heading variant="heading-strong-l">
+                                                {cert.name}
+                                            </Heading>
+                                            <Text variant="body-default-l">
+                                                {cert.issuer}
+                                            </Text>
+                                        </Flex>
                                     </Flex>
                                 ))}
                             </Flex>
@@ -426,6 +451,7 @@ export default function About(
                                 {about.technical.skills.map((skill, index) => (
                                     <Flex
                                         key={`${skill.title}-${index}`}
+                                        id={skill.title}
                                         fillWidth gap="4"
                                         direction="column">
                                         <Text
