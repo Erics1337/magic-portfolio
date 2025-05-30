@@ -1,7 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="800" height="450" xmlns="http://www.w3.org/2000/svg">
-    <rect width="800" height="450" fill="#f0f0f0"/>
-    <text x="400" y="225" font-family="Arial" font-size="24" text-anchor="middle" dominant-baseline="middle" fill="#666">
-        Blog Post Image Coming Soon
-    </text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450"><rect width="800" height="450" fill="#f0f0f0"/><text x="400" y="225" fill="#666" dominant-baseline="middle" font-family="Arial" font-size="24" text-anchor="middle">Blog Post Image Coming Soon</text></svg>
