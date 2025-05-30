@@ -17,14 +17,11 @@ const Hero: React.FC = () => {
 		<section className="overflow-visible relative w-full h-screen hero-section">
 			{/* Background Image */}
 			<div
-				className="fixed top-0 left-0 w-full will-change-transform"
+				className="absolute inset-0 w-full h-full"
 				style={{
 					backgroundImage: `url('/images/RR-v-june-2020-24.png')`,
 					backgroundSize: "cover",
 					backgroundPosition: "center",
-					backgroundAttachment: "fixed",
-					height: "100vh",
-					transform: `translateY(calc(var(--scroll-offset, 0) * -0.4))`,
 					filter: "brightness(0.6)",
 					mixBlendMode: "multiply",
 					zIndex: -1,
@@ -42,9 +39,8 @@ const Hero: React.FC = () => {
 
 			{/* Content Container */}
 			<div 
-				className="flex absolute inset-0 z-10 flex-col gap-16 justify-center items-center px-4 mx-auto max-w-7xl will-change-transform"
+				className="flex absolute inset-0 z-10 flex-col gap-16 justify-center items-center px-4 mx-auto max-w-7xl"
 				style={{
-					transform: "translateY(calc(var(--hero-progress, 0) * -30%))",
 					opacity: "calc(1 - var(--hero-progress, 0) * 0.8)",
 				}}
 			>

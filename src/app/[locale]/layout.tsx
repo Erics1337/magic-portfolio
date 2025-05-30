@@ -137,18 +137,11 @@ export default async function RootLayout({
 					>
 						{/* Full-page background */}
 						<div
-							className="fixed inset-0 will-change-transform"
+							className="absolute inset-0 w-full h-full"
 							style={{
 								backgroundImage: `url('/images/RR-v-june-2020-24.png')`,
 								backgroundSize: "cover",
 								backgroundPosition: "center",
-								backgroundAttachment: "fixed",
-								width: "100vw",
-								height: "120vh",
-								left: "50%",
-								top: "50%",
-								transform:
-									"translate(-50%, calc(-50% + calc(var(--scroll-offset, 0) * 0.3)))",
 								filter: "brightness(0.6)",
 								mixBlendMode: "multiply",
 								zIndex: -1,
@@ -176,7 +169,6 @@ export default async function RootLayout({
 						<Footer />
 					</Flex>
 				</NextIntlClientProvider>
-				<Script src="/scripts/parallax.js" strategy="afterInteractive" />
 			</body>
 			<GoogleAnalytics />
 		</html>
