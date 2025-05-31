@@ -1,0 +1,68 @@
+---
+title: "Building the Future of Customer Service: Enterprise AI Call Center Platform at Nularian"
+publishedAt: "2024-08-15"
+summary: "Architected and developed the admin dashboard for Nularian's Electrify platform, a cloud-native AI call center system that revolutionizes customer service through intelligent automation and real-time analytics."
+images:
+  - "/images/projects/nularian/electrify-homepage.png"
+  - "/images/projects/nularian/electrify-macbook-2.png"
+  - "/images/projects/nularian/electrify-macbook-3.png"
+team:
+  - name: "Eric Swanson"
+    role: "Senior Frontend Engineer"
+    avatar: "/images/avatar.jpg"
+    linkedIn: "https://www.linkedin.com/in/ericsdesign"
+tags: ["typescript", "tailwind", "shadcn", "turborepo", "supabase", "aws", "microservices", "temporal"]
+---
+
+# Overview
+
+At Nularian, I spearheaded the development of the administrative dashboard for Electrify, a revolutionary cloud-native AI call center platform that's transforming how businesses handle customer interactions. As a key engineer on this cutting-edge project, I architected and built the comprehensive admin portal that gives business owners unprecedented visibility into their AI-powered call center operations.
+
+Electrify represents the next generation of customer service technology, utilizing over 5 distinct microservices orchestrated by the Temporal engine to create a robust, fully distributed system that can scale with enterprise demands. My role focused on creating the critical user-facing interfaces that allow administrators to monitor live AI agents, manage user permissions through role-based access control (RBAC), and gain deep insights into telephony performance metrics. The platform seamlessly integrates with industry-standard services like Twilio and Retell APIs while maintaining a secure, multi-tenant architecture.
+
+The impact of this work is already evident in production environments. Encore, a major third-party transportation logistics company, has deployed Electrify to enhance their customer satisfaction while significantly reducing operational costs associated with traditional call center management. The real-time monitoring capabilities and comprehensive analytics dashboard I developed enable business owners to optimize their customer service operations with data-driven insights previously impossible to obtain.
+
+## Key Features
+
+- **Real-Time AI Agent Monitoring:** Engineered live dashboard interfaces using TypeScript and Tailwind CSS that provide administrators with real-time visibility into AI agents handling inbound calls, including conversation status, queue metrics, and performance indicators.
+
+- **Enterprise RBAC System:** Implemented a sophisticated role-based access control system using Supabase that supports multi-tenant architecture, allowing businesses to securely manage user permissions and access levels across different organizational tiers.
+
+- **Advanced Telephony Analytics:** Built comprehensive statistics and reporting interfaces that surface deep insights into call patterns, agent performance, and customer interaction data, enabling business owners to optimize their call center operations.
+
+- **Multi-Tenant Architecture Integration:** Developed frontend interfaces that seamlessly connect with Nularian's GO-based backend services to fetch configuration data, supporting the platform's multi-tenant capabilities while maintaining data isolation and security.
+
+- **Cloud-Native Development Environment:** Utilized LocalStack to replicate AWS services including DynamoDB for local development, ensuring rapid iteration and testing cycles within the distributed microservices architecture.
+
+## Technologies Used
+
+- **Next.js & React:** Modern frontend framework and library for building scalable, server-rendered applications with optimal performance
+- **TypeScript & Tailwind CSS:** Modern frontend development with type safety and utility-first styling
+- **Shadcn Components:** Pre-built, accessible UI components for consistent design system implementation
+- **Turborepo:** Monorepo tooling for efficient management of multiple frontend applications
+- **Supabase:** Backend-as-a-service for authentication, RBAC, and real-time data synchronization
+- **LocalStack & AWS Services:** Local development environment replicating production AWS infrastructure including DynamoDB
+- **Twilio & Retell APIs:** Telephony service integrations for call management and AI conversation handling
+- **Temporal:** Workflow orchestration engine for managing complex, distributed system processes
+
+## Challenges and Learnings
+
+The primary technical challenge was architecting a frontend system that could effectively interface with over 10 different microservices while maintaining real-time responsiveness and data consistency. This required implementing sophisticated state management strategies and designing resilient API integration patterns that could handle the distributed nature of the backend architecture.
+
+Another significant challenge was creating intuitive interfaces for complex telephony data while ensuring the multi-tenant architecture remained secure and performant. I solved this by implementing efficient data caching strategies and designing component architectures that could adapt to different tenant configurations without compromising security boundaries.
+
+## Impact and Results
+
+The Electrify platform has achieved remarkable success in its production deployment:
+
+- **Enterprise Adoption:** Successfully deployed at Encore transportation logistics, demonstrating the platform's ability to handle real-world enterprise customer service demands
+- **Cost Reduction:** Enabled significant operational cost savings for client organizations by automating call center functions while maintaining high service quality
+- **Enhanced Customer Satisfaction:** Provided businesses with tools to improve customer interactions through AI-powered agents and data-driven optimization insights
+- **Scalable Architecture:** Established a foundation for rapid expansion across multiple industries seeking AI-powered customer service solutions
+- **Real-Time Operations:** Delivered live monitoring capabilities that give business owners immediate visibility into their customer service operations, enabling proactive management and optimization
+
+The success of Electrify's admin dashboard has positioned Nularian as a leader in the AI call center space, with the platform ready to scale across various industries seeking to modernize their customer service operations through intelligent automation.
+
+## Learn More
+
+To discover more about Nularian's innovative AI call center solutions and the Electrify platform, visit [nularian.com](https://www.nularian.com/).
