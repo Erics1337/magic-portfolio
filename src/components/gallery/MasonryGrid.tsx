@@ -58,7 +58,7 @@ export default function MasonryGrid({ images }: MasonryGridProps) {
                     : image.orientation === "horizontal" ? "16 / 9" : "9 / 16";
 
                 return (
-                    <Link key={index} href={image.link} className={styles.imageLink}>
+                    <Link key={index} href={image.link} className={`${styles.imageLink} cursor-pointer`}>
                         <div className={styles.imageContainer} style={{ aspectRatio }}>
                             <SmartImage
                                 radius="m"

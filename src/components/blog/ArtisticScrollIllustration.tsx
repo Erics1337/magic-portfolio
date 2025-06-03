@@ -253,18 +253,115 @@ AnimatedLayer.displayName = 'AnimatedLayer';
 
 const createStarburstConfig = (count: number = 45): LayerConfig[] => {
   const starbursts: LayerConfig[] = [];
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // Golden angle ≈ 137.5°
+  const phi = (1 + Math.sqrt(5)) / 2; // Golden ratio
+  
+  // Sacred geometry patterns
+  const patterns = {
+    // Fibonacci spiral with golden angle
+    fibonacci: (i: number, total: number) => {
+      const angle = i * goldenAngle;
+      const radius = Math.sqrt(i / total) * 25; // Scale radius based on position
+      return {
+        x: 50 + radius * Math.cos(angle),
+        y: 50 + radius * Math.sin(angle)
+      };
+    },
+    
+    // Flower of Life pattern (hexagonal grid with circles)
+    flowerOfLife: (i: number, total: number) => {
+      const layer = Math.floor(Math.sqrt(i / 6)) + 1;
+      const posInLayer = i - (layer - 1) * (layer - 1) * 6;
+      const angleStep = (Math.PI * 2) / (layer * 6);
+      const angle = posInLayer * angleStep;
+      const radius = layer * 8; // Distance between layers
+      return {
+        x: 50 + radius * Math.cos(angle),
+        y: 50 + radius * Math.sin(angle)
+      };
+    },
+    
+    // Platonic solid projection (dodecahedron vertices)
+    platonic: (i: number, total: number) => {
+      const t = (1 + Math.sqrt(5)) / 2; // Golden ratio
+      const vertices = [
+        [1, 1, 1], [1, 1, -1], [1, -1, 1], [1, -1, -1],
+        [-1, 1, 1], [-1, 1, -1], [-1, -1, 1], [-1, -1, -1],
+        [0, 1/t, t], [0, 1/t, -t], [0, -1/t, t], [0, -1/t, -t],
+        [1/t, t, 0], [1/t, -t, 0], [-1/t, t, 0], [-1/t, -t, 0],
+        [t, 0, 1/t], [t, 0, -1/t], [-t, 0, 1/t], [-t, 0, -1/t]
+      ];
+      const vertex = vertices[i % vertices.length];
+      // Project 3D to 2D and scale
+      const scale = 15;
+      return {
+        x: 50 + vertex[0] * scale,
+        y: 50 + vertex[1] * scale
+      };
+    },
+    
+    // Vesica Piscis and overlapping circles
+    vesicaPiscis: (i: number, total: number) => {
+      const circleCount = 7; // Seven circles in sacred geometry
+      const circleIndex = Math.floor(i / (total / circleCount));
+      const posInCircle = i % Math.ceil(total / circleCount);
+      const circleAngle = (circleIndex * Math.PI * 2) / circleCount;
+      const circleRadius = 20;
+      
+      // Position on circle circumference
+      const pointAngle = (posInCircle * Math.PI * 2) / Math.ceil(total / circleCount);
+      const pointRadius = 8;
+      
+      const centerX = 50 + circleRadius * Math.cos(circleAngle);
+      const centerY = 50 + circleRadius * Math.sin(circleAngle);
+      
+      return {
+        x: centerX + pointRadius * Math.cos(pointAngle),
+        y: centerY + pointRadius * Math.sin(pointAngle)
+      };
+    }
+  };
+  
   for (let i = 0; i < count; i++) {
-    // Subtle random offset from center (50%) between -2.5% and +2.5%
-    const xOffset = (Math.random() - 0.5) * 5; // Range: -2.5 to 2.5
-    const yOffset = (Math.random() - 0.5) * 5; // Range: -2.5 to 2.5
+    let position;
+    
+    // Distribute starbursts across different sacred geometry patterns
+    const patternIndex = Math.floor(i / (count / 4));
+    const localI = i % Math.floor(count / 4); // Local index within each pattern
+    
+    switch (patternIndex) {
+      case 0:
+        position = patterns.fibonacci(localI, Math.floor(count / 4));
+        break;
+      case 1:
+        position = patterns.flowerOfLife(localI, Math.floor(count / 4));
+        break;
+      case 2:
+        position = patterns.platonic(localI, Math.floor(count / 4));
+        break;
+      default:
+        position = patterns.vesicaPiscis(localI, Math.floor(count / 4));
+        break;
+    }
+    
+    // Ensure positions stay within bounds and add subtle variation
+    const boundedX = Math.max(5, Math.min(95, position.x));
+    const boundedY = Math.max(5, Math.min(95, position.y));
+    
+    // Add small sacred ratio-based variation to avoid perfect rigidity
+    const variation = 2;
+    const xVariation = (Math.sin(i * goldenAngle) * variation);
+    const yVariation = (Math.cos(i * goldenAngle) * variation);
+    
     starbursts.push({
       id: `sb${i + 1}`,
       type: 'starburst',
-      variant: i + 1, // Unique variant for each
-      initialX: 50 + xOffset,
-      initialY: 50 + yOffset,
+      variant: i + 1,
+      initialX: boundedX + xVariation,
+      initialY: boundedY + yVariation,
     });
   }
+  
   return starbursts;
 };
 
