@@ -1,4 +1,8 @@
 export function formatDate(date: string, includeRelative = false) {
+    if (!date || typeof date !== 'string') {
+        // console.error('formatDate called with invalid date input:', date); // Optional: for debugging
+        return 'Invalid Date';
+    }
     const currentDate = new Date();
 
     if (!date.includes('T')) {

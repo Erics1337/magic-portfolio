@@ -1,0 +1,139 @@
+.illustrationContainer {
+  position: relative;
+  width: 100%;
+  min-height: 80vh; /* Increased height for more scroll room */
+  margin: 4rem 0;
+  padding: 1rem;
+  border: 1px solid #374151; /* Tailwind gray-700 */
+  border-radius: 16px; /* Slightly more rounded */
+  background: linear-gradient(170deg, #000011 0%, #0b001f 50%, #1f002e 100%); /* Deep space: near black, dark purple, dark magenta */
+  overflow: hidden;
+  color: #e5e7eb; /* Tailwind gray-200 for better contrast on darker bg */
+}
+
+.illustrationLayer {
+  position: absolute;
+  will-change: transform, opacity;
+  top: 0; left: 0;
+}
+
+/* --- Thematic Element Base Styles --- */
+
+.bgLayer {
+  width: 200%;
+  height: 200%;
+  border-radius: 50%;
+  filter: blur(30px); /* Base blur, JS may modify for nebula variants */
+  /* Specific background (color/gradient) will be applied by JS for each variant */
+}
+/* .bgLayer variant styles removed from CSS; handled by JS */
+
+
+.star {
+  background-color: #ffffff; /* Bright white */
+  border-radius: 50%;
+  box-shadow: 0 0 2px 0px #ffffff, 0 0 4px 0px #ffffff, 0 0 7px 0px #add8e6; /* Softer white glow with light blue hint */
+  /* Size, opacity, and exact position controlled by JS */
+}
+
+.galaxyCluster {
+  border-radius: 50%;
+  /* Base blur, JS will set specific background, filter strength, and opacity based on variant */
+  filter: blur(25px); 
+  /* Example background for a galaxy (JS will set this):
+     background: radial-gradient(circle, rgba(180, 180, 255, 0.15) 0%, rgba(120, 120, 200, 0.0) 70%); */
+}
+
+.productIconPlaceholder {
+  width: 150px; height: 150px; /* Increased size */
+  display: flex; align-items: center; justify-content: center;
+  top: calc(50% - 75px); left: calc(50% - 75px); /* Re-center */
+  /* Base styles for layers */
+}
+.layer {
+  will-change: transform, opacity;
+}
+.productIconCore {
+  will-change: transform, opacity;
+  width: 60%; height: 60%; /* Now 90px x 90px if placeholder is 150px */
+  background-color: rgba(220, 230, 255, 0.15); /* Lighter background for logo visibility */
+  border-radius: 16px; /* Slightly larger radius for larger box */
+  box-shadow: 0 0 18px rgba(173, 216, 230, 0.7), 0 0 36px rgba(173, 216, 230, 0.5); /* Further Enhanced glow */
+  animation: pulseBoxShadowGlow 3s infinite ease-in-out; /* Activate persistent glow, slightly faster */
+  position: absolute;
+  display: flex; /* To center the Image component */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Keyframes for a pulsing box-shadow, can be applied to .productIconCore if desired */
+@keyframes pulseBoxShadowGlow {
+  0% { box-shadow: 0 0 18px rgba(173, 216, 230, 0.6), 0 0 36px rgba(173, 216, 230, 0.4), 0 0 2px 2px rgba(200, 220, 255, 0.1); }
+  50% { box-shadow: 0 0 25px rgba(173, 216, 230, 0.9), 0 0 50px rgba(173, 216, 230, 0.7), 0 0 3px 4px rgba(200, 220, 255, 0.2); }
+  100% { box-shadow: 0 0 18px rgba(173, 216, 230, 0.6), 0 0 36px rgba(173, 216, 230, 0.4), 0 0 2px 2px rgba(200, 220, 255, 0.1); }
+}
+
+/* Style for the dedicated pulse glow div (opacity animated by JS) */
+.productIconPulseGlow {
+  position: absolute;
+  width: 140%; /* Made larger for a more prominent pulse */
+  height: 140%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(173, 216, 230, 0.5) 0%, rgba(173, 216, 230, 0) 65%); /* Slightly stronger and wider gradient */
+  /* Opacity is controlled by JS inline style */
+}
+
+.starburst {
+  will-change: transform, opacity;
+  width: 10px; /* Reverting to slightly thicker beams for more color presence */
+  height: 30px;
+  background-color: #FFD700; /* Gold */
+  position: relative;
+  box-shadow: 
+    0 0 7px #FFD700,   /* Gold - slightly larger base */
+    0 0 15px #FFA500,  /* Orange-Gold */
+    0 0 25px #FF8C00;  /* DarkOrange - wider spread */
+  border-radius: 5px;
+}
+
+.starburst::before,
+.starburst::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 30px;
+  background-color: inherit;
+  border-radius: inherit;
+  box-shadow:
+    0 0 4px #FFD700,   /* Gold - smaller */
+    0 0 8px #FFA500;  /* Orange-Gold - softer */
+  top: 0;
+  left: 0;
+}
+
+.starburst::before {
+  transform: rotate(60deg);
+}
+
+.starburst::after {
+  transform: rotate(-60deg);
+}
+
+/* Variant specific glows or colors can be added if needed */
+.starburst1 { /* Example: could have a slightly different tint */ }
+.starburst2 { }
+.starburst3 { }
+.starburst4 { }
+
+.illustrationCaption {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #d1d5db; /* Tailwind gray-300, lighter for better contrast on very dark bg */
+  font-size: 1rem; /* Slightly larger */
+  font-style: italic;
+  text-align: center;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}

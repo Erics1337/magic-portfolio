@@ -4,6 +4,7 @@ import React, { ReactNode } from 'react';
 import { SmartImage, SmartLink, Text } from '@/once-ui/components';
 import { CodeBlock } from '@/once-ui/modules';
 import { HeadingLink } from '@/components';
+import ArtisticScrollIllustration from '@/components/blog/ArtisticScrollIllustration';
 
 import { TextProps } from '@/once-ui/interfaces';
 import { SmartImageProps } from '@/once-ui/components/SmartImage';
@@ -191,7 +192,8 @@ const components = {
     CodeBlock,
     code: createCode as any,
     // Handle code blocks with language specification
-    pre: ({ children }: { children: any }) => children
+    pre: ({ children }: { children: any }) => children,
+    ArtisticScrollIllustration,
 };
 
 type CustomMDXProps = MDXRemoteProps & {

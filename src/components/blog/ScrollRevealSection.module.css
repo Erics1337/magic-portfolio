@@ -1,0 +1,137 @@
+.sectionContainer {
+  margin: 3rem 0;
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  overflow: hidden; /* Important to contain elements that slide in */
+}
+
+.sectionTitle {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.animatedItem {
+  opacity: 0;
+  /* More flexible transition for diverse animations */
+  transition: all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* A bouncier, more expressive default easing */
+  margin-bottom: 2.5rem; /* Slightly more spacing */
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  transform-style: preserve-3d; /* For 3D transforms */
+  will-change: transform, opacity; /* Performance hint */
+}
+
+.animatedItem:last-child {
+  margin-bottom: 0;
+}
+
+.animatedItem.visible {
+  opacity: 1;
+  transform: none; /* Reset transform for the visible state, specific transforms handled by animation classes */
+}
+
+/* --- Enhanced & New Animation Types --- */
+
+/* FadeIn (remains simple, but benefits from new default transition) */
+.fadeIn {
+  /* Initial state opacity: 0 is handled by .animatedItem */
+}
+
+/* SlideInFromLeft with more flair */
+.slideInFromLeft {
+  opacity: 0; /* Start fully transparent */
+  transform: translateX(-250px) rotateY(-30deg) scale(0.9);
+}
+.slideInFromLeft.visible {
+  opacity: 1;
+  transform: translateX(0) rotateY(0deg) scale(1);
+}
+
+/* SlideInFromRight with more flair */
+.slideInFromRight {
+  opacity: 0;
+  transform: translateX(250px) rotateY(30deg) scale(0.9);
+}
+.slideInFromRight.visible {
+  opacity: 1;
+  transform: translateX(0) rotateY(0deg) scale(1);
+}
+
+/* ScaleUp with more bounce */
+.scaleUp {
+  opacity: 0;
+  transform: scale(0.5);
+}
+.scaleUp.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* New: FlipInX */
+.flipInX {
+  opacity: 0;
+  transform: perspective(1000px) rotateX(-90deg);
+  transition-timing-function: ease-in-out;
+}
+.flipInX.visible {
+  opacity: 1;
+  transform: perspective(1000px) rotateX(0deg);
+}
+
+/* New: ZoomInAndRotate */
+.zoomInAndRotate {
+  opacity: 0;
+  transform: scale(0.3) rotateZ(-45deg);
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.zoomInAndRotate.visible {
+  opacity: 1;
+  transform: scale(1) rotateZ(0deg);
+}
+
+/* Demo Box Styles (for visual distinction) */
+.demoBox1 {
+  border-left: 6px solid #3b82f6; /* Blue-500 */
+}
+
+.demoBox2 {
+  border-left: 6px solid #10b981; /* Green-500 */
+}
+
+.demoBox3 {
+  border-left: 6px solid #f59e0b; /* Amber-500 */
+}
+
+.demoBox4 {
+  border-left: 6px solid #8b5cf6; /* Violet-500 */
+}
+
+.tallBox {
+  min-height: 200px; /* To make sure it's noticeable */
+}
+
+.animatedItem h4 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.animatedItem p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.animatedItem p:last-child {
+  margin-bottom: 0;
+}
