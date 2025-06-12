@@ -53,7 +53,7 @@ export function BlogContent({ posts, locale }: BlogContentProps) {
             {filteredPosts.length > 0 && (
                 <Flex fillWidth flex={1} direction="column">
                     <Posts blogs={filteredPosts.slice(0, 3)} locale={locale} thumbnail/>
-                    <Posts blogs={filteredPosts.slice(3)} columns="2" locale={locale}/>
+                    <Posts blogs={filteredPosts.slice(3)} columns="2" locale={locale} thumbnail/>
                 </Flex>
             )}
         </Flex>
