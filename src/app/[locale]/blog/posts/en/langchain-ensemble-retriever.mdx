@@ -1,0 +1,99 @@
+---
+title: "Beyond the FAQ: Building a Multi-Tenant Virtual Manager with LangChain and Makerkit"
+publishedAt: "2025-06-26"
+image: "/images/blog/langchain/ensemble-retriever.png"
+summary: "A deep dive into how we built a multi-tenant virtual manager using LangChain's EnsembleRetriever, combining public documentation and private client data for a truly intelligent chatbot experience."
+tags: ["LangChain", "AI", "Chatbot", "RAG", "SaaS", "Makerkit", "Supabase", "TypeScript"]
+---
+
+In the world of SaaS, a good chatbot is more than a convenience; it's a *force multiplier*. But what separates a simple FAQ bot from a truly intelligent assistant? The answer is *context*. At Pool Manager Pro, we recently evolved the standard Makerkit chatbot from a helpful guide into a full-fledged *Virtual Manager*, capable of understanding both public documentation and our clients' private, operational data. It was a journey that took us deep into the worlds of *Retrieval-Augmented Generation (RAG)*, multi-tenant database architecture, and the elegant power of LangChain's *EnsembleRetriever*.
+
+Here’s how we did it.
+
+<img src="/images/blog/langchain/ensemble-retriever.png" alt="LangChain Ensemble Retriever" className="w-full rounded-lg my-8" />
+
+### The Vision: From Generic Chatbot to Virtual Manager
+
+The standard chatbot included with the Makerkit SaaS starter kit is a fantastic foundation. It uses a web crawler to build a knowledge base from your public site, allowing it to answer questions about features, pricing, and general documentation. But for a specialized B2B application like Pool Manager Pro, our clients needed more.
+
+Our vision was to create a *Virtual Manager* that could answer two distinct types of questions with equal fluency:
+
+1.  **General Knowledge**: *"How do I reset my password?"* or *"What are the features of the premium plan?"*
+2.  **Tenant-Specific Knowledge**: *"What are the specific safety protocols for the Sunnyvale community pool?"* or *"Who is the emergency contact for the Northside facility?"*
+
+This second category required the AI to access private documents uploaded by each client—employee handbooks, site-specific rules, emergency procedures—and to do so with absolute data security and isolation.
+
+### The Core Challenge: Orchestrating a Hybrid, Multi-Table Search
+
+Our data was split across two tables in Supabase:
+
+*   *site_embeddings*: For the public, crawled data.
+*   *tenant_document_embeddings*: For the private, user-uploaded documents, protected by Row-Level Security.
+
+The initial problem was clear: how do you get a single chatbot to query both sources at once? Furthermore, we wanted the best of both worlds in our search: the semantic, meaning-based power of **vector search** and the precision of traditional **keyword search**. This meant we needed to perform a *hybrid search* across *two different tables* simultaneously.
+
+This is where LangChain's *EnsembleRetriever* became the star of the show.
+
+### The Solution: An Ensemble of Hybrid Retrievers
+
+The *EnsembleRetriever* is a brilliant abstraction. It acts as a high-level orchestrator that can manage multiple, distinct retriever tools. We configured two *SupabaseHybridSearch* retrievers—one for each of our tables—and wrapped them in the ensemble.
+
+When a user asks a question, the *EnsembleRetriever* kicks off a cascade of four parallel searches:
+
+1.  **Site Retriever**: Performs a vector search on *site_embeddings*.
+2.  **Site Retriever**: Performs a keyword search on *site_embeddings*.
+3.  **Tenant Retriever**: Performs a vector search on *tenant_document_embeddings*.
+4.  **Tenant Retriever**: Performs a keyword search on *tenant_document_embeddings*.
+
+It then intelligently merges the results from all four searches into a single, rich context to feed to the AI. This architecture was the key to unlocking our *Virtual Manager's* core capabilities.
+
+### The Deep Dive: Hunting a Silent Bug
+
+Of course, no interesting project is without its challenges. After setting up our ensemble, we hit a wall. The tenant-specific results were coming through perfectly, but the site retriever was returning nothing. No errors, just *silence*.
+
+The culprit, as is so often the case, was a tiny detail buried in our database logic. Our Supabase RPC function for the site search (*match_documents_web*) expected a *filter* parameter, even if it was empty. The default *SupabaseHybridSearch* retriever wasn't sending one, causing the database to silently reject the query.
+
+The fix was a small but powerful piece of code that overrode the retriever's default behavior to inject the required empty filter. It was a potent reminder that building great AI requires *full-stack thinking*, from the highest-level abstractions down to the SQL function signatures.
+
+### The Document Pipeline: From Upload to Insight
+
+To make this all work, we needed a robust pipeline for getting client documents into the system. We engineered a clean, two-stage process:
+
+1.  **Secure Upload**: Our */api/upload* endpoint first authenticates the user and then streams the file directly to a secure Supabase Storage bucket, ensuring tenant data is immediately isolated.
+2.  **Asynchronous Processing**: The API then triggers a dedicated server action (*uploadDocumentAction*) to do the heavy lifting in the background. This action fetches the file, parses it, splits it into manageable chunks, generates vector embeddings for each chunk using the OpenAI API, and finally, stores them in the *tenant_document_embeddings* table.
+
+This decoupled approach ensures the app remains fast and responsive, even when processing large documents.
+
+### The Final Polish: Guiding the AI with a Perfect Prompt
+
+The last step was to ensure the AI knew exactly what to do with the rich context we provided. We crafted a precise prompt template that acts as the AI's *constitution*:
+
+```
+You are an assistant for Pool Manager Pro. Answer the following QUESTION based on the CONTEXT below. If the context does not contain the answer, reply with "I am sorry, but the provided context does not have the answer to this question."
+
+CONTEXT:
+{context}
+
+QUESTION:
+{question}
+
+Final Answer:
+```
+
+This prompt *grounds* the AI, forcing it to answer *only* from the provided context and giving it a clear, honest way to handle questions it can't answer. It's the final guardrail that ensures our *Virtual Manager* is not just powerful, but also reliable and trustworthy.
+
+### Conclusion: A New Standard for SaaS Assistance
+
+By layering these technologies—a secure document pipeline, a multi-table hybrid search orchestrated by the *EnsembleRetriever*, and a set of clear instructions via the prompt—we successfully transformed our chatbot. It's no longer just an FAQ bot; it's a true *Virtual Manager*, seamlessly blending public and private knowledge to provide unparalleled support to our clients. It's a testament to the power of modern AI tools and a new standard for what's possible in SaaS assistance.
+
+-   Setting the correct HTTP headers for a streaming response.
+-   Formatting the data chunks in a way that the frontend can easily interpret.
+-   Ensuring the connection is managed correctly for real-time, character-by-character updates in the UI.
+
+So, while LangChain does the heavy lifting of generating the response, the Vercel AI SDK is the essential messenger that ensures the response is delivered smoothly and efficiently to the user's screen, creating that real-time "typing" effect that makes modern chatbots feel so interactive.
+
+### Conclusion: A Truly Unified Assistant
+
+This journey was a powerful reminder that building robust AI systems requires a full-stack mindset. The solution wasn't just in the Python or TypeScript code, but in understanding the entire data flow, from the LangChain abstractions down to the SQL function signatures.
+
+The *EnsembleRetriever* proved to be an invaluable tool, enabling me to break down data silos and create a truly synergistic RAG system. Our virtual manager is now smarter, more reliable, and provides a seamless experience, effortlessly blending site-wide knowledge with private company context to deliver the best possible answer, every time.
