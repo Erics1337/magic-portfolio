@@ -1,6 +1,6 @@
 "use client";
 
-import { Flex, Select } from '@/once-ui/components';
+import { Flex, Select, Text } from '@/once-ui/components';
 import { Posts } from '@/components/blog/Posts';
 import { useState, useMemo } from 'react';
 
@@ -40,16 +40,27 @@ export function BlogContent({ posts, locale }: BlogContentProps) {
 
     return (
         <Flex direction="column" gap="48">
-            <div style={{ position: 'relative', zIndex: 10, maxWidth: '200px' }}>
-                <Select
-                    id="tag-filter"
-                    label="Filter by tag"
-                    value={selectedTag}
-                    onSelect={(option) => setSelectedTag(option.value)}
-                    options={tagOptions}
-                    placeholder="Filter by tag"
-                />
-            </div>
+            <Flex direction="row" justifyContent="space-between" alignItems="flex-end" fillWidth>
+                <div style={{ position: 'relative', zIndex: 10, maxWidth: '200px' }}>
+                    <Select
+                        id="tag-filter"
+                        label="Filter by tag"
+                        value={selectedTag}
+                        onSelect={(option) => setSelectedTag(option.value)}
+                        options={tagOptions}
+                        placeholder="Filter by tag"
+                    />
+                </div>
+                <Text
+                    variant="body-default-s"
+                    onBackground="neutral-weak"
+                    style={{ marginBottom: '8px' }}>
+                    {selectedTag === 'all' 
+                        ? `Showing ${posts.length} post${posts.length !== 1 ? 's' : ''}` 
+                        : `Showing ${filteredPosts.length} of ${posts.length} post${posts.length !== 1 ? 's' : ''}`
+                    }
+                </Text>
+            </Flex>
             {filteredPosts.length > 0 && (
                 <Flex fillWidth flex={1} direction="column">
                     <Posts blogs={filteredPosts.slice(0, 3)} locale={locale} thumbnail/>
