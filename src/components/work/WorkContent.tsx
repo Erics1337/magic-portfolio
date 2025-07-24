@@ -1,6 +1,6 @@
 "use client";
 
-import { Flex, Select } from '@/once-ui/components';
+import { Flex, Select, Text } from '@/once-ui/components';
 import { Projects } from '@/components/work/Projects';
 import { useState, useMemo } from 'react';
 
@@ -45,16 +45,27 @@ export function WorkContent({ posts, locale }: WorkContentProps) {
 
     return (
         <Flex direction="column" gap="48">
-            <div style={{ position: 'relative', zIndex: 10, maxWidth: '200px' }}>
-                <Select
-                    id="tag-filter"
-                    label="Filter by tag"
-                    value={selectedTag}
-                    onSelect={(option) => setSelectedTag(option.value)}
-                    options={tagOptions}
-                    placeholder="Filter by tag"
-                />
-            </div>
+            <Flex direction="row" justifyContent="space-between" alignItems="flex-end" fillWidth>
+                <div style={{ position: 'relative', zIndex: 10, maxWidth: '200px' }}>
+                    <Select
+                        id="tag-filter"
+                        label="Filter by tag"
+                        value={selectedTag}
+                        onSelect={(option) => setSelectedTag(option.value)}
+                        options={tagOptions}
+                        placeholder="Filter by tag"
+                    />
+                </div>
+                <Text
+                    variant="body-default-s"
+                    onBackground="neutral-weak"
+                    style={{ marginBottom: '8px' }}>
+                    {selectedTag === 'all' 
+                        ? `Showing ${posts.length} project${posts.length !== 1 ? 's' : ''}` 
+                        : `Showing ${filteredPosts.length} of ${posts.length} project${posts.length !== 1 ? 's' : ''}`
+                    }
+                </Text>
+            </Flex>
             <Projects posts={filteredPosts} locale={locale} />
         </Flex>
     );
