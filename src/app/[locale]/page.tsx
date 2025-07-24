@@ -1,13 +1,14 @@
 import React from 'react';
 
-import { Heading, Flex, Text, Button,  Avatar, RevealFx, Arrow } from '@/once-ui/components';
+import { Heading, Flex, Text, Button, Avatar, RevealFx, Arrow } from '@/once-ui/components';
 import { Projects } from '@/components/work/Projects';
 import { baseURL, routes, renderContent } from '@/app/resources'; 
 import { Mailchimp } from '@/components';
 import { PostsContainer } from '@/components/blog/PostsContainer';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
-import { getWorkProjects } from '@/app/utils/utils';
+import { getWorkProjects, getBlogPosts, filterPostsByTitles } from '@/app/utils/utils';
+import { Posts } from '@/components/blog/Posts';
 
 import Hero from '@/components/Hero'
 
@@ -45,13 +46,38 @@ export async function generateMetadata(
 	};
 }
 
+// Curated list of work projects to show on the homepage (in order)
+const CURATED_WORK_PROJECTS = [
+    'Beyond the FAQ: Building a Multi-Tenant Virtual Manager with LangChain and Makerkit',
+    'Transforming Financial Education: How I Automated Certification for 2,000+ Exit Planning Advisors',
+    'Securing High-End Bicycle Deliveries at America\'s First Bike-Only Logistics Company',
+    'Enhancing Web Accessibility for the NIH National Heart Lung and Blood Institute',
+    'Building the Future of Customer Service: Enterprise AI Call Center Platform at Nularian',
+    'Building a Lightning-Fast Search Engine for California\'s $300B Transportation Projects'
+];
+
+// Curated list of blog posts to show on the homepage (in order)
+const CURATED_BLOG_POSTS = [
+    'Beyond the FAQ: Building a Multi-Tenant Virtual Manager with LangChain and Makerkit',
+    'My Favorite Coding YouTube Channels and Dev Personalities'
+];
+
 export default async function Home(
-	{ params: {locale}}: { params: { locale: string }}
+    { params: {locale}}: { params: { locale: string }}
 ) {
-	unstable_setRequestLocale(locale);
-	const t = await getTranslations();
-	const { home, about, person, newsletter } = renderContent(t);
-	const posts = await getWorkProjects(locale);
+    unstable_setRequestLocale(locale);
+    const t = await getTranslations();
+    const { home, about, person, newsletter } = renderContent(t);
+    
+    // Get all work projects and blog posts
+    const allWorkProjects = await getWorkProjects(locale);
+    const allBlogPosts = await getBlogPosts(locale);
+    
+    // Filter to only include curated items in the specified order
+    const [curatedWorkProjects, curatedBlogPosts] = await Promise.all([
+        filterPostsByTitles(allWorkProjects, CURATED_WORK_PROJECTS),
+        filterPostsByTitles(allBlogPosts, CURATED_BLOG_POSTS)
+    ]);
 	return (
 		<Flex
 			maxWidth="m" fillWidth gap="xl"
@@ -131,28 +157,35 @@ export default async function Home(
 					</Flex>
 				
 			</Flex>
-			<RevealFx translateY="16" delay={0.6}>
-				<Projects range={[1,1]} locale={locale} posts={posts}/>
-			</RevealFx>
-			{routes['/blog'] && (
-				<Flex
-					fillWidth gap="24"
-					mobileDirection="column">
-					<Flex flex={1} paddingLeft="l">
-						<Heading
-							as="h2"
-							variant="display-strong-xs"
-							wrap="balance">
-							Latest from the blog
-						</Heading>
-					</Flex>
-					<Flex
-						flex={3} paddingX="20">
-						<PostsContainer range={[1,2]} columns="2" locale={locale}/>
-					</Flex>
-				</Flex>
-			)}
-			<Projects range={[2]} locale={locale} posts={posts}/>
+            {/* Featured Work Projects */}
+            <RevealFx translateY="16" delay={0.6}>
+                <Projects locale={locale} posts={curatedWorkProjects} />
+            </RevealFx>
+            
+            {/* Featured Blog Posts */}
+            {routes['/blog'] && curatedBlogPosts.length > 0 && (
+                <Flex
+                    fillWidth gap="24"
+                    mobileDirection="column">
+                    <Flex flex={1} paddingLeft="l">
+                        <Heading
+                            as="h2"
+                            variant="display-strong-xs"
+                            wrap="balance">
+                            Latest from the blog
+                        </Heading>
+                    </Flex>
+                    <Flex
+                        flex={3} paddingX="20">
+                        <Posts 
+                            locale={locale} 
+                            blogs={curatedBlogPosts} 
+                            columns={curatedBlogPosts.length > 1 ? '2' : '1'}
+                            thumbnail={true}
+                        />
+                    </Flex>
+                </Flex>
+            )}
 			{ newsletter.display &&
 				<Mailchimp newsletter={newsletter} />
 			}

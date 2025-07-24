@@ -22,7 +22,7 @@ export default function Post({ post, thumbnail }: PostProps) {
             href={`/blog/${post.slug}`}>
             <Flex
                 position="relative"
-                mobileDirection="column"
+                direction="column"
                 fillWidth paddingY="12" paddingX="16" gap="32">
                 {post.metadata.image && thumbnail && (
                     <Flex

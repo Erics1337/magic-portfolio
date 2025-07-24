@@ -114,3 +114,18 @@ export async function getWorkProjects(locale: string) {
     // console.log('Found projects:', projects.length);
     return projects;
 }
+
+export async function filterPostsByTitles(posts: any[], titles: string[]): Promise<any[]> {
+    'use server';
+    if (!posts || !Array.isArray(posts)) return [];
+    
+    return titles
+        .map(title => {
+            // Find the first post that includes the title (case insensitive)
+            const post = posts.find(p => 
+                p.metadata.title.toLowerCase().includes(title.toLowerCase())
+            );
+            return post;
+        })
+        .filter(Boolean); // Remove any undefined values if a title wasn't found
+}
